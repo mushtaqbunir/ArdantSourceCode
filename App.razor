@@ -1,0 +1,40 @@
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            @*<AuthorizationCheck route="routeData"></AuthorizationCheck>*@
+            <AuthorizeRouteView RouteData="@routeData"
+                                DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <NavigateToLogin />
+                </NotAuthorized>
+                <Authorizing>
+                    <h1>Authentication in progress</h1>
+                </Authorizing>
+            </AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <NotFound></NotFound>
+                @*<p>Sorry, there's nothing at this address.</p>*@
+            </LayoutView>
+        </NotFound>
+
+    </Router>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+</CascadingAuthenticationState>
+@code
+{
+@inject IJSRuntime JsRuntime
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            // remove class from div element with JSInterop
+            await Task.Delay(1500);
+            await JsRuntime.InvokeVoidAsync("removeLoader"); // this function needs to be available
+        }
+    }
+    
+}
+ 

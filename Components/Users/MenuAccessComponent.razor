@@ -1,0 +1,267 @@
+﻿@inject IJSRuntime JsRuntime;
+@if (Visible)
+{
+    <FormLoader Istrue="@IsloaderShow"></FormLoader>
+
+    <style>
+        .FileNameclass {
+            text-overflow: ellipsis;
+            width: 174px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+    <div tabindex="0" id="kt_quick_cart3456" class="offcanvas offcanvas-right p-10 offcanvas-on w-25" style="position:fixed;z-index:999999999">
+        <!--begin::Header-->
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7 w-25 popup_header" id="sm-width" kt-hidden-height="46">
+            @if (EditID == 0)
+            {
+                <h4 class="font-weight-bold "> Add Menu Access</h4>
+            }
+            else
+            {
+                <h4 class="font-weight-bold "> Update Menu Access</h4>
+            }
+            <a @onclick="CloseSideBar" class="btn" id="kt_quick_cart_close">
+                <i class="p-0 fa fa-window-close"></i>
+            </a>
+        </div>
+        <div class=" mt-4">
+            <div class="offcanvas-wrapper  scroll-pull scroll ps ps--active-y" style="height: auto;overflow:visible">
+                <EditForm Model="@MenuItemModel" OnValidSubmit="@SubmitModel">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    @*<InputCheckbox @bind-Value="TestBool" />*@
+                    <div class="offcanvas-content mt-4 ">
+
+                        <div class="offcanvas-wrapper  scroll-pull scroll ps ps--active-y" style="height: auto;overflow:visible">
+                            <div class=" ">
+                                <div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+                                    <!--Dashboard Card  -->
+                                    <div class="card">
+                                        <!--Dashboard Card header -->
+                                        <div class="card-header" role="tab" id="headingTwo1">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo1" style="color: #0056b3; text-decoration: underline; "
+                                               aria-expanded="false" aria-controls="collapseTwo1">
+                                                <h5 class="mb-0 text-white">
+                                                    Dashboard <i class="fas fa-angle-down rotate-icon"></i>
+                                                </h5>
+                                            </a>
+                                        </div>
+                                        <!--Dashboard Card body -->
+                                        <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1"
+                                             data-parent="#accordionEx1">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class=""> Dashboard : &nbsp; </label>
+                                                            <input type="checkbox" checked="@MenuItemModel.Dashboard" @bind-value ="@MenuItemModel.Dashboard" @bind-value:event="oninput" @onchange="@(async (e) =>  await CheckChanged(e ,"Dashboard"))" />
+                                                            values:@MenuItemModel.Dashboard
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Compliance Card header -->
+                                    <div class="card">
+                                        <!--Compliance Card header -->
+                                        <div class="card-header" role="tab" id="headingCompliance">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseCompliance" style="color: #0056b3; text-decoration: underline; "
+                                               aria-expanded="false" aria-controls="collapseCompliance">
+                                                <h5 class="mb-0 text-white">
+                                                    Compliance <i class="fas fa-angle-down rotate-icon"></i>
+                                                </h5>
+                                            </a>
+                                        </div>
+                                        <!--Compliance Card body -->
+                                        <div id="collapseCompliance" class="collapse" role="tabpanel" aria-labelledby="headingCompliance"
+                                             data-parent="#accordionEx1">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class=""> Compliance :&nbsp; </label>
+                                                            <input type="checkbox" checked="@MenuItemModel.Compliance" @onchange="@(async (e) => await CheckChanged(e ,"Compliance"))" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @*//////////////////////////////*@
+                                            @*Transactions-Monitoring*@
+                                            <div class="accordion md-accordion" id="accordionEx11" role="tablist" aria-multiselectable="true" style="margin-top:-26px">
+                                                <div class="row">
+                                                    <div class="ml-5 col-10">
+                                                        <!--Transactions-Monitorin start -->
+                                                        <div class="card mb-2">
+                                                            <!--Transactions-Monitoring Card header -->
+                                                            <div class="card-header" role="tab" id="headingTransactionsMonitoring">
+                                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx11" href="#collapseTransactionsMonitoring" style="color: #0056b3; text-decoration: underline; "
+                                                                   aria-expanded="false" aria-controls="collapseTransactionsMonitoring">
+                                                                    <h5 class="mb-0 text-white">
+                                                                        Transactions Monitoring  <i class="fas fa-angle-down rotate-icon"></i>
+                                                                    </h5>
+                                                                </a>
+                                                            </div>
+                                                            <!--Transactions-Monitoring Card body -->
+                                                            <div id="collapseTransactionsMonitoring" class="collapse" role="tabpanel" aria-labelledby="headingTransactionsMonitoring"
+                                                                 data-parent="#accordionEx11">
+                                                                <div class="card-body">
+                                                                    <div class="row">
+
+                                                                        <div class="col-12 col-md-12 col-sm-12">
+                                                                            <div class="form-group">
+                                                                                <label class=""> Transactions Monitoring: &nbsp;</label>
+                                                                                <input type="checkbox" checked="@MenuItemModel.TransactionsMonitoring" @onchange="@(async (e) => await CheckChanged(e ,"Transactions-Monitoring"))" />
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- data-parent 2 Start  -->
+                                                                <div class="accordion md-accordion" id="accordionEx12" role="tablist" aria-multiselectable="true" style="margin-top:-26px">
+                                                                    <!--Non-Flag-txns Start  -->
+                                                                    <div class="row">
+                                                                        <div class="ml-5 col-10">
+                                                                            <div class="card mb-2">
+                                                                                <!--Non-Flag-txns Card header -->
+                                                                                <div class="card-header" role="tab" id="headingNonFlagtxns">
+                                                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx12" href="#collapseNonFlagtxns" style="color: #0056b3; text-decoration: underline; "
+                                                                                       aria-expanded="false" aria-controls="collapseNonFlagtxns">
+                                                                                        <h5 class="mb-0 text-white">
+                                                                                            Non Flag Txns  <i class="fas fa-angle-down rotate-icon"></i>
+                                                                                        </h5>
+                                                                                    </a>
+                                                                                </div>
+                                                                                <!--Non-Flag-txns Card body -->
+                                                                                <div id="collapseNonFlagtxns" class="collapse" role="tabpanel" aria-labelledby="headingNonFlagtxns"
+                                                                                     data-parent="#accordionEx12">
+                                                                                    <div class="card-body">
+                                                                                        <div class="row">
+
+                                                                                            <div class="col-12 col-md-12 col-sm-12">
+                                                                                                <div class="form-group">
+                                                                                                    <label class="">Non Flag Txns: &nbsp; </label>
+                                                                                                    <input type="checkbox" checked="@MenuItemModel.NonFlagtxns" @onchange="@(async (e) => await CheckChanged(e ,"Non-Flag-txns"))" />
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!--Flag-Txns Card body -->
+                                                                    <div class="row">
+                                                                        <div class="ml-5 col-10">
+                                                                            <div class="card mb-2">
+                                                                                <!--Flag-Txns Card header -->
+                                                                                <div class="card-header" role="tab" id="headingFlagtxns">
+                                                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx12" href="#collapseFlagtxns" style="color: #0056b3; text-decoration: underline; "
+                                                                                       aria-expanded="false" aria-controls="collapseFlagtxns">
+                                                                                        <h5 class="mb-0 text-white">
+                                                                                            Flag Txns  <i class="fas fa-angle-down rotate-icon"></i>
+                                                                                        </h5>
+                                                                                    </a>
+                                                                                </div>
+                                                                                <!--Flag-Txns Card body -->
+                                                                                <div id="collapseFlagtxns" class="collapse" role="tabpanel" aria-labelledby="headingFlagtxns"
+                                                                                     data-parent="#accordionEx12">
+                                                                                    <div class="card-body">
+
+                                                                                        <div class="row">
+                                                                                            <div class="col-12 col-md-12 col-sm-12">
+                                                                                                <div class="form-group">
+                                                                                                    <label class="font-weight-bold">Flag Txns: &nbsp;</label>
+                                                                                                    <input type="checkbox" checked="@MenuItemModel.FlagTxns" @onchange="@(async (e) => await CheckChanged(e ,"Flag-txns"))" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="row">
+
+                                                                                            <div class="col-12 col-md-12 col-sm-12">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Payments : &nbsp;</label>
+                                                                                                    <input type="checkbox" checked="@MenuItemModel.Payments" @onchange="@(async (e) => await CheckChanged(e ,"Payments"))" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-12 col-md-12 col-sm-12">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Deposits : &nbsp; </label>
+                                                                                                    <input type="checkbox" checked="@MenuItemModel.Deposits" @onchange="@(async (e) => await CheckChanged(e ,"Deposits"))" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- International Payments Start  -->
+                                                                    <div class="row">
+                                                                        <div class="ml-5 col-10">
+                                                                            <div class="card mb-2">
+                                                                                <!-- International Payments Card header -->
+                                                                                <div class="card-header" role="tab" id="headingInternationalPayments">
+                                                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx12" href="#collapseInternationalPayments" style="color: #0056b3; text-decoration: underline; "
+                                                                                       aria-expanded="false" aria-controls="collapseInternationalPayments">
+                                                                                        <h5 class="mb-0 text-white">
+                                                                                            International Payments  <i class="fas fa-angle-down rotate-icon"></i>
+                                                                                        </h5>
+                                                                                    </a>
+                                                                                </div>
+                                                                                <!-- International Payments Card body -->
+                                                                                <div id="collapseInternationalPayments" class="collapse" role="tabpanel" aria-labelledby="headingInternationalPayments"
+                                                                                     data-parent="#accordionEx12">
+                                                                                    <div class="card-body">
+                                                                                        <div class="row">
+                                                                                            <div class="col-12 col-md-12 col-sm-12">
+                                                                                                <div class="form-group">
+                                                                                                    <label class="">International Payments: &nbsp; </label>
+                                                                                                    <input type="checkbox" checked="@MenuItemModel.InternationalPayments" @onchange="@(async (e) => await CheckChanged(e ,"InternationalPayments"))" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*/////////////////////////*@
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="row">
+                        <button type="submit" class=" ml-2 btn  float-right btn-success" tabindex="9">Save</button>
+                    </div>*@
+                </EditForm>
+            </div>
+            <div class="offcanvas-footer" kt-hidden-height="112" style="">
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+}

@@ -1,0 +1,38 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@attribute [IgnoreAntiforgeryToken]
+@using ArdantOffical.Data
+ 
+@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Authentication.Cookies;
+
+
+@functions {
+    public async Task<IActionResult> OnPost()
+    {
+
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        //await SignInManager.SignOutAsync();
+
+        return Redirect("~/");
+    }
+
+    public async Task<IActionResult> OnGet()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        //await SignInManager.SignOutAsync();
+
+        
+
+        return Redirect("~/");
+    }
+
+    //public async Task<IActionResult> LogoutAsync()
+    //{
+    //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+    //    return RedirectToAction(nameof(Login));
+    //}
+}

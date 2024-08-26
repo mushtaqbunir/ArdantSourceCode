@@ -1,0 +1,280 @@
+﻿@inject IJSRuntime JsRuntime;
+@if (Visible)
+{
+    <FormLoader Istrue="@IsloaderShow"></FormLoader>
+
+    <style>
+        .FileNameclass {
+            text-overflow: ellipsis;
+            width: 174px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+    <style>
+        /* Custom style */
+        .accordion-button::after {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill-rule='evenodd' d='M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z' clip-rule='evenodd'/%3e%3c/svg%3e");
+            transform: scale(.7) !important;
+        }
+
+        .accordion-button:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill-rule='evenodd' d='M0 8a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1z' clip-rule='evenodd'/%3e%3c/svg%3e");
+        }
+
+        /*.accordion-button {
+            padding: 0.0rem 1.25rem !important
+        }*/
+        .accordion-padding {
+            padding: 0.0rem 1.25rem !important
+        }
+
+        .card-body {
+            /* margin-bottom: -45px !important;*/
+            padding: 1rem !important
+        }
+
+        .cardd {
+            margin-bottom: -15px !important;
+        }
+    </style>
+
+
+    <div tabindex="0" id="kt_quick_cart3456" class="offcanvas offcanvas-right p-10 offcanvas-on w-50" style="position:fixed;z-index:999999999">
+        <!--begin::Header-->
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7 w-50 popup_header" id="sm-width" kt-hidden-height="46">
+            @if (EditID == 0)
+            {
+                <h4 class="font-weight-bold "> Add Menu Access</h4>
+            }
+            else
+            {
+                <h4 class="font-weight-bold "> Update Menu Access </h4>
+            }
+            <a @onclick="CloseSideBar" class="btn" id="kt_quick_cart_close">
+                <i class="p-0 fa fa-window-close"></i>
+            </a>
+        </div>
+
+        <div class=" mt-4">
+            <div class="offcanvas-wrapper  scroll-pull scroll ps ps--active-y" style="height: auto;overflow:visible">
+                <EditForm Model="@MenuItemModel" OnValidSubmit="@SubmitModel">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    @*<InputCheckbox @bind-Value="TestBool" />*@
+                    <div class="offcanvas-content mt-4 ">
+
+                        <div class="offcanvas-wrapper  scroll-pull scroll ps ps--active-y" style="height: auto;overflow:visible">
+                            <div class=" ">
+                                <div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+                                    @{
+                                        int tabNo = 1;
+                                        int childtabNo = 1;
+                                        int accordionEx11 = 1;
+                                        ListOfRemoveAllCheckedAndUncheckedModel = new();
+                                        foreach (var item in ListOfMenuItem.Where(s => s.MenuItemParentID == null && s.Type!= "Introducer Menu").ToList())
+                                        {
+                                            <div class="cardd ">
+                                                <!--Dashboard Card header -->
+                                                <div class="card-header" role="tab" id="headingTwo_@tabNo">
+                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo_@tabNo" aria-expanded="false" aria-controls="collapseTwo_@tabNo">
+                                                        <h5 class="mb-0 text-white">
+                                                            @item.MenuName <i class="fas fa-angle-down rotate-icon"></i>
+                                                        </h5>
+                                                    </a>
+                                                </div>
+                                                <ul>
+                                                    @foreach (var firstItem in (ListOfMenuItem.Where(s => s.MenuItemParentID == item.MenuItemID).ToList()))
+                                                    {
+
+                                                        var AllCheckbox = ListOfMenuItem.Where(s => s.MenuItemParentID == firstItem.MenuItemID).Count();//use for all checkbox option show visble
+                                                        int ParentCounter = 1;
+                                                        <!--Dashboard Card body -->
+                                                        <div id="collapseTwo_@tabNo" class="collapse" role="tabpanel" aria-labelledby="headingTwo_@tabNo" data-parent="#accordionEx1">
+                                                            <div class="card-body">
+                                                        <li>
+                                                            <div class="row">
+                                                                <div class="col-6 col-md-6 col-sm-12">
+                                                                    <div class="">
+
+                                                                        @{
+                                                                            var Check = ListOfUserMenuItem.Where(x => x.MenuName == firstItem.MenuName).FirstOrDefault();
+                                                                        }
+                                                                        @if (Check != null)
+                                                                        {
+                                                                            <input checked type="checkbox" @onchange="@(async (e) =>  await CheckChanged(e,firstItem.MenuItemParentID,firstItem.MenuItemID ,firstItem.MenuName,firstItem.MenuItemID))" />
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input type="checkbox" @onchange="@(async (e) =>  await CheckChanged(e,firstItem.MenuItemParentID,firstItem.MenuItemID ,firstItem.MenuName,firstItem.MenuItemID))" />
+                                                                        }
+                                                                        <label class=""> &nbsp; @firstItem.MenuName  </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6 col-md-6 col-sm-12">
+                                                                    @if (AllCheckbox > 0)
+                                                                    {
+                                                                        <div class="pull-right ">
+
+                                                                            @{
+                                                                                var allChecked = "All-" + firstItem.MenuName;
+                                                                                var Check2 = ListOfUserMenuItem.Where(x => x.MenuName == allChecked).FirstOrDefault();
+                                                                            }
+                                                                            @if (Check2 != null)
+                                                                            {
+                                                                                <input checked type="checkbox" @onchange="@(async (e) =>  await ALLCheckChanged(e,firstItem.MenuItemParentID,firstItem.MenuItemID ,allChecked))" />
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="checkbox" @onchange="@(async (e) =>  await ALLCheckChanged(e,firstItem.MenuItemParentID, firstItem.MenuItemID,allChecked ))" />
+                                                                            }
+                                                                            <label class=""> &nbsp;   All </label>
+                                                                        </div>
+
+                                                                    }
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="accordion" id="accordionEx_2_@accordionEx11">
+                                                                <ul>
+                                                                    @foreach (var secondItem in (ListOfMenuItem.Where(s => s.MenuItemParentID == firstItem.MenuItemID).ToList()))
+                                                                    {
+                                                                        ParentCounter += 1;
+                                                                        var Cheild = ListOfMenuItem.Where(s => s.MenuItemParentID == secondItem.MenuItemID).Count();
+                                                                        if (Cheild > 0)
+                                                                        {
+                                                                            Showplus = "accordion-button";
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            Showplus = "";
+                                                                        }
+
+                                                                        <li>
+                                                                            <div class="accordion-item">
+                                                                                <h5 class="accordion-header" id="headingOne">
+                                                                                    <div class="@Showplus accordion-padding  mb-1 collapsed" data-bs-toggle="collapse" data-bs-target="#collapseOne_@childtabNo">
+                                                                                        <div>
+                                                                                            <div class="">
+
+                                                                                                @{
+                                                                                                    var secondCheck = ListOfUserMenuItem.Where(x => x.MenuName == secondItem.MenuName).FirstOrDefault();
+                                                                                                }
+                                                                                                @if (secondCheck != null)
+                                                                                                {
+                                                                                                    <input checked type="checkbox" @onchange="@(async (e) =>  await CheckChanged(e,secondItem.MenuItemParentID,firstItem.MenuItemID ,secondItem.MenuName,secondItem.MenuItemID))" />
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <input type="checkbox" @onchange="@(async (e) =>  await CheckChanged(e,secondItem.MenuItemParentID,firstItem.MenuItemID ,secondItem.MenuName,secondItem.MenuItemID))" />
+                                                                                                }
+                                                                                                <label class=""> &nbsp; @secondItem.MenuName </label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </h5>
+                                                                                <div id="collapseOne_@childtabNo" class="accordion-collapse collapse" data-bs-parent="#accordionEx_2_@accordionEx11">
+
+
+                                                                                    @{
+                                                                                        childtabNo += 1;
+
+                                                                                    }
+                                                                                    <ul>
+                                                                                        @foreach (var ThirdItem in (ListOfMenuItem.Where(s => s.MenuItemParentID == secondItem.MenuItemID).ToList()))
+                                                                                        {
+
+                                                                                            ParentCounter += 1;
+                                                                                            <li>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-12 col-md-12 col-sm-12">
+                                                                                                        <div class="form-group">
+
+                                                                                                            @{
+                                                                                                                var ThirdCheck = ListOfUserMenuItem.Where(x => x.MenuName == ThirdItem.MenuName).FirstOrDefault();
+                                                                                                            }
+                                                                                                            @if (ThirdCheck != null)
+                                                                                                            {
+                                                                                                                <input checked type="checkbox" @onchange="@(async (e) =>  await CheckChanged(e,ThirdItem.MenuItemParentID,firstItem.MenuItemID ,ThirdItem.MenuName,ThirdItem.MenuItemID))" />
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                <input type="checkbox" @onchange="@(async (e) =>  await CheckChanged(e,ThirdItem.MenuItemParentID,firstItem.MenuItemID ,ThirdItem.MenuName,ThirdItem.MenuItemID))" />
+                                                                                                            }
+                                                                                                            <label class="font-weight-bold">&nbsp;@ThirdItem.MenuName  </label>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <ul>
+
+                                                                                                    @foreach (var FouthItem in (ListOfMenuItem.Where(s => s.MenuItemParentID == ThirdItem.MenuItemID).ToList()))
+                                                                                                    {
+                                                                                                        ParentCounter += 1;
+                                                                                                        <li>
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-12 col-md-12 col-sm-12">
+                                                                                                                    <div class="form-group">
+                                                                                                                        @{
+                                                                                                                            var FourthCheck = ListOfUserMenuItem.Where(x => x.MenuName == FouthItem.MenuName).FirstOrDefault();
+                                                                                                                        }
+                                                                                                                        @if (FourthCheck != null)
+                                                                                                                        {
+                                                                                                                            <input checked type="checkbox" @onchange="@(async (e) =>  await CheckChanged(e,FouthItem.MenuItemParentID,firstItem.MenuItemID ,FouthItem.MenuName,FouthItem.MenuItemID))" />
+                                                                                                                        }
+                                                                                                                        else
+                                                                                                                        {
+                                                                                                                            <input type="checkbox" @onchange="@(async (e) =>  await CheckChanged(e,FouthItem.MenuItemParentID,firstItem.MenuItemID ,FouthItem.MenuName,FouthItem.MenuItemID))" />
+                                                                                                                        }
+                                                                                                                        <label class=""> &nbsp; @FouthItem.MenuName : </label>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                    }
+                                                                                                </ul>
+                                                                                            </li>
+                                                                                        }
+                                                                                    </ul>
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                        </li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                            @{accordionEx11 += 1;
+                                                            }
+                                                        </li>
+                                                </div>
+                                            </div>
+                                            ListOfRemoveAllCheckedAndUncheckedModel.Add(new Data.ModelVm.Users.RemoveAllCheckedAndUncheckedModel() { Counter = ParentCounter, ParentID = firstItem.MenuItemID });
+                                        }
+                                                    </ul>
+                                                    @{
+                                                        tabNo += 1;
+                                                    }
+                                                </div>
+                                            }
+                                    }
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="mt-2 ml-2 btn  float-right btn-primary" tabindex="9">Save</button>
+                </div>
+                </EditForm>
+            </div>
+            <div class="offcanvas-footer" kt-hidden-height="112" style="">
+
+            </div>
+            </div>
+            </div>
+
+
+
+        }
+<FgcToast TostModels="@TostModelclass"> </FgcToast>

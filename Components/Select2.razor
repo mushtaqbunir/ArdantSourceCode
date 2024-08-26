@@ -1,0 +1,24 @@
+﻿ 
+@typeparam CMPReportsVm
+@inherits InputBase<CMPReportsVm>
+
+
+<select id="@Id" disabled="@Readonly" class="form-control select2 w-100" tabindex="@TabIndex">
+
+
+    @if (Datasource != null)
+    {
+        <option value="">@SelectName</option>
+        @foreach (var item in Datasource.Where(x => x != null))
+        {
+            <option value="@item.Value" selected="@(item.Value?.ToString() == CurrentValue?.ToString())">
+                @((MarkupString)@item.Text)
+            </option>
+        }
+    }
+    else
+    {
+        <option value="">---</option>
+    }
+</select>
+

@@ -1,0 +1,31 @@
+﻿@using ArdantOffical.Helpers.Enums
+
+@if (ModelVisible)
+{
+    var FileExtension = FileName.GetFileExtension();
+    var iitem = FileName;
+    var path = FileName.CheckFileExtension();
+    <div class=" ">
+        <button type="button" @onclick="()=>LocalDeleteFile(attachment)" style="float: right; " class="btn btn-xs"><i class="fas fa-remove text-danger"></i></button>
+        <div class="FileNameclass">
+            @if (!FileExtentionEnum.CheckExtensionformat.Contains(FileExtension))
+            {
+                <a href="/Documents/@Folder/@iitem" data-fancybox="gallery">
+                    <i class="@path"></i>
+                    @FileTitle
+                </a>
+            }
+            else
+            {
+                <a href="/Documents/2024_documents/@iitem" target="_blank">
+                    <i class="@path"></i>
+                    @FileTitle
+                </a>
+            }
+        </div>
+    </div>
+}
+
+@code {
+
+}

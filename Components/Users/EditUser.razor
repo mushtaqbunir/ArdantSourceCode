@@ -1,0 +1,101 @@
+﻿@if (IsEditVisible)
+{
+    <FormLoader Istrue="@IsloaderShow"></FormLoader>
+    <style>
+        .FileNameclass {
+            text-overflow: ellipsis;
+            width: 174px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+    <div id="kt_quick_cart3" class="offcanvas offcanvas-right p-10 offcanvas-on w-50" style="position: absolute">
+        <!--begin::Header-->
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7" kt-hidden-height="46" style="margin-top: -23px">
+            <h4 class="font-weight-bold ">Edit User</h4>
+
+            <a @onclick="CloseSideBar" class="btn btn-light  btn-hover-primary mr-2" id="kt_quick_cart_close">
+                <i class="p-0 fa fa-window-close"></i>
+            </a>
+
+
+        </div>
+
+        <div class="offcanvas-content">
+
+            <div class="offcanvas-wrapper  scroll-pull scroll ps ps--active-y" style="height: auto;overflow:visible">
+                <div class=" ">
+                    <EditForm Model="@UserModal" OnValidSubmit="@UpdateUserData">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Firstname: <span class="text-danger">*</span></label>
+                                        <InputText id="txtfirstname" class="form-control" @bind-Value="UserModal.Firstname" Placeholder="Enter User's Firstname" tabindex="1" />
+                                        @*<ValidationMessage For="() => UserModal.Firstname" />*@
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email: <span class="text-danger">*</span></label>
+                                        <InputText id="txtEmail" class="form-control" @bind-Value="UserModal.Email" Placeholder="Enter User's Email" tabindex="3" />
+                                        @*<ValidationMessage For="() => UserModal.Email" />*@
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" id="btnUseAsUsername" class="btn btn-info" @onclick="UseEmailAsUsername" tabindex="5">Use as Username</button>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Password: <span class="text-danger">*</span></label>
+                                        <InputText id="txtlastname" class="form-control" @bind-Value="UserModal.Password" Placeholder="Enter User's Password" tabindex="7" />
+                                        @*<ValidationMessage For="() => UserModal.Password" />*@
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Lastname: <span class="text-danger">*</span></label>
+                                        <InputText id="txtlastname" class="form-control" @bind-Value="UserModal.Lastname" Placeholder="Enter User's Lastname" tabindex="2" />
+                                        @*<ValidationMessage For="() => UserModal.Lastname" />*@
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Username: <span class="text-danger">*</span></label>
+                                        <InputText id="txtUsername" class="form-control" @bind-Value="UserModal.Username" Placeholder="Enter Username" tabindex="4" />
+                                        @*<ValidationMessage For="() => UserModal.Username" />*@
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="button" id="btnCheckAvailability" class="btn btn-info" @onclick="CheckAvailability" tabindex="6">Check Availability</button>
+                                        <span class="@CssClass" style="float:right; margin-top:10px;">@UserAvailability</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputRole">User Role <span class="text-danger">*</span></label>
+                                        <InputSelect id="transactionStatus" class="form-control" @bind-Value="UserModal.UserRole" tabindex="8">
+                                            @foreach (var state in lstUserRoles)
+                                                {
+                                                <option value="@state.Value">@state.Text</option>
+                                                }
+                                        </InputSelect>
+                                        @*<ValidationMessage For="() => UserModal.UserRole" />*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ml-lg-4 ml-md-4 ml-sm-4 mr-3">
+                            <button type="submit" class=" ml-2 btn  float-right btn-info" tabindex="9">Save</button>
+                            <button type="reset" class="btn btn-secondary float-right" @onclick="CloseSideBar" tabindex="10">Cancel</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+            <div class="offcanvas-footer" kt-hidden-height="112" style="">
+            </div>
+
+            @*<img style="position:fixed;top:50%;left:70%;" src="assets/media/loading.gif" />*@
+
+        </div>
+    </div>
+}
+
+<ModalShowpopup showModal="@responseDialogVisibility" Message="@responseBody" title="@responseHeader" OnVisibilityChangedModel="@OnVisibilityChangedModel"></ModalShowpopup>

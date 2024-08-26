@@ -1,0 +1,143 @@
+﻿@if (IsEditVisible)
+{
+    <FormLoader Istrue="@IsloaderShow"></FormLoader>
+    <div id="kt_quick_cart3" class="offcanvas offcanvas-right p-10 offcanvas-on w-50" style="position:fixed;z-index:999999999">
+        <!--begin::Header-->
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7 w-50 popup_header" id="sm-width" kt-hidden-height="46" >
+            <h4 class="font-weight-bold ">Edit User</h4>
+            <a @onclick="CloseSideBar" class="btn" id="kt_quick_cart_close">
+                <i class="p-0 fa fa-window-close"></i></a>
+
+
+        </div>
+
+        <div class="offcanvas-content pt-4">
+
+            <div class="offcanvas-wrapper  scroll-pull scroll ps ps--active-y" style="height: auto;overflow:visible">
+                <div class="card" style="box-shadow:none;">
+                   
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <div class="tab-content">
+                            @*<div class="active tab-pane" id="Usersettings">*@
+                                <EditForm Model="@EditModal" OnValidSubmit="UpdateUserData">
+                                    <DataAnnotationsValidator />
+                                    <ValidationSummary />
+                                    <div class="card-body">
+                                       @*  <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label>User Key: <span class="text-danger">*</span></label>
+                                                    <InputText id="txtfirstname" disabled=true class="form-control" @bind-Value="EditModal.UserKey" Placeholder="Generate User Key" tabindex="1" />
+
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group mt-4 ">
+                                                    <button type="button" id="btnCheckAvailability" class="btn btn-success" @onclick="GenerateUserKey" tabindex="6">Generate User Key</button>
+                                                </div>
+                                            </div>
+                                        </div> *@
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>First Name: <span class="text-danger">*</span></label>
+                                                    <InputText id="txtfirstname" class="form-control" @bind-Value="EditModal.Firstname" @onfocusout="NameChange" Placeholder="Enter User's First Name" tabindex="1" />
+                                                    @*<ValidationMessage For="() => UserModal.Firstname" />*@
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Short Name: <span class="text-danger">*</span></label>
+                                                    <InputText id="txtShortName" class="form-control" @bind-Value="EditModal.ShortName" Placeholder="Enter User's First Name" tabindex="3" />
+                                                    @*<ValidationMessage For="() => UserModal.Firstname" />*@
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Email: <span class="text-danger">*</span></label>
+                                                    <InputText id="txtEmail" class="form-control" @bind-Value="EditModal.Email" Placeholder="Enter User's Email" tabindex="5" />
+                                                    @*<ValidationMessage For="() => UserModal.Email" />*@
+                                                </div>
+                                                <div class="form-group">
+                                                <button type="button" id="btnUseAsUsername" class="btn btn-primary" @onclick="UseEmailAsUsername" tabindex="7">Use as User Name</button>
+
+                                                </div>
+                                            <div class="form-group">
+                                                <label>Password: <span class="text-danger">*</span></label>
+                                                <InputText id="txtlastname" class="form-control" @bind-Value="EditModal.Password" Placeholder="Enter User's Password" tabindex="9" />
+                                                @*<ValidationMessage For="() => UserModal.Password" />*@
+                                            </div>
+                                                
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Last Name: <span class="text-danger">*</span></label>
+                                                    <InputText id="txtlastname" class="form-control" @bind-Value="EditModal.Lastname" @onfocusout="NameChange" Placeholder="Enter User's Last Name" tabindex="2" />
+                                                    @*<ValidationMessage For="() => UserModal.Lastname" />*@
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputRole">User Role <span class="text-danger">*</span></label>
+                                                    <InputSelect id="transactionStatus" class="form-control" @bind-Value="EditModal.UserRole" tabindex="4">
+                                                        @foreach (var state in lstUserRoles)
+                                                            {
+                                                            <option value="@state.Value">@state.Text</option>
+                                                            }
+                                                    </InputSelect>
+                                                    @*<ValidationMessage For="() => EditModal.UserRole" />*@
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>User Name: <span class="text-danger">*</span></label>
+                                                    <InputText id="txtUsername" class="form-control" @bind-Value="EditModal.Username" Placeholder="Enter User Name" tabindex="6" />
+                                                    @*<ValidationMessage For="() => UserModal.Username" />*@
+                                                </div>
+
+                                                <div class="form-group">
+                                                <button type="button" id="btnCheckAvailability" class="btn btn-primary" @onclick="CheckAvailability" tabindex="8">Check Availability</button>
+                                                    <span class="@CssClass" style="float:right; margin-top:10px;">@UserAvailability</span>
+                                                </div>
+                                            <div class="form-group">
+                                                <label for="inputRole">User Status <span class="text-danger">*</span></label>
+                                                <InputSelect id="transactionStatus" class="form-control" @bind-Value="EditModal.UserStatus" tabindex="10">
+                                                    @foreach (var state in lstUserStatus)
+                                                    {
+                                                        <option value="@state.Value">@state.Text</option>
+                                                    }
+                                                </InputSelect>
+                                                @*<ValidationMessage For="() => UserModal.UserRole" />*@
+                                            </div>
+                                               
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ml-lg-4 ml-md-4 ml-sm-4 mr-3">
+                                        <button type="submit" class=" ml-2 btn  float-right btn-primary" tabindex="11">Save</button>
+                                        <button type="reset" class="btn btn-secondary float-right" @onclick="CloseSideBar" tabindex="12">Cancel</button>
+                                    </div>
+                                </EditForm>
+                            @*</div>*@
+                           
+                            <!-- /.tab-pane -->
+                        </div>
+                        <!-- /.tab-content -->
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+               
+            </div>
+            <div class="offcanvas-footer" kt-hidden-height="112" style="">
+            </div>
+
+            @*<img style="position:fixed;top:50%;left:70%;" src="assets/media/loading.gif" />*@
+
+        </div>
+    </div>
+
+
+}
+<ModalShowpopup showModal="@responseDialogVisibility" Message="@responseBody" title="@responseHeader" OnVisibilityChangedModel="@OnVisibilityChangedModel"></ModalShowpopup>
+<Confirm showModal="@ConfirmDialogVisibility" Message="@responseBody" OnUndoVisibilityChangedModel="ConfirmOnVisibilityChangedModel" OnUndoAddSuccessModel="OnConfirmBoxSuccess"></Confirm>
+<FgcToast TostModels="@TostModelclass"> </FgcToast>
+@code {
+
+    
+
+}

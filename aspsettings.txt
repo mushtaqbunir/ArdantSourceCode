@@ -1,0 +1,7 @@
+﻿ //"DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=aspnet-ArdantOffical-4CCAD930-981E-4418-ABEF-A5829D029E64;Trusted_Connection=True;MultipleActiveResultSets=true",
+    // use for local
+    // "DefaultConnection1": "Data Source=LAPTOP-950QGOTB;Initial Catalog=FGCDb; Trusted_Connection=True; MultipleActiveResultSets=true;",
+    // use for live
+    // "DefaultConnection": "Data Source=mssql.fgcerpdev.com;Initial Catalog=db_fgcerp_dev; User ID=db_fgcAdmin; Password=1025mcs!@#; Integrated Security=False; MultipleActiveResultSets=true;",
+    // use for live 95.217.141.238
+    // ip 116.202.175.92

@@ -1,0 +1,130 @@
+﻿@using ArdantOffical.Components.ClinicalData
+
+    <FormLoader Istrue="@IsloaderShow"></FormLoader>
+    <style>
+        .FileNameclass {
+            text-overflow: ellipsis;
+            width: 174px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+    <div id="kt_quick_cart3" class="offcanvas offcanvas-right p-10 offcanvas-on w-50" style="position:fixed;z-index:999999999">
+        <!--begin::Header-->
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7 w-50 popup_header" id="sm-width" kt-hidden-height="46">
+            <h4 class="font-weight-bold ">Upload Documents</h4>
+            <a @onclick="CloseSideBar" class="btn" id="kt_quick_cart_close">
+                <i class="p-0 fa fa-window-close"></i>
+            </a>
+        </div>
+        <div class="offcanvas-content pt-5">
+
+            <div class="offcanvas-wrapper  scroll-pull scroll ps ps--active-y" style="height: auto;overflow:visible">
+                <div class=" ">
+                    <EditForm Model="@attachment" OnValidSubmit="@SaveData">
+                        <DataAnnotationsValidator />
+                        <div class="card-body">
+
+                            <h5><span class="text-danger"></span></h5>
+                            <LoaderComponent Istrue="@IsLoader"></LoaderComponent>
+                          @*   <InputFile OnChange="()=>BuisnessFileupdate(fileUpload)" id="@fileUpload" class="mb-2" multiple accept=".png,.pdf,.jpg,.JPEG,.Doc,.docx,.xls,.xlsx" /> *@
+                            <InputFile id="@fileUpload" OnChange="OnInputFileChange" class="mb-2" accept=".png,.pdf,.jpg,.JPEG,.Doc,.docx,.xls,.xlsx" style="margin-left:15px;" />
+                            <ProgressBar progressBarDisplay="@progressBarDisplay" progressPercentage="@progressPercentage"/>
+                            <div class="container">
+                                <div class="form-group">
+                                    <label>File Title: <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" @bind="attachment.Title" id="exampleInputEmailAddress" >
+                                    <ValidationMessage For="()=>attachment.Title"/>
+                                </div>
+                            </div>
+                               
+                        </div>
+                        <div class="ml-lg-4 ml-md-4 ml-sm-4 mr-3">
+                        <button type="submit" class=" ml-2 btn  float-right bg-gradient-green" tabindex="11">Upload</button>
+                            <button type="reset" class="btn btn-secondary float-right" @onclick="CloseSideBar" tabindex="12">Cancel</button>
+                        </div>
+
+                        <div class="row mb-4 " style="margin-top:50px; margin-left:20px;">
+                        <h5 style="width:100%;margin-left:15px;">Uploaded Files</h5> <br>
+
+                        @if (attachments != null)
+                        {
+                            <div class="container">
+                                <GenericList Elements="attachments">
+                                    <NullTemplate>
+                                        <LoaderPage></LoaderPage>
+                                    </NullTemplate>
+                                    <WithElementsTemplate>
+                                        <table class="table table-striped table-sm projects dataTable no-footer dtr-inline table-responsive">
+                                            <thead>
+                                                <tr class="card-header-gray">
+                                                    <th>Title </th>
+                                                    <th>Uploaded By </th>
+                                                    <th>Date Posted </th>
+                                                    @*   <th>Description</th> *@
+                                                   @*  <th class="text-center">Action</th> *@
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in attachments)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                         @*    @item.Title *@
+                                                            <DisplayClinicalDataFiles FileId="@item.ID" Folder="@item.Folder" FileTitle="@item.Title" ModelVisible="true" DeleteFileVisibilityChanged="LocalDeleteFile" FileName="@item.Path" />
+                                                            @* <a style="cursor:pointer" data-toggle="modal" data-target="#modal-Buisness-Reason" class="ml-4" @onclick:preventDefault @onclick="() => ShowMessage(FGCExtensions.ShowMarkupString(item.Body).ToString(),item.Title)"><b style="color:darkblue"> show details</b></a> *@
+                                                        </td>
+                                                        <td>@item.PostedBy</td>
+                                                        <td>@item.DatePosted.Value.ToString("dd-MM-yyyy")</td>
+                                                        @*  <td></td> *@
+                                                     @*    <td>
+                                                            <a href="#" @onclick:preventDefault @onclick="()=>EditNotes(item.Id)" class="text-info" title="Edit"><i class="fa fa-pencil"></i></a>&nbsp;
+                                                            <a href="#" @onclick:preventDefault @onclick="()=>DeleteNote(item.Id)" class="text-danger" title="Delete"><i class="fa fa-trash-o"></i></a>
+                                                        </td> *@
+
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </WithElementsTemplate>
+                                </GenericList>
+                            </div>
+                        }
+                         @*    @if(attachments.Count>0)
+                            {
+                            @foreach (var item in attachments)
+                            {
+                                <DisplayClinicalDataFiles FileId="@item.ID" Folder="@item.Folder" FileTitle="@item.Title" ModelVisible="true" DeleteFileVisibilityChanged="LocalDeleteFile" FileName="@item.Path" />
+                            }
+                            } else
+
+                            {
+                                <p> No file uploaded.</p>
+                            } *@
+                           
+
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+            <div class="offcanvas-footer" kt-hidden-height="112" style="">
+            </div>
+
+            @*<img style="position:fixed;top:50%;left:70%;" src="assets/media/loading.gif" />*@
+
+        </div>
+    </div>
+  
+
+
+
+@if (DeleteConfirmationVisibility)
+{
+    <DeleteModalBespokepopup ButtonText="Yes" CancelButtonText="No" title="Delete File" Message="Are you sure to delele this file" OnVisibilityChangedModel="DeleteConfirmation"></DeleteModalBespokepopup>
+}
+
+<FgcToast TostModels="@TostModelclass"> </FgcToast>
+
+@code {
+
+}

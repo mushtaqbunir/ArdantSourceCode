@@ -1,0 +1,44 @@
+﻿@using System.Net.Http
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using ArdantOffical
+@using ArdantOffical.Shared
+@using ArdantOffical.Data
+@using ArdantOffical.Services
+@using ArdantOffical.IService
+@using ArdantOffical.Data.ModelVm
+@using CsvHelper
+@using ArdantOffical.Helpers
+@using ArdantOffical.Helpers.Extensions
+@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Authentication.Cookies;
+@using System.Security.Claims
+@using System.IO
+@using System.Text.Json
+@using ArdantOffical.Components
+@using ArdantOffical.Shared
+@using Microsoft.AspNetCore.Identity.UI.Services
+@using ArdantOffical.Components.SystemconfigurationComponent
+@using Radzen;
+@using Radzen.Blazor;
+@using Blazored.TextEditor;
+@using Microsoft.AspNetCore.Components;
+@inject HttpClient httpClient
+@inject IJSRuntime js
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject IGenericModelsList IGenericModelaa
+@inject ILogServices IlogServices
+@inject IUsersServices IuserServices
+@inject IEmailSender IemailServices
+@inject ISFConnect ISalesforceService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager Navigator
+@inject IClinicalDataServices IclinicalDataServices
+@inject IInvoiceServices IinvoiceServices
+@inject IInvoiceItemsServices IinvoiceServicesItems
+

@@ -1,0 +1,190 @@
+﻿@page "{Data}"
+@using Microsoft.AspNetCore.Identity
+@using ArdantOffical.Areas.Identity
+@using ArdantOffical.Areas.Identity.Pages
+@using ArdantOffical.Areas.Identity.Pages.Account
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@model LoginGoogleAuthenticationModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Log in";
+}
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>FGC | Log </title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link href="/assets/dist/css/adminlte.css" rel="stylesheet" />
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style type="text/css">
+        .limiter {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .container-login100 {
+            width: 100%;
+            min-height: 100vh;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 15px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            margin-right: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+            .container-login100::before {
+                content: "";
+                display: block;
+                position: absolute;
+                z-index: -1;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background: #005bea;
+                background: -webkit-linear-gradient(bottom, #005bea, #00c6fb);
+                background: -o-linear-gradient(bottom, #005bea, #00c6fb);
+                background: -moz-linear-gradient(bottom, #005bea, #00c6fb);
+                background: linear-gradient(bottom, #005bea, #00c6fb);
+                opacity: 0.1;
+            }
+
+        .wrap-login100 {
+            width: 390px;
+            background: transparent;
+        }
+
+
+
+        /*------------------------------------------------------------------
+        [  ]*/
+        .login100-form {
+            width: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .login100-form-title {
+            font-family: Montserrat-ExtraBold;
+            font-size: 24px;
+            color: #fff;
+            line-height: 1.2;
+            text-align: center;
+            width: 100%;
+            display: block;
+        }
+
+        /*---------------------------------------------*/
+        .login100-form-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+            .login100-form-avatar img {
+                width: 100%;
+            }
+        .HeaderClass {
+            margin-left: -19px;
+            margin-top: -20px;
+            width: 110% !important
+        }
+
+    </style>
+</head>
+<body class="hold-transition login-page container-login100" style="background-image: url('/images/1024248.png');">
+    <div class="login-box" style="margin-right: 40px; width:430px">
+        <!-- /.login-logo -->
+
+
+        <div class="card" style="border-radius: 15px;">
+            <div class="card-body login-card-body" style="padding: 19px !important">
+
+                <div class="bg-success HeaderClass p-1">
+                    <p class="text-center text-light mt-1 mb-1">
+                        Token Authentication
+                    </p>
+                </div>
+              
+                <div class="card-body">
+                    @{ if (!string.IsNullOrEmpty(Model.QRbase64string))
+                        {
+                        <p class="d-flex justify-content-start mb-2">
+                            Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below.
+                        </p>
+                        <div class="text-center">
+                            <img class="" src="@Model.QRbase64string" />
+                        </div>
+
+                        }
+                        else
+                        {
+                        <p class="d-flex justify-content-start">
+                            Your login is protected with an authenticator app. Enter your authenticator code below.
+                        </p>
+                        }
+
+                    }
+                </div>
+
+                <form class="form" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <input type="hidden" asp-for="Input.Email" />
+                    <input type="hidden" asp-for="Input.RememberMe" />
+
+
+                    <div class="form-group mb-2">
+                        <label> Authentication code</label>
+                        <input asp-for="Input.verificationCode" class="form-control h-auto form-control-solid " type="text" placeholder="Enter 6-digit Authentication code" autocomplete="off" />
+                        <span asp-validation-for="Input.verificationCode" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-success font-weight-bold " style="margin-left: 315px">Sign In</button>
+                    <p class="mt-1">Don't have access to your authenticator device? Contact your administrator </p>
+                </form>
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+
+
+</body>
+</html>

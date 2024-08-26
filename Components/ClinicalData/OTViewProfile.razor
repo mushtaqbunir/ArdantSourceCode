@@ -1,0 +1,298 @@
+﻿@using Helpers.Enums
+
+<FormLoader Istrue="@IsloaderShow"></FormLoader>
+<div id="kt_quick_cart3" class="offcanvas offcanvas-right p-10 offcanvas-on w-50" style="position:fixed;z-index:999999999">
+    <!--begin::Header-->
+    <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7 w-50 popup_header" id="sm-width" kt-hidden-height="46">
+        <h4 class="font-weight-bold ">Profile Details</h4>
+        <a @onclick="CloseSideBar" class="btn" id="kt_quick_cart_close">
+            <i class="p-0 fa fa-window-close"></i>
+        </a>
+    </div>
+    <div class="offcanvas-content">
+        <div class="offcanvas-wrapper  scroll-pull scroll ps ps--active-y" style="height: auto;overflow:visible">
+            <div class=" ">
+                <EditForm Model="OTVm" OnValidSubmit="SaveOTData">
+                    @*   <DataAnnotationsValidator/>
+                    <ValidationSummary/> *@
+                    <div class="container" style="margin-top:60px">
+                        <p class="text-danger">@ErrorMessage</p>
+                        <div class="row">
+                            <div class="col-md-6 mt-3">
+                                <InputFile id="@fileUpload" OnChange="(e)=>OnInputFileChange(e, UserFileType.ProfilePicture)" class="mb-1" accept=".png,.jpg,.JPEG" />
+                                @if (FileType == UserFileType.ProfilePicture)
+                                {
+                                    <p class="text-muted mb-0" style="font-size:12px; font-style:italic">
+                                        Supported formats: jpg, png, jpeg
+                                        <br />
+                                        Maximum dimensions: 200x200 pixels
+                                    </p>
+                                    <p style="color:red; font-size:13px">@FileValidationMessage</p>
+
+                                    <ProgressBar progressBarDisplay="@progressBarDisplay" progressPercentage="@progressPercentage" />
+                                }
+                            </div>
+                            <div class="col-md-6 mt-3 d-flex justify-content-end">
+                                @foreach (var attachment in attachments.Where(a => a.UserFileType == UserFileType.ProfilePicture))
+                                {
+                                   
+
+                                    <div class="col-md-6 d-flex justify-content-end">
+                                        <div style="max-width: 100px; max-height: 100px; overflow: hidden;">
+
+                                            <img src="/Documents/@attachment.Folder/@attachment.Path" alt="Profile Image" style="width: 100%; height: auto;" />
+
+                                        </div>
+                                    </div>
+
+                                }
+                            </div>
+
+
+                            <!--Signature-->
+
+                            <div class="col-md-6 mt-3">
+                                <label>Upload Signature</label>
+                                <InputFile id="@signaturefile" OnChange="(e)=>OnInputFileChange(e, UserFileType.Signature)" class="mb-1" accept=".png,.jpg,.JPEG" />
+                                @if (FileType == UserFileType.Signature)
+                                {
+
+                                    <p class="text-muted mb-0" style="font-size:12px; font-style:italic">
+                                        Supported formats: jpg, png, jpeg
+                                        <br />
+                                        Maximum dimensions: 200x200 pixels
+                                    </p>
+                                    <p style="color:red; font-size:13px">@FileValidationMessage</p>
+
+
+                                    <ProgressBar progressBarDisplay="@progressBarDisplay" progressPercentage="@progressPercentage" />
+                                }
+
+                            </div>
+                            <div class="col-md-6 mt-3 d-flex justify-content-end">
+                                @foreach (var attachment in attachments.Where(a => a.UserFileType == UserFileType.Signature))
+                                {
+                                    
+                                    <div class="col-md-6 d-flex justify-content-end">
+                                        <div style="max-width: 100px; max-height: 100px; overflow: hidden;">
+
+                                            <img src="/Documents/@attachment.Folder/@attachment.Path" alt="Signature" style="width: 100%; height: auto;" />
+
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-md-6 mt-1">
+
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <select class="form-control" id="exampleFormControlSelecttitle" @bind="OTVm.Title">
+                                        <option>--Select Title--</option>
+                                        @foreach (var item in lstTitles)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-1">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Gender:</label>
+                                    <select class="form-control" id="exampleFormControlSelect1" @bind="OTVm.Gender">
+                                        <option>--Select Gender--</option>
+                                        @foreach (var item in lstGender)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="firstname">First Name</label>
+                                    <input type="text" class="form-control" id="exampleInputfirstname" aria-describedby="emailHelp" @bind="OTVm.Firstname">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="lastname">Last Name</label>
+                                    <input type="text" class="form-control" id="exampleInputlastname" aria-describedby="emailHelp" @bind="OTVm.Lastname">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="exampleInputemail" aria-describedby="emailHelp" @bind="OTVm.Email">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="phone">Phone</label>
+                                    <input type="text" class="form-control" id="exampleInputphone" aria-describedby="emailHelp" @bind="OTVm.Phone">
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="aphra">AHPRA Registration Number</label>
+                                    <input type="text" class="form-control" id="exampleInputaphra" aria-describedby="emailHelp" @bind="OTVm.AHPRANo">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="abn">ABN</label>
+                                    <input type="text" class="form-control" id="exampleInputabn" aria-describedby="emailHelp" @bind="OTVm.ABN">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect2">Are You Currently Employed</label>
+                                    <select class="form-control" id="exampleFormControlSelect2" @bind="OTVm.IsEmployed__c">
+                                        <option>--Select--</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="bankaccountbsb">Bank Account BSB</label>
+                                    <input type="text" class="form-control" id="exampleInputbankaccountbsb" aria-describedby="emailHelp" @bind="OTVm.Bank_Account_BSB__c">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="bankaccountno">Bank Account Number</label>
+                                    <input type="text" class="form-control" id="exampleInputbankaccountno" aria-describedby="emailHelp" @bind="OTVm.Bank_Account_Number__c">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dob">DOB</label>
+                                    <input type="date" class="form-control" id="exampleInputdob" aria-describedby="emailHelp" @bind="OTVm.DoB__c">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="hoursperweek">Hours Per Week</label>
+                                    <input type="text" class="form-control" id="exampleInputhoursperweek" aria-describedby="emailHelp" @bind="OTVm.Hours_per_week__c">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="insurance">Insurance</label>
+                                    <input type="text" class="form-control" id="exampleInputinsurance" aria-describedby="emailHelp" @bind="OTVm.Insurance__c">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="medicareproviderno">Medicare Provider No</label>
+                                    <input type="text" class="form-control" id="exampleInputmedicareproviderno" aria-describedby="emailHelp" @bind="OTVm.Medicare_Provider_No__c">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect3">NDIS Registered</label>
+                                    <select class="form-control" id="exampleFormControlSelect3" @bind="OTVm.NDIS_Registered__c">
+                                        <option>--Select--</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect4">Open to TeleHealth</label>
+                                    <select class="form-control" id="exampleFormControlSelect4" @bind="OTVm.Open_to_Telehealth__c">
+                                        <option>--Select--</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect5">Preferences</label>
+                                    <RadzenDropDown @bind-Value=@lstSelectedIds Data=@lstPerferences TextProperty="Name" ValueProperty="Name"
+                                                    Multiple=true AllowClear=true Placeholder="--Select--" Style="width: 100%;" />
+                                    @*  <select class="form-control" id="exampleFormControlSelect5" @bind="OTVm.Preference__c">
+                                    <option>--Select--</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    </select> *@
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <RadzenDropDown @bind-Value=@lstSelectedStates Data=@lstStates TextProperty="Name" ValueProperty="Name"
+                                                    Multiple=true AllowClear=true Placeholder="--Select--" Style="width: 100%;" />
+                                    @*  <input type="text" class="form-control" id="exampleInputstate" aria-describedby="emailHelp" @bind="OTVm.State__c"> *@
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="willingtotravel">Willing to Travel (KM)</label>
+                                    <input type="text" class="form-control" id="exampleInputwillingtotravel" aria-describedby="emailHelp" @bind="OTVm.Willing_to_travel_KM__c">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Current Rights</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="OTVm.Right__c"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea2">Experience in this Profession (Years)</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea2" rows="3" @bind="OTVm.Experience__c"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea3">How did you hear about us</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea3" rows="3" @bind="OTVm.HearAboutUs__c"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea4">When Would You Able Be to Start</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea4" rows="3" @bind="OTVm.StartWorkingDate__c"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <button type="submit" class="btn btn-primary" style="background:#1f1f8d">Update</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+        <div class="offcanvas-footer" kt-hidden-height="112" style="">
+        </div>
+
+        @*<img style="position:fixed;top:50%;left:70%;" src="assets/media/loading.gif" />*@
+
+    </div>
+</div>
+<ModalShowpopup showModal="@responseDialogVisibility" Message="@responseBody" title="@responseHeader" OnVisibilityChangedModel="@OnVisibilityChangedModel"></ModalShowpopup>
+
+@code {
+
+}

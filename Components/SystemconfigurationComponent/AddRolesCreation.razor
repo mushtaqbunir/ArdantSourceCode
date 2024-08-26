@@ -1,0 +1,112 @@
+﻿@if (IsVisible)
+{
+    <FormLoader Istrue="@IsloaderShow"></FormLoader>
+    <style>
+        .FileNameclass {
+            text-overflow: ellipsis;
+            width: 174px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+    <div id="kt_quick_cart3" class="offcanvas offcanvas-right p-10 offcanvas-on w-25">
+        <!--begin::Header-->
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7 w-25 popup_header" id="sm-width" kt-hidden-height="46">
+
+            @if (RoleId == 0)
+            {
+                <h4 class="font-weight-bold"> Add New Role </h4>
+            }
+            else
+            {
+                <h4 class="font-weight-bold"> Update Role </h4>
+            }
+
+            <a @onclick="CloseSideBar" class="btn" id="kt_quick_cart_close">
+                <i class="p-0 fa fa-window-close"></i>
+            </a>
+        </div>
+        <div class="offcanvas-content pt-3">
+
+            <div class="offcanvas-wrapper  scroll-pull scroll ps ps--active-y" style="height: auto;overflow:visible">
+                <div class=" ">
+                    <EditForm Model="@RolesVMModal" OnValidSubmit="@SaveModel">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+
+                                    <div class="form-group">
+                                        <label>Role Name: <span class="text-danger">*</span></label>
+                                        <InputText id="txtfirstname" class="form-control" @bind-Value="RolesVMModal.RoleName" Placeholder="Enter Role Name" tabindex="1" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description: <span class="text-danger">*</span></label>
+                                        <InputText id="txtEmail" class="form-control" @bind-Value="RolesVMModal.MeaningfulName" Placeholder="Enter Description" tabindex="3" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="ml-lg-4 ml-md-4 ml-sm-4 mr-3">
+                            <button type="submit" class=" ml-2 btn  float-right btn-primary" tabindex="9">Save</button>
+                            <button type="reset" class="btn btn-secondary float-right" @onclick="CloseSideBar" tabindex="10">Cancel</button>
+                        </div>
+                    </EditForm>
+                </div>
+
+
+
+            </div>
+            <div class="offcanvas-footer" kt-hidden-height="112" style="">
+            </div>
+
+            @*<img style="position:fixed;top:50%;left:70%;" src="assets/media/loading.gif" />*@
+
+        </div>
+
+        <div class="mt-5 row">
+         
+                <div class="row">
+                    @{
+                        var ColClass = "col-6";
+                    }
+                    @foreach (var item in ListOfMenuItem.Where(s => s.MenuItemParentID == null).ToList())
+                    {
+
+                        @foreach (var firstItem in (ListOfMenuItem.Where(s => s.MenuItemParentID == item.MenuItemID).ToList()))
+                        {
+                            if (firstItem.MenuName == "System Configuration")
+                                ColClass = "col-12 col-lg-12 col-md-12 col-sm-12";
+                            else
+                                ColClass = "col-6 col-lg-6 col-md-12 col-sm-12";
+                            <div class="@ColClass">
+                                
+                                    @{
+                                        var Check = ListOfUserMenuItem.Where(x => x.MenuName == firstItem.MenuName).FirstOrDefault();
+                                    }
+                                    @if (Check != null)
+                                    {
+                                        <input checked type="checkbox" @onchange="@(async (e) =>  await CheckChanged(e,firstItem.MenuItemID,firstItem.MenuName))" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" @onchange="@(async (e) =>  await CheckChanged(e,firstItem.MenuItemID,firstItem.MenuName))" />
+                                    }
+                                    <label class="" style="font-size: 12px;">&nbsp; @firstItem.MenuName   </label>
+                               
+                            </div>
+
+                        }
+                    }
+                </div>
+            
+        </div>
+
+
+    </div>
+}
+<FgcToast TostModels="@TostModelclass"> </FgcToast>
+<ModalShowpopup showModal="@PopupDialogs.responseDialogVisibility" Message="@PopupDialogs.responseBody" title="@PopupDialogs.responseHeader" OnVisibilityChangedModel="@OnVisibilityChangedModel"></ModalShowpopup>
+

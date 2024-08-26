@@ -1,0 +1,326 @@
+﻿<FormLoader Istrue="@IsloaderShow"></FormLoader>
+<div id="kt_quick_cart3" class="offcanvas offcanvas-right p-10 offcanvas-on w-50" style="position:fixed;z-index:999999999">
+    <!--begin::Header-->
+    <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7 w-50 popup_header" id="sm-width" kt-hidden-height="46">
+        <h4 class="font-weight-bold ">DVA Job Details</h4>
+        <a @onclick="CloseSideBar" class="btn" id="kt_quick_cart_close">
+            <i class="p-0 fa fa-window-close"></i>
+        </a>
+    </div>
+    <div class="offcanvas-content">
+        <div class="offcanvas-wrapper  scroll-pull scroll ps ps--active-y" style="height: auto;overflow:visible">
+            <div class="container" style="margin-top:60px">
+                <div class="row">
+
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputsurname" class="form-label">Job Number:</label>
+                            <h3>@DVAVm.Job_Number__c</h3>
+                        </div>
+                    </div>
+                    
+                        @if (DVAVm.Status__c == "Open")
+                        {
+                            <div class="col-md-6 col-sm-12 mt-1">
+                                <div class="mb-3" style="float:right;">
+                                <AuthorizeView Roles="OT" Context="authContext">
+                                    @if (IsSpinner)
+                                    {
+                                        <button class="btn btn-primary" disabled>
+                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                            Please wait...
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" id="btnchoose" class="btn btn-primary" @onclick="ChooseJob">Choose this job</button>
+
+                                    }
+                                </AuthorizeView>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-6" style="margin-top:25px;">
+                                <div class="mb-3" style="float:right;">
+                                    <button type="button" id="btnedit" class="btn btn-primary" onclick="editJob()">Edit Job</button>
+                                </div>
+                            </div>
+                        }
+
+                   
+                  
+                    <div class="col-md-12 col-sm-12 mt-3 d-md-flex gap-md-3">
+                        <h5 class="mb-0" style="font-size:15px"> Referral Type <span class="text-danger">*</span></h5>
+                        <InputRadioGroup @bind-Value="DVAVm.ReferralType" Name="flexRadioDefault">
+                            <div class="form-check ml-md-2">
+                                <InputRadio class="form-check-input" TValue="string" name="flexRadioDefault" id="flexRadioDefault1" value="Specialist" />
+                                <label class="form-check-label" for="flexRadioDefault1">Specialist</label>
+                            </div>
+                            <div class="form-check ml-md-2">
+                                <InputRadio class="form-check-input" TValue="string" name="flexRadioDefault" id="flexRadioDefault2" value="Allied Health Provider" />
+                                <label class="form-check-label" for="flexRadioDefault2">Allied Health Provider</label>
+                            </div>
+                        </InputRadioGroup>
+                        
+                    </div>
+                    <div class="col-md-12 col-sm-12 mt-3">
+                        <h5 style="color:rgb(20, 18, 149)">Patient Details</h5>
+                        <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-3">
+                        <div class="mb-3">
+                            <label for="exampleInputSurname" class="form-label">Surname <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.PatientSurName" id="exampleInputSureName" readonly>
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-3">
+                        <div class="mb-3">
+                            <label for="exampleInputgivenname" class="form-label">Given name(s) <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.PatientGivenName" id="exampleInputgivenname" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputdvafileno" class="form-label">DVA file number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.PatientDVAFormNumber" id="exampleInputdvafileno" readonly>
+                           
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputdob" class="form-label">Date of birth <span class="text-danger">*</span></label>
+                            <RadzenDatePicker @bind-Value="@DVAVm.PateintDOB" class="valid" Style="height:38px !important;" ShowTime="false" DateFormat="dd-MMM-yyyy" readonly />
+                         
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputage" class="form-label">Age</label>
+                            <input type="text" class="form-control" placeholder="@DVAVm.PatientAge" readonly id="exampleInputage">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputaddress" class="form-label">Address <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.PatientAddress" id="exampleInputaddress" readonly>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputpostcode" class="form-label">PostCode <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.PatientPostCode" id="exampleInputpostcode" readonly>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputemail" class="form-label">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" @bind="DVAVm.PatientEmailAddress" id="exampleInputemail" readonly>
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputphoneno" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.PatientPhoneNumber" id="exampleInputphoneno" readonly>
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputmobileno" class="form-label">Mobile Number</label>
+                            <input type="text" class="form-control" @bind="DVAVm.PatientMobileNumber" id="exampleInputmobileno" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 mt-3 d-md-flex gap-md-3">
+                        <h5 class="mb-0" style="font-size:15px"> Card Type <span class="text-danger">*</span></h5>
+                        <InputRadioGroup @bind-Value="DVAVm.PatientCardType" Name="flexRadiocardtype">
+                            <div class="form-check">
+                                <InputRadio class="form-check-input" TValue="string" name="flexRadiocardtype" id="flexRadioDefault3" value="Gold" />
+                                <label class="form-check-label" for="flexRadioDefault3">Specialist</label>
+                            </div>
+                            <div class="form-check">
+                                <InputRadio class="form-check-input" TValue="string" name="flexRadiocardtype" id="flexRadioDefault4" value="White" />
+                                <label class="form-check-label" for="flexRadioDefault4">Allied Health Provider</label>
+                            </div>
+                        </InputRadioGroup>
+                       
+                    </div>
+                    <div class="col-md-12 col-sm-12 mt-3">
+                        <div class="mb-3">
+                            <label for="exampleInputaccepteddisabilities" class="form-label">Accepted disabilities <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.PatientAcceptedDisabilities" id="exampleInputaccepteddisabilities" readonly>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                        <h5 style="color:rgb(20, 18, 149)">Referral To</h5>
+                        <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-3">
+                        <div class="mb-3">
+                            <label for="exampleInputrefname" class="form-label">Name </label>
+                            <input type="text" class="form-control" @bind="DVAVm.ReferraltoName" id="exampleInputrefname" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-3">
+                        <div class="mb-3">
+                            <label for="exampleInputrefaddress" class="form-label">Address</label>
+                            <input type="text" class="form-control" @bind="DVAVm.ReferraltoAddress" id="exampleInputrefaddress" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputrefpostcode" class="form-label">PostCode</label>
+                            <input type="text" class="form-control" @bind="DVAVm.ReferraltoPostCode" id="exampleInputrefpostcode" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputrefemailaddress" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" @bind="DVAVm.ReferraltoEmailAddress" id="exampleInputrefemailaddress" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputrefphoneno" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" @bind="DVAVm.ReferraltoPhoneNumber" id="exampleInputrefphoneno" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputrefmobileno" class="form-label">Mobile Number</label>
+                            <input type="text" class="form-control" @bind="DVAVm.ReferraltoMobileNumber" id="exampleInputrefmobileno" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputrefproviderno" class="form-label">Provider number (if known)</label>
+                            <input type="text" class="form-control" @bind="DVAVm.ReferraltoProviderNumber" id="exampleInputrefproviderno" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputcondition" class="form-label">Condition to be treated <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.ConditionTreated" id="exampleInputcondition" readonly>
+                          
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 mt-3 d-md-flex gap-md-3">
+                        <h5 class="mb-0" style="font-size:15px"> Is the patient a resident in a Residential Aged Care Facility? <span class="text-danger">*</span></h5>
+                        <InputRadioGroup @bind-Value="DVAVm.IsPatientResidentialAged" Name="flexRadioagedcare">
+                            <div class="form-check">
+                                <InputRadio class="form-check-input" TValue="string" name="flexRadioagedcare" id="flexRadioDefault5" value="true" />
+                                <label class="form-check-label" for="flexRadioDefault5">Yes</label>
+                            </div>
+                            <div class="form-check">
+                                <InputRadio class="form-check-input" TValue="string" name="flexRadioagedcare" id="flexRadioDefault6" value="false" />
+                                <label class="form-check-label" for="flexRadioDefault6">No</label>
+                            </div>
+                        </InputRadioGroup>
+                    </div>
+                    @if (DVAVm.IsPatientResidentialAged)
+                    {
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="exampleInputcareclass" class="form-label">Class of care</label>
+                                <input type="text" class="form-control" @bind="DVAVm.CarePatientClass" id="exampleInputcareclass" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="exampleInputdatefunding" class="form-label">Date funding began</label>
+                                <RadzenDatePicker @bind-Value="@DVAVm.CarePatientDateFundingBegan" class="valid" Style="height:38px !important;" ShowTime="false" DateFormat="dd-MMM-yyyy" readonly />
+                            </div>
+                        </div>
+                    }
+                    <div class="col-md-12 col-sm-12 mt-3">
+                        <label for="exampleInputillnesses" class="form-label">Clinical details of condition including recent illnesses, injuries and current medication, if applicable Attach additional details (if applicable)</label>
+                        <textarea class="form-control" @bind="DVAVm.IsPatientResidentialAged" id="exampleInputillnesses" rows="3" readonly></textarea>
+                    </div>
+                    
+                    <div class="col-md-12 col-sm-12 mt-3">
+                        <label for="exampleInputtreatmentcycle" class="form-label">Period of referral Please refer to the information on the Treatment Cycle above</label>
+                        <input type="text" class="form-control" @bind="DVAVm.PeriodofReferral" id="exampleInputtreatmentcycle" readonly>
+                    </div>
+                    <div class="col-md-12 col-sm-12 mt-3">
+                        <label for="exampleInputhealthprovider" class="form-label">Other treating health providers (if relevant)</label>
+                        <textarea class="form-control" @bind="DVAVm.OtherTreatingHealthProviders" id="exampleInputhealthprovider" rows="3" readonly></textarea>
+                    </div>
+                    <div class="col-md-12 col-sm-12 mt-3">
+                        <h5 style="color:rgb(20, 18, 149)">Referring Provider Details</h5>
+                        <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-1 mt-3">
+                        <div class="mb-3">
+                            <label for="exampleInputprovidername" class="form-label">Provider Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.ProviderName" id="exampleInputprovidername" readonly>
+                          
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-3">
+                        <div class="mb-3">
+                            <label for="exampleInputprovidernumber" class="form-label">Provider Number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.ProviderNumber" id="exampleInputprovidernumber" readonly>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputpracticename" class="form-label">Practice Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.ProviderPracticeName" id="exampleInputpracticename" readonly>
+                       
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputpracticeaddress" class="form-label">Practice Address <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.ProviderPracticeAddress" id="exampleInputpracticeaddress" readonly>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputproviderps" class="form-label">PostCode <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" @bind="DVAVm.ProviderPostCode" id="exampleInputproviderps" readonly>
+                          
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputprovideremail" class="form-label">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" @bind="DVAVm.ProviderEmailAddress" id="exampleInputprovideremail" readonly>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputproviderphone" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" @bind="DVAVm.ProviderPhoneNumber" id="exampleInputproviderphone" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="exampleInputproviderfax" class="form-label">Fax Number</label>
+                            <input type="text" class="form-control" @bind="DVAVm.ProviderFaxNumber" id="exampleInputproviderfax" readonly>
+                        </div>
+                    </div>
+              
+                </div>
+
+            </div>
+        </div>
+        <div class="offcanvas-footer" kt-hidden-height="112" style="">
+        </div>
+
+        @*<img style="position:fixed;top:50%;left:70%;" src="assets/media/loading.gif" />*@
+
+    </div>
+</div>
+
+<ModalShowpopup showModal="@responseDialogVisibility" Message="@responseBody" title="@responseHeader" OnVisibilityChangedModel="@OnVisibilityChangedModel"></ModalShowpopup>

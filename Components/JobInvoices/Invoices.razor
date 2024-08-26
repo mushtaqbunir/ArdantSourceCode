@@ -1,0 +1,156 @@
+﻿@using ArdantOffical.Data.ModelVm.Invoices
+
+<style>
+    .rz-grid-table {
+        width: unset;
+    }
+</style>
+@if (IsVisible)
+{
+    <FormLoader Istrue="@IsloaderShow"></FormLoader>
+    <style>
+        .FileNameclass {
+            text-overflow: ellipsis;
+            width: 174px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+    <div id="kt_quick_cart3" class="offcanvas offcanvas-right p-10 offcanvas-on w-50" style="position:fixed;z-index:999999999">
+        <!--begin::Header-->
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7 w-50 popup_header" kt-hidden-height="46">
+            <h4 class="font-weight-bold ">Add Invoice</h4>
+            <a @onclick="CloseSideBar" class="btn" id="kt_quick_cart_close">
+                <i class="p-0 fa fa-window-close"></i>
+            </a>
+        </div>
+        <div class="offcanvas-content pt-5">
+
+            <div class="offcanvas-wrapper  scroll-pull scroll ps ps--active-y" style="height: auto;overflow:visible">
+                <div class="mb-4">
+                    <EditForm Model="@Modal" OnValidSubmit="@SaveData">
+
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label>Invoice Title: <span class="text-danger">*</span></label>
+                                        <InputText @bind-Value="Modal.Title" Placeholder="Add invoice title here" class="form-control" />
+                                        <ValidationMessage For="() => Modal.Title" />
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label>Invoice Date: <span class="text-danger">*</span></label>
+                                        <RadzenDatePicker @bind-Value="@Modal.InvoiceDate" class="valid" Style="height:38px !important;" ShowTime="false" DateFormat="dd-MMM-yyyy" />
+                                        <ValidationMessage For="() => Modal.InvoiceDate" />
+                                    </div>
+
+                                </div>
+                               
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label>Send Invoice: <span class="text-danger">*</span></label>
+                                        <InputText @bind-Value="Modal.SentTo" Placeholder="Add invoice receipiant email" class="form-control" />
+                                        <ValidationMessage For="() => Modal.SentTo" />
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="exampleInputaddress" class="form-label">Status</label>
+                                        <select class="form-control" aria-label="Default select example" @onchange="OnChangeState">
+                                            <option selected>--Select Status--</option>
+                                            @foreach (var item in lstStatus)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+
+                                        </select>
+                                        <ValidationMessage For="() => Modal.Status" />
+                                    </div>
+
+                                </div>
+                             
+
+                            </div>
+                            
+                        </div>
+                        <div class="ml-lg-4 ml-md-4 ml-sm-4 mr-3 mb-5">
+                            <button type="submit" class=" ml-2 btn  float-right bg-gradient-green" tabindex="11">@ActionName</button>
+                            <button type="reset" class="btn btn-secondary float-right" @onclick="CloseSideBar" tabindex="12">Cancel</button>
+                        </div>
+                    </EditForm>
+                </div>
+
+                @if (lstInvoices != null)
+                {
+                    <div class="container">
+                        <GenericList Elements="lstInvoices">
+                            <NullTemplate>
+                                <LoaderPage></LoaderPage>
+                            </NullTemplate>
+                            <WithElementsTemplate>
+                                <table class="table table-striped table-sm projects dataTable no-footer dtr-inline" style="font-size:14px">
+                                    <thead>
+                                        <tr class="card-header-gray">
+                                            <th>Date </th>
+                                            <th>Invoice Title </th>
+                                            <th>Sent To </th>
+                                            <th>Invoice Total </th>
+                                            <th>Status </th>
+                                            @*   <th>Description</th> *@
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in lstInvoices)
+                                        {
+                                            <tr>
+                                                <td> @item.InvoiceDate </td>
+                                                <td> @item.Title </td>
+                                                <td> @item.SentTo </td>
+                                                <td> @item.InvoiceTotal </td>
+                                                <td> @item.Status </td>
+                                                @*  <td></td> *@
+                                                <td>
+                                                    <a href="#" @onclick:preventDefault @onclick="()=>ShowInvoiceItem(item.Id)" class="text-info" title="Add Item">
+                                                        <i class="fa fa-plus" aria-hidden="true" style="color: #1f1f8d;"></i>
+                                                    </a>&nbsp;
+                                                    <a href="#" @onclick:preventDefault @onclick="()=>EditInvoice(item.Id)" class="text-info" title="Edit"><i class="fa fa-pencil"></i></a>&nbsp;
+                                                    <a href="#" @onclick:preventDefault @onclick="()=>DeleteInvoice(item.Id)" class="text-danger" title="Delete"><i class="fa fa-trash-o"></i></a>
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </WithElementsTemplate>
+                        </GenericList>
+                    </div>
+                }
+
+            </div>
+            <div class="offcanvas-footer" kt-hidden-height="112" style="">
+            </div>
+
+            @*<img style="position:fixed;top:50%;left:70%;" src="assets/media/loading.gif" />*@
+
+        </div>
+    </div>
+}
+
+<ModalShowpopup showModal="@responseDialogVisibility" Message="@responseBody" title="@responseHeader" OnVisibilityChangedModel="@OnVisibilityChangedModel"></ModalShowpopup>
+<ShowDetailMessage HeaderTitle="@HeaderTitle" MessageDetail="@MessageDetail" IsVisible="ShowDetailsVisibility" OnVisibilityChanged="OnShowMessageVisibilityChanged"></ShowDetailMessage>
+<DeleteConfirmation showModal="@DeleteConfirmationVisibility" OnDeleteVisibilityChangedModel="OnDeleteConfirmationVisibilityChangedModel" OnDeleteAddSuccessModel="OnDeleteConfirmationSuccess"></DeleteConfirmation>
+
+<FgcToast TostModels="@TostModelclass"> </FgcToast>
+@if (IsInvoiceItem)
+{
+    <AddInvoiceItems OnVisibilityChanged="HideInvoiceItem" InvoiceId="@InvoiceId"></AddInvoiceItems>
+}
+
