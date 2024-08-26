@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+
+    <style>
+        .row {
+            margin-left: -15px;
+            margin-right: -15px;
+            overflow: hidden; /* Clearfix */
+        }
+
+        .col {
+            float: left;
+            padding-left: 15px;
+            padding-right: 15px;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        /* Define widths for different columns */
+        .col-1 {
+            width: 8.33333333%; /* One column in a row */
+        }
+
+        .col-2 {
+            width: 16.66666667%; /* Two columns in a row */
+        }
+
+        .col-3 {
+            width: 25%; /* Three columns in a row */
+        }
+
+        .col-4 {
+            width: 33.33333333%; /* Four columns in a row */
+        }
+
+        .col-5 {
+            width: 41.66666667%; /* Five columns in a row */
+        }
+
+        .col-6 {
+            width: 50%; /* Six columns in a row */
+        }
+
+        .col-7 {
+            width: 58.33333333%; /* Seven columns in a row */
+        }
+
+        .col-8 {
+            width: 66.66666667%; /* Eight columns in a row */
+        }
+
+        .col-9 {
+            width: 75%; /* Nine columns in a row */
+        }
+
+        .col-10 {
+            width: 83.33333333%; /* Ten columns in a row */
+        }
+
+        .col-11 {
+            width: 91.66666667%; /* Eleven columns in a row */
+        }
+
+        .col-12 {
+            width: 100%; /* Twelve columns in a row */
+        }
+
+        /* Additional styles */
+        .text-center {
+            text-align: center;
+        }
+
+        /* Remove margin from columns */
+        .col {
+            margin-bottom: 0; /* Remove default margin */
+        }
+
+        /* Example styles for demonstration */
+        .container {
+            margin: 0 auto;
+            max-width: 1140px; /* Set a max-width for the container */
+        }
+
+        /* Add margin between columns for visual separation */
+        .col + .col {
+            margin-left: 0; /* Reset margin for the first column */
+        }
+
+        .logo {
+            width: 100%;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .subtotal {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="card border-0">
+        <div class="card-body">
+            <div class="container mb-5 mt-3">
+                <div class="row">
+                    <div class="col col-12">
+                        <img class="logo" src="https://www.ardantadvantage.com/images/ardantlogo.jpg" style="width:200px" alt="Ardant Logo">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-8">
+                        <ul class="list-unstyled">
+                            <li class="text-muted">To: <span style="color:#5d9fc5 ;">@Model.InvoiceItemList.Select(ii=>ii.CustomerName).FirstOrDefault()</span></li>
+                            <li class="text-muted" style="margin-top:10px">Address: <span style="color:#5d9fc5 ;">@Model.InvoiceItemList.Select(ii => ii.CustomerAddress).FirstOrDefault()</span></li>
+                            <li class="text-muted" style="margin-top:10px">Suburb: <span style="color:#5d9fc5 ;"></span>@Model.InvoiceItemList.Select(ii => ii.CustomerSubUrb).FirstOrDefault()</li>
+                            <li class="text-muted" style="margin-top:10px">Post Code: <span style="color:#5d9fc5 ;">@Model.InvoiceItemList.Select(ii => ii.CustomerPostCode).FirstOrDefault()</span></li>
+                        </ul>
+                    </div>
+                    <div class="col col-4 ">
+                        <p class="text-muted">Invoice</p>
+                        <ul class="list-unstyled">
+                            <li class="text-muted">
+                                <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">ID:</span>@Model.InvoiceId
+                            </li>
+                            <li class="text-muted">
+                                <i class="fas fa-circle" style="color:#84B0CA ; margin-top:4px"></i> <span class="fw-bold">Creation Date: </span>@Model.InvoiceItemList.Select(ii => ii.InvoiceDate).FirstOrDefault()
+                            </li>
+                            <li class="text-muted">
+                                <i class="fas fa-circle" style="color:#84B0CA ; margin-top:4px"></i> <span class="me-1 fw-bold">Status:</span><span class="badge bg-warning text-black fw-bold">
+                                    @Model.InvoiceItemList.Select(ii => ii.InvoiceStatus).FirstOrDefault()
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row my-2 mx-1 justify-content-center " style="margin-top:20px;">
+                    <table class="table table-striped table-borderless">
+                        <thead style="background-color:#84B0CA ;" class="text-white">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Item Name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Hours</th>
+                                <th scope="col">Minutes</th>
+                                <th scope="col">KM(s)</th>
+                                <th scope="col">Unit Price</th>
+                                <th scope="col">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                            int i = 0;
+
+                            }
+                            @foreach (var item in Model.InvoiceItemList)
+                            {
+                            i++;
+                            <tr>
+                                <th scope="row">@i</th>
+                                <td>@item.ItemName</td>
+                                <td>@item.Description</td>
+                                <td>@item.Hours</td>
+                                <td>@item.Minutes</td>
+                                <td>@item.KM</td>
+                                <td>@item.UnitPrice</td>
+                                <td>@item.Amount</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row">
+                    <div class="col col-8">
+                        <p class="ml-3">Add additional notes and payment information</p>
+                    </div>
+                    <div class="col col-4">
+                        <ul class="list-unstyled">
+                            <li class="text-muted ms-3"><span class="text-black mr-4">SubTotal &nbsp; @Model.SubTotal</span></li>
+                            <li class="text-muted ms-3 me-2"><span class="text-black me-4">Tax(15%) &nbsp;$111</span></li>
+                        </ul>
+
+                        <p class="text-black float-start">
+                            <span class="text-black ms-3"> Net Amount</span><span style="font-weight:bold">&nbsp;@Model.NetAmount</span>
+                        </p>
+                    </div>
+                </div>
+                <br />
+                <hr>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

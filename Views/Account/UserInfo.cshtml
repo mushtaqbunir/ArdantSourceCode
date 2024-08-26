@@ -1,0 +1,71 @@
+﻿@model ArdantOffical.Data.ModelVm.Users.UserInfoViewModel
+
+@{
+    ViewData["Title"] = "User Info";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forgot Password </title>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    @*<link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.min.css">*@
+    <link href="/assets/plugins/fontawesome-free/css/all.css" rel="stylesheet" />
+    <!-- icheck bootstrap -->
+    <link href="/assets/plugins/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />
+    <!-- Theme style -->
+    <link href="/assets/dist/css/adminlte.css" rel="stylesheet" />
+</head>
+<body class="hold-transition login-page">
+    @if (ViewBag.Message != null)
+    { 
+            <div class="login-box ml-2">
+                <div class=" text-danger ">@((Microsoft.AspNetCore.Components.MarkupString)ViewBag.Message)</div>
+            </div>
+    }
+    <div class="login-box">
+        <div class="card card-success mt-2">
+            <div class="card-header text-center">
+                <a href="#" class="h1"><b>FGC</b></a>
+            </div>
+            <div class="card-body">
+                <p class="justify-content-start">Please enter your email address associated with your FGC account. You will receive a link to create a new password via email.</p>
+                @using (Html.BeginForm("UserInfo", "Account", new { userName = Model.UserName }, FormMethod.Post))
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="input-group mb-3">
+                        @Html.TextBox("UserName", "", new { @class = "form-control" })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-6">
+                            <a   class="btn btn-success" href="identity/account/Login">Login</a>
+                        </div>
+                        <div class="col-6">
+                            <input type="submit" value="Submit" class="btn btn-success  float-right " />
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+    <!-- /.login-box -->
+    <!-- jQuery -->
+    <script src="/assets/plugins/jquery/jquery.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/assets/plugins/bootstrap/js/bootstrap.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/assets/dist/js/adminlte.js"></script>
+</body>
+</html>
