@@ -1,0 +1,237 @@
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+a, .btn-link {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1f1f8d !important;
+    border-color: #1f1f8d !important;
+}
+
+.content {
+    padding-top: 1.1rem;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+@media (min-width: 992px) {
+}
+
+
+/*[data-title] {
+    position: relative;
+}
+
+  [data-title]:hover::before {
+            content: attr(data-title);
+            display: block;
+            bottom: -46px;
+            padding: 10px;
+            background: Darkgray;
+            color: #fff;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+ 
+
+.Text-Oneline {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: block;
+    overflow: hidden
+}*/
+.notification {
+    color: #fff !important;
+    background-color: red !important;
+    float: right;
+    position: relative;
+    top: 3px;
+}
+
+.cursor-not-allowed {
+    cursor: not-allowed !important;
+}
+
+.active-background-color {
+    background-color: rgba(255,255,255,.1) !important;
+}
+
+.FileNameclass {
+    width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.delete-icon-remove > div > button {
+    display: none;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.spinner {
+    border: 16px solid silver;
+    border-top: 16px solid #337AB7;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 700ms linear infinite;
+    top: 40%;
+    left: 55%;
+    position: absolute;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+.card-header-default {
+    padding: 5px;
+}
+
+.tab-space {
+    margin-right: 2px !important;
+}
+
+label.rz-dropdown-label.rz-inputtext.rz-placeholder {
+    font-size: 13px !important;
+    padding: 6px 12px !important;
+    color: #495057 !important;
+}
+
+textarea:disabled + .ck.ck-reset.ck-editor.ck-rounded-corners {
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+    textarea:disabled + .ck.ck-reset.ck-editor.ck-rounded-corners > .ck.ck-editor__main > .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred {
+        background-color: #eee !important;
+    }
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   /* max-width: 160px;*/ /* Set your desired max-width */
+    cursor:pointer;
+}
+
+   
+
+.circle-container {
+    width: 35px;
+    height: 35px;
+    overflow: hidden;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.circle-image {
+    width: 100%; /* Make the image fill the container */
+    height: auto; /* Maintain the aspect ratio of the image */
+    border-radius: 50%; /* Ensures the image is a circle */
+}
+
+.head-Image {
+    width: 100%;
+    height: auto;
+    clip-path: circle(50% at 50% 50%);
+}
+
+.fa-2x {
+    font-size: 1.3em !important;
+}
+
+grid-table thead th .rz-column-title {
+    display: inline-block;
+    font-size: 0.75rem;
+    line-height: inherit;
+     text-transform: capitalize !important; 
+    color: #3a474d;
+    padding: 0 0 0.625rem 0.625rem;
+    font-weight: normal;
+    vertical-align: unset;
+}
+
+.rz-grid-table td, .rz-grid-table th
+{
+    padding:0px !important;
+}
+.rz-datatable-data td, .rz-grid-table td
+{
+    border:none !important;
+}
+.bg-color {
+    transition: background-color 0.3s ease; /* Transition effect for background color change */
+}
+
+.bg-focus:focus-within {
+    background: #cff1ff;
+}
+.small-box {
+    border: 2px solid #999999 !important;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3) !important;
+}
+.toggle-adjustment{
+    margin-left:240px !important;
+}
+/* components for small devices */
+@media (max-width: 575.98px) {
+    .offcanvas.offcanvas-right.offcanvas-on{
+        width: 100% !important;
+    }
+    #sm-width{
+        width: 100% !important;
+    }
+    .sm-screen{
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    .toggle-adjustment {
+        margin-left: 125px !important;
+    }
+}

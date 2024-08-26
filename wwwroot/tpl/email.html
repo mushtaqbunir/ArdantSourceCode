@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="https://www.ardantadvantage.com/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://www.ardantadvantage.com/css/site.css" rel="stylesheet" />
+    <link href="https://www.ardantadvantage.com/css/custom.css" rel="stylesheet" />
+    <link href="https://www.ardantadvantage.com/css/adminlte.min.css" rel="stylesheet" />
+    <style>
+        th
+        {
+            font-weight:bold !important;
+        }
+        b{ font-size:14px; font-weight:bolder; }
+
+        .tr {
+            background: #ededed;
+            height: 40px;
+            font-size: 14px;
+            text-align:left;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-body " id="PrintDiv" style=" background: #fff !important;">
+        <!--<div class="col-md-12" style="text-align:right;">
+            <img src="https://www.ardantadvantage.com/images/ardantlogo.jpg" />
+        </div>-->
+        <div class="col-md-12">
+           <p>Dear Admin !</p><br />
+            <p>This is to notify that a new occupational theraphist has created his account on Ardantadvantage. Followings are the details</p>
+        </div>
+      
+        <h6 > <b>OT Details</b></h6>
+        <table class="table table-striped projects table-sm dataTable no-footer dtr-inline" style="width: 100%;font-size:16px !important;">
+            <thead>
+                <tr class="tr">
+                    <th>Title.</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>AHPRA No</th>
+                    <th>ABN</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>{#Title}</td>
+                    <td>{#Firstname} {#Lastname}</td>
+                    <td>{#Gender} </td>
+                    <td>{#AHPRA}</td>
+                    <td>{#ABN}</td>
+                    <td>{#Phone}</td>
+                    <td>{#Email}</td>
+                </tr>
+
+            </tbody>
+        </table>
+       
+        <br />
+        <p style="text-align:justify; margin-top:20px;">
+            <b>Regards</b><br />
+            Ardant Advantage
+           
+        </p>
+
+        
+    </div>
+</body>
+</html>
