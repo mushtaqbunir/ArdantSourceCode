@@ -1,0 +1,404 @@
+﻿<style>
+    .os-content::-webkit-scrollbar-thumb {
+        background-color: #FDB509 !important;
+    }
+</style>
+@*<div class="top-row pl-4 navbar navbar-dark">
+        <a class="navbar-brand" href="">ArdantOffical</a>
+        <button class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>*@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style=" height:100% !important; background:linear-gradient(-90deg, rgba(14,14,158,1) 0%, rgba(15,10,92,1) 100%);">
+    <!-- Brand Logo -->
+    <a href="Default.aspx" class="brand-link" style="height: 50px; background:#060652;">
+        <img src="/images/ardant.png" alt="FGC Compliance System" class="brand-image " style="height:35px;">
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition">
+        <div class="os-resize-observer-host observed"><div class="os-resize-observer" style="left: 0px; right: auto;"></div></div><div class="os-size-auto-observer observed" style="height: calc(100% + 1px); float: left;"><div class="os-resize-observer"></div></div><div class="os-content-glue" style="margin: 0px -8px; width: 249px; height: 365px;"></div><div class="os-padding">
+            <div class="os-viewport os-viewport-native-scrollbars-invisible">
+
+                <div class="os-content" style="padding: 0px 8px; height: 100%; width: 100%; overflow-y: overlay !important; overflow-y: auto; scrollbar-color: #e6913d transparent !important; ">
+                    <!-- Sidebar user panel (optional) -->
+                    <div class="user-panel pb-1 mb-1 d-flex" style="background: #e6913d; padding-left: 10px; margin-left: -8px;margin-right: -8px;">
+                        <div class="info">
+                            <a class="d-block" href="../profile/">
+                                <span class="clear" style="color: #000;">
+                                    <span class="block m-t-xs"> WELCOME ! </span>   <strong>
+                                        <span id="lblUsername">
+                                            <AuthorizeView>@context.User.Identity.Name </AuthorizeView>
+                                        </span>
+                                    </strong>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+
+
+
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+                            <AuthorizeView Roles="Introducer Admin,Introducer User">
+                                <Authorized>
+                                    <li class="nav-item p-0">
+                                        <a href="/TransactionsSummary" @onclick:preventDefault class="nav-link">
+                                            <i class="nav-icon fa fa-network-wired"></i>
+                                            <p> Transactions Activity</p>
+                                        </a>
+                                    </li>
+                                </Authorized>
+                            </AuthorizeView>
+                            @*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
+                            @foreach (var item in ListOfMenuItem.Where(s => s.MenuItemParentID == null && s.Type == "Menu").ToList())
+                            {
+                                int authCont = 1;
+                              
+                                    foreach (var firstItem in item.MenuItemChild.OrderBy(x => x.SortOrder))
+                                    {
+                                        string authContextt = "authContext";
+                                        var checkChildCount = firstItem.MenuItemChild.Where(s => s.Type != "Permission").Count();//use for ARROWS
+                                        <AuthorizeView Policy="@firstItem.MenuName" Context="authContext">
+                                            <li class="nav-item p-0">
+
+                                                @if (firstItem.ActionLink == "#")
+                                                {
+                                                    <a onclick="Active(this)" href="@firstItem.ActionLink" @onclick:preventDefault class="nav-link">
+                                                        <i class="@firstItem.Icons"></i>
+                                                        <p>
+                                                            @firstItem.MenuName
+                                                            @if (checkChildCount > 0)
+                                                            {
+                                                                <i class="right fas fa-angle-right"></i>
+                                                            }
+                                                        </p>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                <a onclick="Active(this)" href="@firstItem.ActionLink" class="nav-link nav-link-sm">
+                                                    <i class="@firstItem.Icons"></i>
+                                                        <p>
+                                                            @firstItem.MenuName
+                                                            @if (checkChildCount > 0)
+                                                            {
+                                                                <i class="right fas fa-angle-right"></i>
+                                                            }
+                                                        </p>
+                                                    </a>
+                                                }
+                                                @if (firstItem.MenuItemChild.Where(s => s.Type != "Permission").Count() > 0)
+                                                {
+                                                    <ul class="nav nav-treeview" style="display: none; background: linear-gradient(79deg, rgb(19 19 182) 0%, rgb(12 3 116) 100%); ">
+                                                        @foreach (var secondItem in firstItem.MenuItemChild)
+                                                        {
+
+                                                            string secondItemAuthContext = "authContext" + authCont;
+                                                            authCont += 1;
+                                                            var secondItemChildCount = secondItem.MenuItemChild.Count();//use for ARROWS
+                                                            <AuthorizeView Policy="@secondItem.MenuName" Context=secondItemAuthContext>
+                                                                <li class="nav-item p-0">
+                                                                    @if (secondItem.ActionLink == "#")
+                                                                    {
+                                                                        <a onclick="Active(this)" href="@secondItem.ActionLink" @onclick:preventDefault class="nav-link">
+                                                                            <i class="@secondItem.Icons"></i>
+                                                                            <p>
+                                                                                @secondItem.MenuName
+                                                                                @if (secondItem.MenuName == "On Boarding")
+                                                                                {
+                                                                                    
+                                                                                    <span id="OnBoardingApplicationCount" class="badge badge-danger notification" style="margin-left: 10px;"></span>
+                                                                                }
+                                                                                else if (secondItem.MenuName == "OB-Compliance")
+                                                                                {
+                                                                                    <span id="ComplianceApplicationCount" class="badge badge-danger notification" style="margin-left: 13px;"></span>
+                                                                                }
+                                                                                else if (secondItem.MenuName == "Operation")
+                                                                                {
+                                                                                    <span id="OperationApplicationCount" class="badge badge-danger notification" style="margin-left: 22px;"></span>
+                                                                                }
+
+                                                                                @if (secondItemChildCount > 0)
+                                                                                {
+                                                                                    <i class="right fas fa-angle-right"></i>
+                                                                                }
+                                                                            </p>
+                                                                        </a>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (secondItem.MenuName == "Pending Audits")
+                                                                        {
+                                                                        <a onclick="Active(this)" href="@secondItem.ActionLink" class="nav-link nav-link-sm">
+                                                                            <i class="@secondItem.Icons"></i>
+                                                                                <p>
+                                                                                    @secondItem.MenuName
+                                                                                    <span class="badge badge-danger notification" style="margin-left: 22px;"></span>
+                                                                                </p>
+                                                                            </a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                        <a onclick="Active(this)" href="@secondItem.ActionLink" class="nav-link nav-link-sm">
+                                                                            <i class="@secondItem.Icons"></i>
+                                                                                <p>
+                                                                                    @secondItem.MenuName
+                                                                                    @if (secondItemChildCount > 0)
+                                                                                    {
+                                                                                        <i class="right fas fa-angle-right"></i>
+                                                                                    }
+                                                                                </p>
+                                                                            </a>
+                                                                        }
+                                                                    }
+                                                                    @if (secondItem.MenuItemChild.Count() > 0)
+                                                                    {
+                                                                        <ul class="nav nav-treeview" style="display: none; margin-left:20px; ">
+                                                                            @foreach (var ThirdItem in secondItem.MenuItemChild)
+                                                                            {
+                                                                                string ThirdItemAuthContext = "authContext" + authCont;
+                                                                                authCont += 1;
+                                                                                var ThirdItemItemChildCount = ThirdItem.MenuItemChild.Count();
+                                                                                <AuthorizeView Policy="@ThirdItem.MenuName" Context=ThirdItemAuthContext>
+                                                                                    <li class="nav-item p-0">
+                                                                                        @if (ThirdItem.ActionLink == "#")
+                                                                                        {
+                                                                                            <a onclick="Active(this)" href="@ThirdItem.ActionLink" @onclick:preventDefault class="nav-link">
+                                                                                                <i class="@ThirdItem.Icons"></i>
+                                                                                                <p>
+                                                                                                    @ThirdItem.MenuName
+                                                                                                    @if (ThirdItemItemChildCount > 0)
+                                                                                                    {
+                                                                                                        <i class="right fas fa-angle-right"></i>
+                                                                                                    }
+                                                                                                </p>
+                                                                                            </a>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+
+                                                                                            <a onclick="Active(this)" href="@ThirdItem.ActionLink" class="nav-link nav-link-sm">
+                                                                                                <i class="@ThirdItem.Icons"></i>
+                                                                                                <p>
+                                                                                                    @ThirdItem.MenuName
+                                                                                                    @if (ThirdItemItemChildCount > 0)
+                                                                                                    {
+                                                                                                        <i class="right fas fa-angle-right"></i>
+                                                                                                    }
+                                                                                                </p>
+                                                                                                @if (ThirdItem.MenuName == "Referred")
+                                                                                                {
+                                                                                                    <span id="RefferApplicationsCount" class="badge badge-danger notification"></span>
+                                                                                                }
+                                                                                                else if (ThirdItem.MenuName == "Returned")
+                                                                                                {
+                                                                                                    <span id="ReturnApplicationsCount" class="badge badge-danger notification"></span>
+                                                                                                }
+                                                                                                else if (ThirdItem.MenuName == "Awaiting Queue")
+                                                                                                {
+                                                                                                    <span id="AwaitingApplicationsCount" class="badge badge-danger notification"></span>
+                                                                                                }
+                                                                                                else if (ThirdItem.MenuName == "Partial")
+                                                                                                {
+                                                                                                    <span id="PartialApplicationsCount" class="badge badge-danger notification"></span>
+                                                                                                }
+                                                                                                else if (ThirdItem.MenuName == "For Compliance Review")
+                                                                                                {
+                                                                                                    <span id="PassApplicationsCount" class="badge badge-danger notification"></span>
+                                                                                                }
+                                                                                                else if (ThirdItem.MenuName == "Approved")
+                                                                                                {
+                                                                                                    <span id="ApprovedApplicationsCount" class="badge badge-danger notification"></span>
+                                                                                                }
+                                                                                                @*else if (ThirdItem.MenuName == "Closed")
+                                                                {
+                                                                <span id="ClosedApplicationsCount" class="badge badge-danger notification">@(applicationsCount.ClosedApplicationsCount > 0 ? applicationsCount.ClosedApplicationsCount:"")</span>
+                                                                }
+                                                                else if (ThirdItem.MenuName == "Declined")
+                                                                {
+                                                                <span id="DeclinedApplicationsCount" class="badge badge-danger notification">@(applicationsCount.DeclinedApplicationsCount > 0 ? applicationsCount.DeclinedApplicationsCount:"")</span>
+                                                                }
+                                                                else if (ThirdItem.MenuName == "Bin")
+                                                                {
+                                                                <span id="BinApplicationsCount" class="badge badge-danger notification">@(applicationsCount.BinApplicationsCount > 0 ? applicationsCount.BinApplicationsCount:"")</span>
+                                                                }*@
+                                                                                            </a>
+                                                                                        }
+
+                                                                                        @if (ThirdItem.MenuItemChild.Count() > 0)
+                                                                                        {
+                                                                                            <ul class="nav nav-treeview" style="display: none; margin-left:20px; ">
+                                                                                                @foreach (var FouthItem in ThirdItem.MenuItemChild)
+                                                                                                {
+                                                                                                    string FouthItemAuthContext = "authContext" + authCont;
+                                                                                                    authCont += 1;
+                                                                                                    <AuthorizeView Policy="@FouthItem.MenuName" Context=FouthItemAuthContext>
+                                                                                                        <li class="nav-item p-0 ">
+                                                                                                            @if (FouthItem.ActionLink == "#")
+                                                                                                            {
+                                                                                                                <a onclick="Active(this)" href="@FouthItem.ActionLink" @onclick:preventDefault class="nav-link">
+                                                                                                                    <i class="@FouthItem.Icons"></i>
+                                                                                                                    <p>
+                                                                                                                        @FouthItem.MenuName
+                                                                                                                    </p>
+                                                                                                                </a>
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                            <a onclick="Active(this)" href="@FouthItem.ActionLink" class="nav-link nav-link-sm">
+                                                                                                                <i class="@FouthItem.Icons"></i>
+                                                                                                                    <p>
+                                                                                                                        @FouthItem.MenuName
+                                                                                                                    </p>
+                                                                                                                </a>
+                                                                                                            }
+
+                                                                                                        </li>
+                                                                                                    </AuthorizeView>
+                                                                                                    @*if (FouthItem.MenuName == "Introducers")
+                                                                {
+                                                                <AuthorizeView Policy="@FouthItem.MenuName" Context=FouthItemAuthContext>
+                                                                <li class="nav-item p-0 ">
+                                                                <a onclick="Active(this)" href="@FouthItem.ActionLink" @onclick:preventDefault class="nav-link">
+                                                                <i class="@FouthItem.Icons"></i>
+                                                                <p>
+                                                                @FouthItem.MenuName
+                                                                <i class="right fas fa-angle-right"></i>
+                                                                </p>
+                                                                </a>
+                                                                <ul class="nav nav-treeview" style="display: none; background: linear-gradient(79deg, rgb(31, 143, 69) 33%, rgb(31, 143, 69) 33%); ">
+                                                                @foreach (var intro in IntroducersUserMenu)
+                                                                {
+                                                                <li class="nav-item p-0">
+                                                                <a onclick="Active(this)" href="#" @onclick:preventDefault class="nav-link">
+                                                                <i class="nav-icon fa fa-users"></i>
+                                                                <p>
+                                                                @intro.IntroducerName
+                                                                <i class="right fas fa-angle-right"></i>
+                                                                </p>
+                                                                </a>
+                                                                <ul class="nav nav-treeview" style="display: none; background: linear-gradient(79deg, rgb(31, 143, 69) 33%, rgb(31, 143, 69) 33%); margin-left: 20px; ">
+                                                                @foreach (var introduceruser in intro.objIntroducers)
+                                                                {
+                                                                var Fullname = introduceruser.FirstName + " " + introduceruser.LastName;
+
+                                                                <li class="nav-item">
+                                                                <a onclick="Active(this)" href="/IntroducerApplications/@introduceruser.Id" style="cursor:pointer" class="nav-link">
+                                                                <i class="fa fa-user nav-icon"></i>
+                                                                <p class="menusearchitem" id="@Fullname">@Fullname</p>
+
+                                                                </a>
+                                                                </li>
+                                                                }
+                                                                </ul>
+                                                                </li>
+                                                                }
+                                                                </ul>
+                                                                </li>
+
+                                                                </AuthorizeView>
+                                                                }
+                                                                else
+                                                                {
+                                                                <AuthorizeView Policy="@FouthItem.MenuName" Context=FouthItemAuthContext>
+                                                                <li class="nav-item p-0 ">
+                                                                @if (FouthItem.ActionLink == "#")
+                                                                {
+                                                                <a onclick="Active(this)" href="@FouthItem.ActionLink" @onclick:preventDefault class="nav-link">
+                                                                <i class="@FouthItem.Icons"></i>
+                                                                <p>
+                                                                @FouthItem.MenuName
+                                                                </p>
+                                                                </a>
+                                                                }
+                                                                else
+                                                                {
+                                                                <a onclick="Active(this)" href="@FouthItem.ActionLink" class="nav-link">
+                                                                <i class="@FouthItem.Icons"></i>
+                                                                <p>
+                                                                @FouthItem.MenuName
+                                                                </p>
+                                                                </a>
+                                                                }
+
+                                                                </li>
+                                                                </AuthorizeView>
+                                                                }*@
+                                                                                                }
+                                                                                            </ul>
+                                                                                        }
+                                                                                    </li>
+                                                                                </AuthorizeView>
+                                                                            }
+                                                                        </ul>
+                                                                    }
+                                                                </li>
+                                                            </AuthorizeView>
+                                                        }
+                                                    </ul>
+                                                }
+
+                                            </li>
+                                        </AuthorizeView>
+                                    }
+                                
+                              
+                            }
+                            @*///////////////////////////////////////// ///////////////////////////////////////////////////////////////////////////////*@
+                            @*<AuthorizeView   Policy="Dashboard-main" Context="authContext">*@
+
+                        </ul>
+                    </nav>
+                    <!-- /.sidebar-menu -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.sidebar -->
+</aside>
+@*<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="counter">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Counter
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="fetchdata">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+                </NavLink>
+            </li>
+        </ul>
+    </div>*@
+
+@code {
+
+    private bool expandAdminSubMenu = false;
+
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+    //public void OnAdminClick()
+    //{
+    //  ArdantOffical.Shared.MainLayout.IsAdminPanel = true;
+    //  Navigator.NavigateTo("/OnboardDashboard",true);
+
+    //}
+
+    //private void gotoReview()
+    //{
+    //    js.CallgotoReview();
+    //}
+}

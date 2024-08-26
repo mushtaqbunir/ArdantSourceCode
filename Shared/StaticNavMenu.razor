@@ -1,0 +1,390 @@
+﻿@*<div class="top-row pl-4 navbar navbar-dark">
+        <a class="navbar-brand" href="">ArdantOffical</a>
+        <button class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>*@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style=" height:100% !important; background: linear-gradient( -90deg, rgba(31,143,69,1) 33%, rgba(20,103,59,1) 78%);">
+    <!-- Brand Logo -->
+    <a href="Default.aspx" class="brand-link" style="height: 50px; background:darkgreen;">
+        <img src="/images/logo2.png" alt="FGC Compliance System" class="brand-image " style="height:35px;">
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition">
+        <div class="os-resize-observer-host observed"><div class="os-resize-observer" style="left: 0px; right: auto;"></div></div><div class="os-size-auto-observer observed" style="height: calc(100% + 1px); float: left;"><div class="os-resize-observer"></div></div><div class="os-content-glue" style="margin: 0px -8px; width: 249px; height: 365px;"></div><div class="os-padding">
+            <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+                <div class="os-content" style=" padding: 0px 8px; height: 100%; width: 100%;">
+                    <!-- Sidebar user panel (optional) -->
+                    <div class="user-panel pb-1 mb-1 d-flex" style="background: #FDB509; padding-left: 10px; margin-left: -8px;margin-right: -8px;">
+                        <div class="info">
+                            <a class="d-block" href="../profile/">
+                                <span class="clear" style="color: #000;">
+                                    <span class="block m-t-xs"> WELCOME ! </span>   <strong>
+                                        <span id="lblUsername">
+                                            <AuthorizeView>@context.User.Identity.Name </AuthorizeView>
+                                        </span>
+                                    </strong>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- SidebarSearch Form -->
+                    <!--<div class="form-inline">
+                        <div class="input-group" data-widget="sidebar-search">
+                            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-sidebar">
+                                    <i class="fas fa-search fa-fw"></i>
+                                </button>
+                            </div>
+                        </div><div class="sidebar-search-results"><div class="list-group"><a href="#" class="list-group-item"><div class="search-title"><strong class="text-light"></strong>N<strong class="text-light"></strong>o<strong class="text-light"></strong> <strong class="text-light"></strong>e<strong class="text-light"></strong>l<strong class="text-light"></strong>e<strong class="text-light"></strong>m<strong class="text-light"></strong>e<strong class="text-light"></strong>n<strong class="text-light"></strong>t<strong class="text-light"></strong> <strong class="text-light"></strong>f<strong class="text-light"></strong>o<strong class="text-light"></strong>u<strong class="text-light"></strong>n<strong class="text-light"></strong>d<strong class="text-light"></strong>!<strong class="text-light"></strong></div><div class="search-path"></div></a></div></div>
+                    </div>-->
+                    <!-- Sidebar Menu -->
+
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+
+                            <li class="nav-item p-0">
+                                <a href="/" class="nav-link ">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item p-0">
+                                <a href="#" @onclick:preventDefault class="nav-link">
+                                    <i class="nav-icon fa fa-gear"></i>
+                                    <p>
+                                        Compliance
+                                        <i class="right fas fa-angle-right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none; background: linear-gradient(79deg, rgb(31, 143, 69) 33%, rgb(31, 143, 69) 33%); ">
+                                    <li class="nav-item p-0">
+                                        <a href="#" @onclick:preventDefault class="nav-link ">
+                                            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                            <p>
+                                                Transactions-Monitoring
+                                                <i class="right fas fa-angle-right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: none; margin-left:20px; ">
+                                            <li class="nav-item p-0">
+                                                <a href="TransactionsMain" class="nav-link ">
+                                                    <i class="nav-icon fas fa-donate"></i>
+                                                    <p>Non-Flag Transactions</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item p-0 ">
+                                                <a href="#" @onclick:preventDefault class="nav-link  ">
+                                                    <i class="nav-icon fas fa-donate"></i>
+                                                    <p>
+                                                        Flag Transactions
+                                                        <i class="right fas fa-angle-right"></i>
+                                                    </p>
+                                                </a>
+                                                <ul class="nav nav-treeview" style="display: none; margin-left:20px; ">
+                                                    <li class="nav-item p-0">
+                                                        <a href="FlagPayments" class="nav-link ">
+                                                            <i class="nav-icon fa fa-credit-card"></i>
+                                                            <p>Payments</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item p-0">
+                                                        <a href="FlagDeposits" class="nav-link  ">
+                                                            <i class="nav-icon fa fa-money"></i>
+                                                            <p>
+                                                                Deposits
+                                                            </p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="nav-item p-0">
+                                                <a href="Treasury" class="nav-link ">
+                                                    <i class="nav-icon fa fa-globe"></i>
+                                                    <p>International Payments</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-item p-0">
+                                        <a href="#" @onclick:preventDefault class="nav-link ">
+                                            <i class="fas fa-money-check-alt nav-icon"></i>
+                                            <p>
+                                                Business Profile Monitoring
+                                                <i class="right fas fa-angle-right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: none; margin-left:20px; ">
+                                            <li class="nav-item p-0">
+                                                <a href="BespokeMonitoring" class="nav-link ">
+                                                    <i class="fas fa-money-check-alt nav-icon"></i>
+                                                    <p>Bespoke</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-item p-0 ">
+                                        <a href="RulesHub" class="nav-link  ">
+                                            <i class="nav-icon fa fa-gear"></i>
+                                            <p>
+                                                Compliance Rules
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item p-0">
+                                        <a href="#" @onclick:preventDefault class="nav-link  ">
+                                            <i class="nav-icon fa fa-pie-chart"></i>
+                                            <p>
+                                                CMP Reports
+                                                <i class="right fas fa-angle-right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: none; margin-left:20px; ">
+                                            <li class="nav-item p-0">
+                                                <a href="CMPvelocitychecks" class="nav-link ">
+                                                    <i class="fa fa-circle fa-spin nav-icon text-primary"></i>
+                                                    <p>CMP Velocity checks</p>
+                                                </a>
+                                            </li>
+
+                                            <li class="nav-item p-0">
+                                                <a href="BehaviouralChecks" class="nav-link ">
+                                                    <i class="fa fa-circle fa-spin nav-icon text-warning  "></i>
+                                                    <p>Behavioural Checks</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item p-0">
+                                                <a href="Sars" class="nav-link">
+                                                    <i class="fa fa-circle fa-spin nav-icon text-success"></i>
+                                                    <p>Sars</p>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item p-0 ">
+                                        <a href="Trainings" class="nav-link  ">
+                                            <i class="nav-icon fas fa-award"></i>
+                                            <p>
+                                                Trainings
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item p-0 ">
+                                        <a href="TransactionSummaryReport" class="nav-link  ">
+                                            <i class="nav-icon fa fa-pie-chart"></i>
+                                            <p>
+                                                Weekly Txns Summary
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <AuthorizeView Roles="Admin,Auditor, MLRO">
+                                <Authorized>
+                                    <li class="nav-item p-0">
+                                        <a href="#" @onclick:preventDefault class="nav-link">
+                                            <i class="nav-icon fas fa-file-signature"></i>
+                                            <p>
+                                                Audit
+                                                <i class="right fas fa-angle-right"></i>
+                                            </p>
+                                        </a>
+
+                                        <ul class="nav nav-treeview" style="display: none; background: linear-gradient(79deg, rgb(31, 143, 69) 33%, rgb(31, 143, 69) 33%); ">
+
+                                            <li class="nav-item p-0">
+                                                <a href="/Audit/Transactions" class="nav-link ">
+                                                    <i class="fa fa-credit-card nav-icon" aria-hidden="true"></i>
+                                                    <p>Transactions Monitoring</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item p-0">
+                                                <a href="/Audit/On-boarding" class="nav-link ">
+                                                    <i class="nav-icon fas fa-users" aria-hidden="true"></i>
+                                                    <p>Client On-boarding</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item p-0">
+                                                <a href="/Audit/Msb" class="nav-link ">
+                                                    <i class="fa fa-maxcdn nav-icon" aria-hidden="true"></i>
+                                                    <p>MSB</p>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                </Authorized>
+                            </AuthorizeView>
+
+
+                            <AuthorizeView Roles="Admin">
+                                <Authorized>
+                                    <li class="nav-item p-0">
+                                        <a href="#" @onclick:preventDefault class="nav-link">
+                                            <i class="nav-icon fas fa-comment-dollar"></i>
+                                            <p>
+                                                Finance
+                                                <i class="right fas fa-angle-right"></i>
+                                            </p>
+                                        </a>
+
+                                        <ul class="nav nav-treeview" style="display: none; background: linear-gradient(79deg, rgb(31, 143, 69) 33%, rgb(31, 143, 69) 33%); ">
+
+                                            <li class="nav-item p-0">
+                                                <a href="DailyReconciliation" class="nav-link ">
+                                                    <i class="fas fa-money-check-alt nav-icon"></i>
+                                                    <p>Txn Fee Deduction</p>
+                                                </a>
+                                            </li>
+
+                                            <li class="nav-item p-0">
+                                                <a href="Safeguarding" class="nav-link ">
+                                                    <i class="fa fa-tasks nav-icon" aria-hidden="true"></i>
+                                                    <p>Client Safeguarding</p>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+
+                                </Authorized>
+                            </AuthorizeView>
+
+                            <li class="nav-item p-0">
+                                <a href="#" @onclick:preventDefault class="nav-link ">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Customers
+                                        <i class="right fas fa-angle-right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none; background: linear-gradient(79deg, rgb(31, 143, 69) 33%, rgb(31, 143, 69) 33%); ">
+                                    <li class="nav-item p-0">
+                                        <a href="Clients" class="nav-link ">
+                                            <i class="nav-icon fas fa-users"></i>
+                                            <p>Clients</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item p-0">
+                                        <a href="Depositors" class="nav-link ">
+                                            <i class="nav-icon fas fa-donate"></i>
+                                            <p>Depositors</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item p-0">
+                                        <a href="Beneficiaries" class="nav-link ">
+                                            <i class="nav-icon fas fa-users"></i>
+                                            <p>Beneficiaries</p>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </li>
+
+                            <li class="nav-item p-0">
+                                <a href="Download" class="nav-link ">
+                                    <i class="nav-icon fa fa-download"></i>
+                                    <p>
+                                        Download
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item p-0">
+                                <a href="SystemLog" class="nav-link ">
+                                    <i class="nav-icon fa fa-history"></i>
+                                    <p>
+                                        System Logs
+                                        @*<i class="right fas fa-angle-left"></i>*@
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item p-0">
+                                <a href="RiskMatrixSettings" class="nav-link ">
+                                    <i class="nav-icon fa fa-exclamation-triangle"></i>
+                                    <p>
+                                        Risk Management
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item p-0">
+                                <a href="/OnboardDashboard" class="nav-link ">
+                                    <i class="nav-icon fa fa-users"></i>
+                                    <p>
+                                        On Boarding Panel
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item p-0">
+                                <a href="#" @onclick:preventDefault class="nav-link ">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        System Configuration
+                                        <i class="right fas fa-angle-right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none; background: linear-gradient(79deg, rgb(31, 143, 69) 33%, rgb(31, 143, 69) 33%); ">
+                                    <li class="nav-item p-0">
+                                        <a href="Users" class="nav-link ">
+                                            <i class="nav-icon fas fa-user"></i>
+                                            <p>User Management</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item p-0">
+                                        <a href="FgcTurnoverReport" class="nav-link ">
+                                            <i class="nav-icon fas fa-donate"></i>
+                                            <p>Admin Annual Report</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item p-0">
+                                        <a href="TestingTransactionApi" class="nav-link ">
+                                            <i class="nav-icon fa fa-pie-chart"></i>
+                                            <p>Testing Transaction (Api)</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- /.sidebar-menu -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.sidebar -->
+</aside>
+
+
+@*<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="counter">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Counter
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="fetchdata">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+                </NavLink>
+            </li>
+        </ul>
+    </div>*@
+

@@ -1,0 +1,29 @@
+﻿@if (showModal)
+{
+    <div class="modal fade show " id="myModal" style="display: block; z-index: 9999999;" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" style="width: 310px">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="card-header modal-header text-light" style="padding: 0rem 1rem !important; ">
+                    <h6 class="modal-title icon-box material-icons">Confirmation </h6>
+                    <button type="button" class="close" @onclick="@ModalCancel">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center" style="padding: 10px">                   
+                        <p>@Message</p>                
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer" style="padding: -0.25rem">
+                    <button type="button" class="btn btn-secondary btn-sm" @onclick="@ModalCancel">Cancel</button>
+                    <button type="button" class="btn btn-info btn-sm" @onclick=@ModalOk>Yes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+<hr />

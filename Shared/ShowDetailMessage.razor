@@ -1,0 +1,33 @@
+﻿@if (IsVisible)
+{
+    <style>
+        .Compdot {
+            white-space: pre-line;
+        }
+    </style>
+    <div class="modal fade  mymodel show" id="modal-Buisness-Reason" aria-modal="true" role="dialog" style="display:block;">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="card-header modal-header text-white" style="padding: 0.25rem !important; ">
+                    <h4 class="modal-title text-center w-100">@HeaderTitle</h4>
+                    <button type="button" @onclick="() => CloseShowModel()" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                @*<label class="text-center"><b><u>Declined Reason:</u></b></label><br />*@
+                                <p class="Compdot">@((MarkupString)MessageDetail)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button @onclick="() => CloseShowModel()" type="button" class="btn btn-secondary BPClose" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,137 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ArdantOffical.Components
+@using ArdantOffical.Data
+@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Authentication.Cookies;
+@using Helpers.Enums
+@using ArdantOffical.Components.Users
+
+<style>
+    .popover {
+       
+        /* margin-right: 32px; */
+        width: 159px;
+        position: absolute;
+        left: -46px !important;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        margin-top: 40px;
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<AuthorizeView>
+    <Authorized>
+        <div class="row" style="flex-wrap:nowrap">
+            <div class="col-lg-3 col-md-3 col-sm-3  " style="white-space: nowrap">
+
+                @*<a href="Identity/Account/Manage" class="text-light">@context.User.Identity.Name!</a>*@
+                <div class="circle-container" id="popoverButton">
+                    @foreach (var attachment in attachments.Where(a => a.UserFileType == UserFileType.ProfilePicture))
+                    {
+                        <img src="/Documents/@attachment.Folder/@attachment.Path" class="head-Image" alt="Profile Picture" />
+                    }
+
+
+                    @if (attachments.Count(a => a.UserFileType == UserFileType.ProfilePicture) == 0)
+                    {
+                        <img src="/images/favpng_user-profile-avatar-female.png" title="@context.User.Identity.Name" class="circle-image" />
+                    }
+
+                </div>
+                <div class="popover" id="myPopover" style="display:none">
+                    <ul class="pl-0" style="list-style:none">
+                        <li>
+                            <a href="#" class="dropdown-item " style="color: #1f2d3d !important" @onclick:preventDefault title="Change Password" @onclick="()=>ShowChangePasswordSideBar(1)">
+                                Change Password
+                            </a>
+                        </li>
+                        <li>
+                            @if (userInfo.Role == "Admin")
+                            {
+                                <a href="#" class="dropdown-item " style="color: #1f2d3d !important" @onclick:preventDefault title="View Profile" @onclick="()=>ShowEditUserSideBar(userInfo.UserId)">
+                                    View Profile
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="dropdown-item " style="color: #1f2d3d !important" @onclick:preventDefault title="View Profile" @onclick="()=>ProfileView(userInfo.SalesforceID)">
+                                    View Profile
+                                </a>
+                            }
+                           
+                        </li>
+                    </ul>
+                </div>
+
+
+                @*   <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                @* <a class="nav-link text-light" data-toggle="dropdown" href="#">
+                @context.User.Identity.Name!
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </a> *@
+
+                @*  <ul class="dropdown-menu" style="padding: 0.1rem !important; border-radius:unset">
+                </ul> *@
+                <!--<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">-->
+                @*<a href="#" @onclick:preventDefault @onclick="()=>ShowChangePasswordSideBar(1)" class="text-success" title="Change Password"><i class="fa fa-key">Change Password</i></a>&nbsp;*@
+
+                <!--</div>-->
+                @*    </li>
+                </ul> *@
+
+
+
+                @*<div class="dropdown show">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown link
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+                </div>*@
+
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-3 sm-screen">
+                <button type="button" class="nav-link" role="button" title="Logout" style="border: none; background: none;" @onclick="()=>ClearlocalStorage()">
+                    <i class="fa fa-sign-out" style="font-size:24px;color:#e6913d"></i>
+                </button>
+                @*</form>*@
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <a href="Identity/Account/Register">Register</a>
+        <a href="Identity/Account/Login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+<DeleteModalBespokepopup showModal="@responseDialogVisibility" BPID="@DBPID" ButtonText="Yes" CancelButtonText="No" Message="@responseBody" title="@responseHeader" OnVisibilityChangedModel="OnVisibilityChangedModel" OnDeleteSuccess="OnDeleteActionSuccess"></DeleteModalBespokepopup>
+<ArdantOffical.Components.Users.ChangePassword IsChangePasswordPopupVisibile="ChangePasswordSideBarVisibility" UserID="@UserID" OnPasswordVisibiltyChanged="OnPasswordVisibiltyChanged" OnPasswordChangedSuccess="OnPasswordChangedSuccess"></ArdantOffical.Components.Users.ChangePassword>
+<Edit IsEditVisible="EditSideBarVisibility" UserID="@UserID" OnEditVisibiltyChanged="OnEditUserVisibilityChanged" OnEditSuccess="OnEditSuccess"></Edit>
+@if (IsProfileView)
+{
+    <ArdantOffical.Components.ClinicalData.OTViewProfile RefreshMenuHeader="RefreshHeaderMenu" VisibilityHide="ProfileViewHide" SFUserId="@SFUserId"></ArdantOffical.Components.ClinicalData.OTViewProfile>
+}
+<!--Use for logout in js-->
+<a style="display:none" href="/Identity/Account/Logout">Logout</a>
+
+@{
+    async Task ClearlocalStorage()
+    {
+        OnVisibilityChangedModel(true);
+        if (await localStorage.LengthAsync() > 0)
+        {
+            await localStorage.ClearAsync();
+        }
+
+    }
+
+
+}

@@ -1,0 +1,42 @@
+﻿<style>
+    .progress-container {
+        width: 100%;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        height: 20px;
+        margin-bottom: 10px;
+    }
+
+    .progress-bar {
+        width: 0%;
+        height: 100%;
+        line-height: 20px;
+        color: white;
+        text-align: center;
+        border-radius: 4px;
+        background-color: #1f1f8d;
+        position: relative;
+    }
+
+    .progress-line {
+        height: 100%;
+        background-color: #e6913d; /* Adjust color as needed */
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: @progressPercentage%;
+        border-radius: 4px;
+    }
+
+</style>
+
+<div class="progress-container" style="display: @progressBarDisplay">
+    <div class="progress-bar" style="width: @progressPercentage%">
+        <div class="progress-line"></div>
+        @progressPercentage%
+    </div>
+</div>
+
+@code {
+
+}

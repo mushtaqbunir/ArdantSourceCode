@@ -1,0 +1,28 @@
+﻿
+@if (showModal)
+{
+    <div class="modal fade show" id="myModal" style="display:block" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" style="width: 410px">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="card-header modal-header text-light" style="padding: 0rem 1rem !important; ">
+                    <h6 class="modal-title">@title</h6>
+                    <button type="button" class="close" @onclick="@ModalCancel">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body text-center" style="padding: 15px">
+                    <span style="white-space: pre-line"> @FGCExtensions.ShowMarkupString(Message)</span>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer" style="padding: -0.25rem">
+                    @*<button type="button" class="btn btn-secondary btn-sm" @onclick="@ModalCancel">Cancel</button>*@
+                    <button type="button" class="btn btn-primary btn-sm" @onclick=@ModalOk>OK</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}

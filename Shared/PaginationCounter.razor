@@ -1,0 +1,17 @@
+﻿@if (TotalCount > 0)
+{
+    <nav aria-label="Page navigation example" class="mt-2">
+        <div class="pagination d-flex  ">
+            <label class="flex-grow-1">
+                Showing @((((CurrentPage-1) * RecordsPerPage)+1).ToString()) to @(TotaPagesQuantity >=(CurrentPage+1)?((CurrentPage)*RecordsPerPage).ToString(): TotalCount.ToString()) of @TotalCount entries
+            </label>
+        </div>
+    </nav>
+}
+
+@code {
+    [Parameter] public int CurrentPage { get; set; } = 1;
+    [Parameter] public int TotaPagesQuantity { get; set; }
+    [Parameter] public int TotalCount { get; set; }
+    [Parameter] public int RecordsPerPage { get; set; }
+}

@@ -1,0 +1,13 @@
+﻿
+@if (TostModels.AlertMessageShow)
+{
+    <div id="divAlerts"  class=@TostModels.Msgstyle visible="true" style=@CssStyles >
+        <a href="#" @onclick:preventDefault class="close"  @onclick="() => Close()">&times;</a>
+        @TostModels.AlertMessagebody
+    </div>
+}
+
+
+@code {
+
+}

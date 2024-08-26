@@ -1,0 +1,17 @@
+﻿@inject NavigationManager Navigation
+
+<p>Sorry, there's nothing at this address.</p>
+
+@code {
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        if (uri.ToString().Contains("identity/account/Login"))
+        {
+            Navigation.NavigateTo("identity/account/Login", true);
+        }
+        await base.OnParametersSetAsync();
+    }
+
+}

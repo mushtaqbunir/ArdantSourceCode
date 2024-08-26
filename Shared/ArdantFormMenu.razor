@@ -1,0 +1,109 @@
+﻿
+@layout ArdantFormLayout
+
+<div class="container d-flex justify-content-center" style="margin-top:60px">
+    <div class="row justify-content-center">
+        <div class="col-10 d-flex justify-content-center">
+            <img src="/images/ardantlogo.jpg" style="width: 260px;" />
+        </div>
+        <div class="col-10 d-flex justify-content-center">
+            <!--Navbar Menu-->
+            <nav class="navbar navbar-expand-lg " style="font-size: 20px;">
+                <div class="container-fluid">
+                  
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ProviderRegistration">Provider Registration</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Referral Forms
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="/ReferralForm/NDIS">NDIS</a></li>
+                                    <li><a class="dropdown-item" href="/ReferralForm/DVA">DVA</a></li>                                    
+                                    <li><a class="dropdown-item" href="/ReferralForm/HCP">HCP</a></li>
+                                    
+                                </ul>
+                            </li>
+                          
+                        </ul>
+                      
+                    </div>
+                </div>
+            </nav>
+
+            @* <nav class="navbar navbar-expand-lg navbar-light bg-white">
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-0" style="font-size:16px;letter-spacing:2px">
+                        <li class="nav-item">
+                            <a class="nav-link" href="identity/account/Login">HOME</a>
+                        </li>
+                        <li class="nav-item" >
+                            <a class="nav-link" href="javascript:void(0)">
+                                ABOUT
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/ProviderRegistration">
+                                PROVIDER REGISTRATION
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <select class="form-select border-0 rounded-0" aria-label="Default select example">
+                                
+                                <option>
+                                    <a class="nav-link">
+                                        Referral Form
+                                    </a>
+                                </option>
+
+                                <option value="4">
+                                    <NavLink class="nav-link" href="/ReferralForm/DVA">
+                                        DVA
+                                    </NavLink>
+
+                                </option>
+                                <option value="5">
+                                    <a class="nav-link" href="/ReferralForm/NDIS">
+                                        NDIS
+                                    </a>
+
+                                </option>
+                                <option value="6">
+                                    <a class="nav-link" href="/ReferralForm/HCP">
+                                        HCP
+                                    </a>
+
+                                </option>
+                            </select>
+
+                        </li>
+                    </ul>
+
+                </div>
+            </nav> *@
+        </div>
+    </div>
+
+</div>
+
+@code {
+
+    
+}
