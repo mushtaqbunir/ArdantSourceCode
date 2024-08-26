@@ -1,0 +1,26 @@
+.pdftable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    .pdftable td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+/*   .pdftable  tr:nth-child(even) {
+        background-color: #dddddd;
+    }*/
+
+.myhead {
+    background-color: lightgray;
+    justify-content: center;
+    margin-bottom : 30px;
+      
+}
+
+.form {
+  width:800px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
