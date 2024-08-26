@@ -1,0 +1,251 @@
+﻿@page "/"
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor htp
+
+<style>
+    th {
+        border-right: none;
+    }
+</style>
+
+<FormLoader Istrue="@IsloaderShow"></FormLoader>
+
+<div class="card card-green card-margin">
+    <div class="card-header">
+        <h3 class="card-title"><i class="nav-icon fas fa-tachometer-alt"></i>&nbsp;Dashboard</h3>
+        <div class="card-tools"></div>
+    </div>
+    <div class="card-body">
+
+        <h5 class="mb-0" style="font-size: 20px;">NDIS Jobs</h5>
+        <div style="border:1px solid #b9b9b9a1"></div>
+        <div class="row mt-3">
+            @foreach (var job in NDISJobs)
+            {
+                <div class="col-lg-4 col-sm-12" style="padding-right: 7.5px;padding-left: 7.5px;">
+
+                    <div class="small-box">
+                        <div class="inner">
+                            <div class="d-flex justify-content-between">
+                                <p>Name : @job.Name</p>
+                                <p>Gender: @job.Gender</p>
+                                <p>@job.Age</p>
+
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p>Post Code: @job.Postcode</p>
+                                <p class="ellipsis">Suburb : <span @onclick:preventDefault @onclick="() => ShowMessage(FGCExtensions.ShowMarkupString(job.Suburb).ToString())">@job.Suburb</span></p>
+                                <p>State: @job.State</p>
+                            </div>
+                            <div class="text-left">
+                                <p class="ellipsis">Diagnosed Conditions: <span style="color:blue;" @onclick:preventDefault @onclick="() => ShowMessage(FGCExtensions.ShowMarkupString(job.DiagnosedConditions).ToString())"><strong>@job.ShortDC</strong></span> </p>
+                                <p class="ellipsis">Reason for Referral: <span style="color:blue;" @onclick:preventDefault @onclick="() => ShowMessage(FGCExtensions.ShowMarkupString(job.Description).ToString())"><strong>@job.ShortDescription</strong></span> </p>
+                            </div>
+
+                            @*  <div class="d-flex justify-content-between">
+                        <p>Name : <span class="text-success">@job.Name</span></p>
+                        <p>Job Status : <span class="text-success">@job.Status</span></p>
+                        </div> *@
+                            <div class="d-flex justify-content-between">
+                                <p>Posted Date</p>
+                                <p>@(job.DatePosted.Value.ToString("dd-MMM-yyyy"))</p>
+                            </div>
+                        </div>
+
+                        <a href="javascript:void(0)" class="small-box-footer bg-gradient-green" @onclick="()=>ShowNDISJobDetail(job.ID)" title="More info">
+                            &nbsp; More info
+                            <i class="fas fa-arrow-circle-right pull-right mt-1 mr-2"></i>
+
+                            @*  <i class="fas fa-arrow-circle-right pull-right mt-1 mr-2" @onclick="()=>ShowAddClinicalDataSideBar()"></i> *@
+                        </a>
+                    </div>
+                </div>
+            }
+            <div class="col-12 text-right" style="padding-right: 7.5px;">
+                @if (NDISCount > 3)
+                {
+                    @if (IsNDISShowMore)
+                    {
+
+                        <button type="button" class="btn bg-gradient-green" @onclick="ShowNDISMore" style="background:#1f1f8d;">Show More</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-secondary" @onclick="ShowNDISLess">Show Less</button>
+                    }
+                }
+
+
+            </div>
+
+        </div>
+
+        <!--HCP Jobs-->
+        <h5 class="mb-0" style="font-size: 20px;">HCP Jobs</h5>
+        <div style="border:1px solid #b9b9b9a1"></div>
+        <div class="row mt-3">
+            @foreach (var job in HCPJobs)
+            {
+                <div class="col-lg-4 col-sm-12" style="padding-right: 7.5px;padding-left: 7.5px;">
+                    <!-- small box -->
+                    <div class="small-box bg-default p-2 cursor-pointer">
+                        <div class="inner">
+                            <div class="d-flex justify-content-between">
+                                <p>Name : @job.Name</p>
+                                <p>Gender: @job.Gender</p>
+                                <p>@job.Age</p>
+
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p>Post Code: @job.Postcode</p>
+                                <p class="ellipsis">Suburb : <span @onclick:preventDefault @onclick="() => ShowMessage(FGCExtensions.ShowMarkupString(job.Suburb).ToString())">@job.Suburb</span></p>
+                                <p>State: @job.State</p>
+                            </div>
+                            <div class="text-left">
+                                <p class="ellipsis">Diagnosed Conditions: <span style="color:blue;" @onclick:preventDefault @onclick="() => ShowMessage(FGCExtensions.ShowMarkupString(job.DiagnosedConditions).ToString())"><strong>@job.ShortDC</strong></span> </p>
+                                <p class="ellipsis">Reason for Referral: <span style="color:blue;" @onclick:preventDefault @onclick="() => ShowMessage(FGCExtensions.ShowMarkupString(job.Description).ToString())"><strong>@job.ShortDescription</strong></span> </p>
+                            </div>
+                            @*   <div class="d-flex justify-content-between">
+                        <p>Name : <span class="text-success">@job.Name</span></p>
+                        <p>Job Status : <span class="text-success">@job.Status</span></p>
+                        </div> *@
+                            <div class="d-flex justify-content-between">
+                                <p>Posted Date</p>
+                                <p>@(job.DatePosted.Value.ToString("dd-MMM-yyyy"))</p>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" class="small-box-footer bg-gradient-green" @onclick="()=>ShowHCPJobDetail(job.ID)" title="More info">
+                            &nbsp; More info
+                            <i class="fas fa-arrow-circle-right pull-right mt-1 mr-2"></i>
+
+                            @*  <i class="fas fa-arrow-circle-right pull-right mt-1 mr-2" @onclick="()=>ShowAddClinicalDataSideBar()"></i> *@
+                        </a>
+                        @*  <div class="col-sm-6 small-box-footer bg-gradient-green" style="border-right:1px solid #fff;">
+                    <a href="#" @onclick="()=>ShowAddClinicalDataSideBar(Job.ID)" class="small-box-footer bg-gradient-green" title="Add Clinical Data">
+                    &nbsp; Clinical Data
+
+                    <i class="fas fa-plus-circle pull-right mt-1 mr-2"></i>
+                    </a>
+                    </div> *@
+                    </div>
+
+                </div>
+            }
+            <div class="col-12 text-right" style="padding-right: 7.5px;">
+                @if (HCPCounts > 3)
+                {
+                    @if (IsHCPShowMore)
+                    {
+
+                        <button type="button" class="btn bg-gradient-green" @onclick="ShowHCPMore" style="background:#1f1f8d; ">Show More</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-secondary" @onclick="ShowHCPLess">Show Less</button>
+                    }
+                }
+
+
+            </div>
+
+        </div>
+
+        <!--DVA Jobs-->
+
+        <h5 class="mb-0" style="font-size: 20px;">DVA Jobs</h5>
+        <div style="border:1px solid #b9b9b9a1"></div>
+        <div class="row mt-3">
+            @foreach (var job in DVAJobs)
+            {
+                <div class="col-lg-4  col-sm-12" style="padding-right: 7.5px;padding-left: 7.5px;">
+                    <!-- small box -->
+                    <div class="small-box bg-default p-2 cursor-pointer">
+                        <div class="inner">
+                            <div class="d-flex justify-content-between">
+                                <p>Name : @job.Name</p>
+                                <p>Gender: @job.Gender</p>
+                                <p>@job.Age</p>
+
+
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p>Post Code: @job.Postcode</p>
+                                <p class="ellipsis">Suburb : <span @onclick:preventDefault @onclick="() => ShowMessage(FGCExtensions.ShowMarkupString(job.Suburb).ToString())">@job.Suburb</span></p>
+                                <p>State: @job.State</p>
+                            </div>
+
+                            <p class="ellipsis text-left">Diagnosed Conditions: <br /> <span @onclick:preventDefault @onclick="() => ShowMessage(FGCExtensions.ShowMarkupString(job.ShortDescription).ToString())"><strong>@job.ShortDescription</strong></span> </p>
+
+
+                            @*  <div class="d-flex justify-content-between">
+                        <p>Name : <span class="text-success">@job.Name</span></p>
+                        <p>Job Status : <span class="text-success">@job.Status</span></p>
+                        </div> *@
+                            <div class="d-flex justify-content-between">
+                                <p>Posted Date</p>
+                                <p>@(job.DatePosted.Value.ToString("dd-MMM-yyyy"))</p>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" class="small-box-footer bg-gradient-green" @onclick="()=>ShowJobDetail(job.ID)" title="More info">
+                            &nbsp; More info
+                            <i class="fas fa-arrow-circle-right pull-right mt-1 mr-2"></i>
+
+                            @*  <i class="fas fa-arrow-circle-right pull-right mt-1 mr-2" @onclick="()=>ShowAddClinicalDataSideBar()"></i> *@
+                        </a>
+
+                        @* <div class="col-sm-6 small-box-footer bg-gradient-green" style="border-right:1px solid #fff;">
+                    <a href="#" @onclick="()=>ShowAddClinicalDataSideBar(Job.ID)" class="small-box-footer bg-gradient-green" title="Add Clinical Data">
+                    &nbsp; Clinical Data
+
+                    <i class="fas fa-plus-circle pull-right mt-1 mr-2"></i>
+                    </a>
+                    </div> *@
+                    </div>
+
+                </div>
+            }
+            <div class="col-12 text-right" style="padding-right: 7.5px;">
+                @if (DVACounts > 3)
+                {
+                    @if (IsShowMore)
+                    {
+
+                        <button type="button" class="btn bg-gradient-green" @onclick="ShowMore" style="background:#1f1f8d; ">Show More</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-secondary" @onclick="ShowLess">Show Less</button>
+                    }
+                }
+
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+<FgcToast TostModels="@TostModelclass"> </FgcToast>
+<ArdantOffical.Components.ClinicalData.AddClinicalData IsVisible="AddSideBarVisibility" OnVisibilityChanged="OnAddUserVisibilityChanged" OnAddSuccess="OnAddSuccess"></ArdantOffical.Components.ClinicalData.AddClinicalData>
+@if (IsShowJobDetail)
+{
+    <ArdantOffical.Components.Jobs_Details.DVADetail JobId="@JobID" VisibilityHide="HideJobDetail" OnAddSuccess="OnAddSuccess"></ArdantOffical.Components.Jobs_Details.DVADetail>
+}
+@if (IsHCPShowJobDetail)
+{
+    <ArdantOffical.Components.Jobs_Details.HCPDetail JobId="@JobID" VisibilityHide="HideHCPJobDetail" OnAddSuccess="OnAddSuccess"></ArdantOffical.Components.Jobs_Details.HCPDetail>
+}
+@if (IsNDISShowJobDetail)
+{
+    <ArdantOffical.Components.Jobs_Details.NDISDetail JobId="@JobID" OnVisibilityChanged="HideNDISJobDetail" OnAddSuccess="OnAddSuccess"></ArdantOffical.Components.Jobs_Details.NDISDetail>
+}
+<ShowDetailMessage HeaderTitle="@HeaderTitle" MessageDetail="@MessageDetail" IsVisible="ShowDetailsVisibility" OnVisibilityChanged="OnShowMessageVisibilityChanged"></ShowDetailMessage>
+@code
+{
+
+
+}

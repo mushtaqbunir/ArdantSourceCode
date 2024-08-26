@@ -1,0 +1,453 @@
+﻿@page "/ReferralForm/HCP"
+@layout ArdantFormLayout
+<FormLoader Istrue="@IsloaderShow"></FormLoader>
+<style>
+
+    .form-check .form-check-input {
+        width: 18px !important;
+        height: 18px;
+        background: #dfdfdf;
+    }
+
+    .form-check-input:checked {
+        border: 4px solid #0d6efd !important;
+    }
+</style>
+
+<EditForm Model="HCPVm" OnValidSubmit="Save">
+
+    <DataAnnotationsValidator />
+
+    <div class="container w-75" style="margin-top:60px">
+        <p class="text-danger">@ErrorMessage</p>
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Client Details</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+            <div class="col-md-12 col-sm-12 mt-3">
+                <div class="form-group d-flex mb-0 gap-3" style="flex-wrap:wrap;">
+                    <label for="titleRadioButton">Title</label> <br />
+                    <InputRadioGroup @bind-Value="HCPVm.Title__c" Name="titleRadioButton">
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton" id="flexRadioDefault1" value="Miss" />
+                            <label class="form-check-label" for="flexRadioDefault1">Miss</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton" id="flexRadioDefault2" value="Ms." />
+                            <label class="form-check-label" for="flexRadioDefault2">Ms</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton" id="flexRadioDefaul3" value="Mrs." />
+                            <label class="form-check-label" for="flexRadioDefault3">Mrs</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" name="titleRadioButton" TValue="string" id="flexRadioDefault4" value="Mr." />
+                            <label class="form-check-label" for="flexRadioDefault4">Mr</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" name="titleRadioButton" TValue="string" id="flexRadioDefault5" value="Dr" />
+                            <label class="form-check-label" for="flexRadioDefault5">Dr</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" name="titleRadioButton" TValue="string" id="flexRadioDefault6" value="Other" />
+                            <label class="form-check-label" for="flexRadioDefault6">Other</label>
+                        </div>
+                    </InputRadioGroup>
+                    <ValidationMessage For="() => HCPVm.Title__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputfirstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control"  id="exampleInputfirstName" @bind-value="HCPVm.FirstName__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.FirstName__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputsurname" class="form-label">Surname</label>
+                    <input type="text" class="form-control"  id="exampleInputsurname" @bind-value="HCPVm.SureName__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.SureName__c" />
+                  
+                </div>
+            </div>
+
+       
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group d-flex gap-3" style="flex-wrap:wrap;">
+                    <label for="exampleInputsurname" class="form-label">Gender</label> <br />
+                    <InputRadioGroup @bind-Value="HCPVm.Gender" Name="genderRadioButton">
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="genderRadioButton" id="flexRadioDefault1" value="Female" />
+                            <label class="form-check-label" for="flexRadioDefault1">Female</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="genderRadioButton" id="flexRadioDefault2" value="Male" />
+                            <label class="form-check-label" for="flexRadioDefault2">Male</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" name="genderRadioButton" TValue="string" id="flexRadioDefault3" value="Non-binary" />
+                            <label class="form-check-label" for="flexRadioDefault3">Non-binary</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" name="genderRadioButton" TValue="string" id="flexRadioDefault4" value="Other" />
+                            <label class="form-check-label" for="flexRadioDefault4">Other</label>
+                        </div>
+                    </InputRadioGroup>
+                    <ValidationMessage For="() => HCPVm.Gender" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputdob" class="form-label">Date of Birth</label>
+                    @* <RadzenDatePicker @bind-Value="@HCPVm.DOB__c" class="valid" Style="height:38px !important;" ShowTime="false" DateFormat="dd-MMM-yyyy" /> *@
+                    <input type="text" class="form-control" placeholder="DD-MM-YYYY" @bind="@HCPVm.DOB__c" />
+                    <ValidationMessage For="() => HCPVm.DOB__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputaddress" class="form-label">Street Address</label>
+                    <input type="text" class="form-control"  id="exampleInputaddress" @bind="HCPVm.Street_Address__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.Street_Address__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputaddress" class="form-label">Suburb</label>
+                    <input type="text" class="form-control" id="exampleInputaddress" @bind="HCPVm.Suburb__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.Suburb__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputaddress" class="form-label">Postcode</label>
+                    <input type="text" class="form-control"  id="exampleInputaddress" @bind="HCPVm.Postcode__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.Postcode__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputaddress" class="form-label">State</label>
+                    <select class="form-select" aria-label="Default select example" @onchange="OnChangeState">
+                        <option selected>--Select State--</option>
+                        @foreach (var item in lstStates)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+
+                    </select>
+                    <ValidationMessage For="() => HCPVm.State__c" />
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputphone" class="form-label">Phone</label>
+                    <input type="text" class="form-control"  id="exampleInputphone" @bind-value="HCPVm.Phone__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.Phone__c" />
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputlanguage" class="form-label">Language</label>
+                    <input type="text" class="form-control"  id="exampleInputlanguage" @bind-value="HCPVm.Language__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputmedicalBackground" class="form-label">Medical Background</label>
+                    <input type="text" class="form-control" id="exampleInputmedicalBackground" @bind-value="HCPVm.MedicalBackground__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">GP Health Summary Attached</label>
+                    <input class="form-control" type="file" id="formFile">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputallergies" class="form-label">Allergies or Alerts </label>
+                    <input type="text" class="form-control"  id="exampleInputallergies" @bind-value="HCPVm.AllergiesorAlerts__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputfundingType" class="form-label">Funding type </label>
+                    <select class="form-select" aria-label="Default select example" @onchange="OnChangeFundingTypes">
+                        <option selected>--Select Type--</option>
+                        @foreach (var item in FundingTypes)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+
+                    </select>
+                    <ValidationMessage For="() => HCPVm.FundingTypes__c" />
+                </div>
+            </div>
+            @if (IsHomeCareLevel)
+            {
+                <div class="col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="exampleInputfundingType1" class="form-label">Select Level</label>
+                        <select class="form-select" aria-label="Default select example" @bind="HCPVm.HomeCarePackageLevel__C">
+                            <option selected>--Select Level--</option>
+                            <option value="L1">L1</option>
+                            <option value="L2">L2</option>
+                            <option value="L3">L3</option>
+                            <option value="L4">L4</option>
+                        </select>
+                    </div>
+                </div>
+            }
+            
+
+            <!--Primary Contact to arrange services Section-->
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Primary Contact to arrange services</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputprimaryContactFN" class="form-label">Full Name</label>
+                    <input type="text" class="form-control"  id="exampleInputprimaryContactFN" @bind-value="HCPVm.PrimaryContactFullName__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.PrimaryContactFullName__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputpositionrelationClient" class="form-label">Relationship to Client</label>
+                    <input type="text" class="form-control"  id="exampleInputpositionrelationClient" @bind-value="HCPVm.PrimaryContactRelationshiptoClient__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.PrimaryContactRelationshiptoClient__c" />
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputprimaryPhone" class="form-label">Phone</label>
+                    <input type="text" class="form-control"  id="exampleInputprimaryPhone" @bind-value="HCPVm.PrimaryContactPhone__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.PrimaryContactPhone__c" />
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Person(s) client requires at visit</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1"  @bind="HCPVm.PrimaryContactPersonVisit__c" rows="3"></textarea>
+                </div>
+            </div>
+
+            <!--Referral Details Section-->
+
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Referral Details</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+            <div class="col-md-12 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea2" class="form-label">Reason for Referral</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea2"  @bind="HCPVm.ReasonforReferral__c" rows="3"></textarea>
+                    <ValidationMessage For="() => HCPVm.ReasonforReferral__c" />
+                </div>
+            </div>
+
+            <!--Referrer Details (if different from support coordinator details above) Section-->
+
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Referrer Details (if different from support coordinator details above)</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputdifreferrerName" class="form-label">Name of Referrer</label>
+                    <input type="text" class="form-control"  id="exampleInputdifreferrerName" @bind="HCPVm.NameofReferrer__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputdifpositionTitle" class="form-label">Position Title</label>
+                    <input type="text" class="form-control"  id="exampleInputdifpositionTitle" @bind="HCPVm.PositionTitle__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputdifOrganisation" class="form-label">Organisation</label>
+                    <input type="text" class="form-control"  id="exampleInputdifOrganisation" @bind="HCPVm.Organisation__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputdifreferrerreferrerEmail" class="form-label">Email</label>
+                    <input type="text" class="form-control"  id="exampleInputdifreferrerreferrerEmail" @bind="HCPVm.ReferrerEmail__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputdifreferrerContactphone" class="form-label">phone</label>
+                    <input type="text" class="form-control"  id="exampledifInputreferrerContactphone" @bind="HCPVm.ReferrerContactphone__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+
+            <!--Invoicing Details Section-->
+
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Invoicing Details</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputinvoiceName" class="form-label">Name</label>
+                    <input type="text" class="form-control"  id="exampleInputinvoiceName" @bind="HCPVm.InvoiceName__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.InvoiceName__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputinvoiceAddress" class="form-label">Address</label>
+                    <input type="text" class="form-control"  id="exampleInputinvoiceAddress" @bind="HCPVm.InvoiceAddress__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.InvoiceAddress__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputemailtoInvoice" class="form-label">Email invoices to</label>
+                    <input type="text" class="form-control"  id="exampleInputemailtoInvoice" @bind="HCPVm.InvoiceEmail__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.InvoiceEmail__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputinvociePhone" class="form-label">Phone </label>
+                    <input type="text" class="form-control"  id="exampleInputinvociePhone" @bind="HCPVm.InvoicePhone__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => HCPVm.InvoicePhone__c" />
+                </div>
+            </div>
+
+
+            <!--Offsite Risk Assessment (please complete any applicable sections) Section-->
+
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Offsite Risk Assessment (please complete any applicable sections)</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputsocialinfo" class="form-label">
+                        Social Information <br />
+                        <span style="font-size:12px">(family, informal/formal supports)</span>
+                    </label>
+
+                    <input type="text" class="form-control"  id="exampleInputsocialinfo" @bind="HCPVm.SocialInformation__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputcultureReq" class="form-label">
+                        Cultural requirements
+                        <br />
+                        <span style="font-size:12px">(i.e. interpreter, female/male staff only)</span>
+                    </label>
+
+                    <input type="text" class="form-control"  id="exampleInputcultureReq" @bind="HCPVm.CultureInformation__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputbehaviouralissues" class="form-label">
+                        Behavioural issues
+                        <br />
+                        <span style="font-size:12px">(i.e. substance abuse, aggression)</span>
+                    </label>
+
+                    <input type="text" class="form-control"  id="exampleInputbehaviouralissues" @bind="HCPVm.BehaviouralIssues__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mt-4">
+                <div class="mb-3">
+                    <label for="exampleInputpets" class="form-label">Pets</label>
+                    <input type="text" class="form-control"  id="exampleInputpets" @bind="HCPVm.Pets__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputhandlingissue" class="form-label">Environmental / Manual handling issues</label>
+                    <input type="text" class="form-control"  id="exampleInputhandlingissue" @bind="HCPVm.EnviromentalIssues__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mt-2">
+                <div class="form-group d-flex gap-3 mb-0 mt-4" style="flex-wrap:wrap;">
+                    <label for="titleRadioButton3">Onsite Parking / Access Issues</label> <br />
+                    <InputRadioGroup @bind-Value="HCPVm.OnSitePark__c" Name="titleRadioButton3">
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton3" id="flexRadioDefault6" value="Yes" />
+                            <label class="form-check-label" for="flexRadioDefault6">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton3" id="flexRadioDefault7" value="No" />
+                            <label class="form-check-label" for="flexRadioDefault7">No</label>
+                        </div>
+                    </InputRadioGroup>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group d-flex gap-3 mb-0 mt-4" style="flex-wrap:wrap;">
+                    <label for="titleRadioButton4">Smoker</label> <br />
+                    <InputRadioGroup @bind-Value="HCPVm.Smoker__c" Name="titleRadioButton4">
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton4" id="flexRadioDefault8" value="Yes" />
+                            <label class="form-check-label" for="flexRadioDefault8">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton4" id="flexRadioDefault9" value="No" />
+                            <label class="form-check-label" for="flexRadioDefault9">No</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton4" id="flexRadioDefault10" value="UnSure" />
+                            <label class="form-check-label" for="flexRadioDefault10">UnSure</label>
+                        </div>
+                    </InputRadioGroup>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputNotes" class="form-label">Notes</label>
+                    <input type="text" class="form-control"  id="exampleInputNotes" @bind="HCPVm.Notes__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputotherrisks" class="form-label">Other risks/alerts</label>
+                    <input type="text" class="form-control"  id="exampleInputotherrisks" @bind="HCPVm.OtherRisks__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 text-right">
+                @if (IsSpinner)
+                {
+                    <button class="btn btn-primary" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Submitting...
+                    </button>
+                }
+                else
+                {
+                    <button type="submit" class="btn bg-gradient-green text-white">Submit</button>
+                }
+                
+            </div>
+
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+
+}

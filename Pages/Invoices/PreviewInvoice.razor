@@ -1,0 +1,57 @@
+﻿<div class="modal fade show " id="myModal" style="display:block" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header p-2 mr-0 text-light" style="background-color:#e6913d !important ">
+                <h6 class="modal-title icon-box material-icons pl-2">Invoice Preview </h6>
+                <button type="button" class="close" @onclick="@CloseSideBar">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="padding: 10px">
+                <div class="row">
+                    <div class="col-3 ml-2">
+                        <div class="mb-3">
+                            <label>Send Invoice:</label>
+                            <InputText @bind-Value="InvoiceModal.SentTo" Placeholder="Add invoice receipiant email" class="form-control" />
+                            
+                        </div>
+                    </div>
+                  
+                        <div class="col-4" style="margin-top:27px !important;margin-left: 0 !important;">
+                            @if(IsSpinner)
+                            {
+                                <button class="btn btn-primary" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Sending Email...
+                                </button>
+                            } else
+                            {
+                                <button type="button" @onclick="SendEmail" class=" ml-2 btn text-white bg-gradient-green" tabindex="11">Send Email</button>
+                            }
+
+                            @if(IsSpinnerDownload)
+                            {
+                                <button class="btn btn-primary" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Downloading...
+                                </button>
+                            } else
+
+                            {
+                                <button type="button" @onclick="DownloadInvoice" class=" ml-2 btn text-white bg-gradient-green" tabindex="11">Download</button>
+                            }                           
+                        </div>                                  
+                     
+                </div>
+                @FGCExtensions.ShowMarkupString(HtmlContent)
+            </div>
+           
+
+        </div>
+    </div>
+</div>
+
+@code {
+
+}

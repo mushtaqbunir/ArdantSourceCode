@@ -1,0 +1,300 @@
+﻿@page "/"
+@namespace ArdantOffical.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ardant</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+    @*<link href="ArdantOffical.styles.css" rel="stylesheet" />*@
+    <link href="/css/custom.css" media="screen" rel="stylesheet" />
+
+    <link href="/css/print.css" media="print" rel="stylesheet" />
+    <link href="/css/adminlte.min.css" rel="stylesheet" />
+    <link href="/assets/dist/css/stylbundle.css" rel="stylesheet" />
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default.css">
+ @*    <link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css"> *@
+
+    @*<link href="/css/ClientRiskScore.css" rel="stylesheet" />*@
+
+    <link href="/assets/css/select2.min.css" rel="stylesheet" />
+    
+    @*<link href="/assets/css/site.css" rel="stylesheet" />*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="/assets/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <!--<link rel="stylesheet" href="/assets/dist/css/adminlte.min.css">-->
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="/assets/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="/assets/plugins/summernote/summernote-bs4.min.css">
+
+    <link href="/assets/fancybox/jquery.fancybox.css" rel="stylesheet" />
+
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+    @*<link href="css/ckeditorstyles.css" rel="stylesheet" />*@
+    @*<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />*@
+
+    @*<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>*@
+
+    <link href="~/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/currency-flags/2.1.2/currency-flags.min.css" rel="stylesheet" />
+    <style type="text/css">
+          .spinner-that-is-always-spinning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(128, 128, 128, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 100px;
+            height: 100px;
+            margin-left:-100px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+   
+    <component type="typeof(App)" render-mode="ServerPrerendered"  />
+
+
+    <div id="components-reconnect-modal"></div>
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+        </environment>
+        <environment include="Development">
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+  <div id="loader-father" class="spinner-that-is-always-spinning">
+        <div id="loader" class="spinner">
+            
+        </div>
+        <h4 style="text-align:center; color:#fff; margin-left:50px;">Loading... </h4>
+  </div>
+    <iframe id="my_iframe" style="display:none;"></iframe>
+    @*<script>
+            $('.select2').select2();
+        </script>*@
+    @*@if (this.Model is IPageWithBlazor)
+        {
+            <script type="text/javascript" src="~/js/blazor.polyfill.min.js"></script>
+            <script src="~/_framework/blazor.server.js"></script>
+        }*@
+    <script src="_framework/blazor.server.js"></script>
+
+    <environment include="Development,Production">
+        <script src="~/Js/HotReload.js"></script>
+    </environment>
+
+    @*<script>
+            Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+                document.location.reload();
+            }
+        </script>*@
+
+
+
+    <script>
+        Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+            document.location.reload();
+        }
+    </script>
+    @*<script>
+            // Wait until a 'reload' button appears
+            new MutationObserver((mutations, observer) => {
+                if (document.querySelector('#components-reconnect-modal h5 a')) {
+                    // Now every 10 seconds, see if the server appears to be back, and if so, reload
+                    async function attemptReload() {
+                        await fetch(''); // Check the server really is back
+                        location.reload();
+                    }
+                    observer.disconnect();
+                    attemptReload();
+                    setInterval(attemptReload, 10000);
+                }
+            }).observe(document.body, { childList: true, subtree: true });
+        </script>*@
+
+
+
+
+
+    @*<script>
+            function TestDataTablesAdd(table) {
+                debugger
+
+                $(document).ready(function () {
+                    $(table).DataTable();
+                });
+            }
+        </script>*@
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    @*datatable*@
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>*@
+
+    <script src="/assets/plugins/jquery/jquery.js"></script>
+    @*<script src="/assets/plugins/jquery/jquery.min.js"></script>*@
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>*@
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha512-cLuyDTDg9CSseBSFWNd4wkEaZ0TBEpclX0zD3D6HjI19pO39M58AgJ1SjHp6c7ZOp0/OCRcC2BCvvySU9KJaGw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js" integrity="sha512-ToRWKKOvhBSS8EtqSflysM/S7v9bB9V0X3B1+E7xo7XZBEZCPL3VX5SFIp8zxY19r7Sz0svqQVbAOx+QcLQSAQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>*@
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    @*<script src="~/Js/Pdf.js"></script>*@
+    <script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+   
+    <script src="/assets/plugins/chart.js/Chart.min.js"></script>
+    <script src="/assets/plugins/sparklines/sparkline.js"></script>
+
+    @*<script src="/assets/plugins/jqvmap/jquery.vmap.min.js"></script>*@
+
+
+    @*01-03-2022*@
+    @*<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>*@
+    @*<script src="/assets/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>*@
+    <script src="/assets/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <script src="/assets/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <script src="/assets/plugins/moment/moment.min.js"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="/assets/plugins/summernote/summernote-bs4.min.js"></script>
+    <script src="/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="/assets/dist/js/adminlte.js"></script>
+    <script src="~/Js/CKEditorInterop.js"></script>
+    <script src="~/Js/Helpers.js"></script>
+    <script src="~/Js/Transactions.js"></script>
+    <script src="/Js/CSVimport.js"></script>
+    <script src="/assets/fancybox/jquery.fancybox.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/microsoft/signalr/dist/browser/chat.js"></script>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="_content/Blazored.TextEditor/quill-blot-formatter.min.js"></script>
+    <script src="_content/Blazored.TextEditor/Blazored-BlazorQuill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript">
+
+        //function GetTransaction(type) {
+        //    //debugger;
+
+        //        //$.ajax({
+        //        //    type: "GET",
+        //        //    url: "/Transactions/LoadTransactionAll",
+        //        //    data: { "Type": type},
+        //        //    success: function (response) {
+        //        //        alert("Hello");
+        //        //    },
+        //        //    failure: function (response) {
+        //        //        alert(response.responseText);
+        //        //    },
+        //        //    error: function (response) {
+        //        //        alert(response.responseText);
+        //        //    }
+        //        //});
+        //}
+    </script>
+   @*  <script src="~/Js/Radzen.js"></script> *@
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+    <script src="/Js/download.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+    <script src="/Js/Select2.js"></script>
+    <script>
+        /** add active class and stay opened when selected */
+        var url = window.location;
+
+        // for sidebar menu entirely but not cover treeview
+        $('ul.sidebar-menu a').filter(function () {
+            return this.href == url;
+        }).parent().addClass('active');
+
+        // for treeview
+        $('ul.treeview-menu a').filter(function () {
+            return this.href == url;
+        }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+
+
+    </script>
+
+    <script>
+        window.getIpAddress = () => {
+            return fetch('/api/Values/ipaddress')
+                .then((response) => response.text())
+                .then((data) => {
+                    return data
+                })
+        }
+    </script>
+    <script src="/ckeditor/ckeditor.js"></script>
+    <script src="/js/CKEditorInterop.js"></script>
+    <script src="~/Js/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    
+</body>
+</html>
+

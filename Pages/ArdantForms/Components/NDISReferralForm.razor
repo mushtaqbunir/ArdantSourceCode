@@ -1,0 +1,520 @@
+﻿@page "/ReferralForm/NDIS"
+@layout ArdantFormLayout
+
+<style>
+    .form-check .form-check-input {
+        width: 18px !important;
+        height: 18px;
+        background: #dfdfdf;
+    }
+
+    .form-check-input:checked {
+        border:4px solid #0d6efd !important;
+    }
+</style>
+
+<FormLoader Istrue="@IsloaderShow"></FormLoader>
+<EditForm Model="@NDISVm" OnValidSubmit="SaveNDISFormData">
+    <DataAnnotationsValidator  />
+  
+    <div class="container w-75" style="margin-top:60px">
+        <p class="text-danger">@ErrorMessage</p>
+        <h5>Note: <span style="color:red; text-align:center;">Having trouble submitting the form ? Contact us at  <a href="mailto:access@ardant.com.au">access@ardant.com.au</a>  and we will submit it for you.</span></h5>
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">NDIS Participant Details</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+            <div class="col-md-12 col-sm-12 mt-3">
+                <div class="form-group d-flex mb-0 gap-3" style="flex-wrap:wrap;">
+                    <label for="exampleInputsurname" class="form-label">Title</label> <br />
+                    <InputRadioGroup @bind-Value="NDISVm.Title__c" Name="titleRadioButton">
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton" id="flexRadioDefault1" value="Miss" />
+                            <label class="form-check-label" for="flexRadioDefault1">Miss</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton" id="flexRadioDefault2" value="Ms." />
+                            <label class="form-check-label" for="flexRadioDefault2">Ms</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton" id="flexRadioDefault3" value="Mrs." />
+                            <label class="form-check-label" for="flexRadioDefault3">Mrs</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" name="titleRadioButton" TValue="string" id="flexRadioDefault4" value="Mr." />
+                            <label class="form-check-label" for="flexRadioDefault4">Mr</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" name="titleRadioButton" TValue="string" id="flexRadioDefault5" value="Dr" />
+                            <label class="form-check-label" for="flexRadioDefault5">Dr</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" name="titleRadioButton" TValue="string" id="flexRadioDefault6" value="Other" />
+                            <label class="form-check-label" for="flexRadioDefault6">Other</label>
+                        </div>
+                    </InputRadioGroup>
+                    <ValidationMessage For="() => NDISVm.Title__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputfirstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control"  id="exampleInputfirstName" @bind="NDISVm.FirstName__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.FirstName__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputsurname" class="form-label">Surname</label>
+                    <input type="text" class="form-control"  id="exampleInputsurname" @bind="NDISVm.SureName__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.SureName__c" />
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group d-flex gap-3" style="flex-wrap:wrap;">
+                    <label for="exampleInputsurname" class="form-label">Gender</label> <br />
+                    <InputRadioGroup @bind-Value="NDISVm.Gender" Name="genderRadioButton">
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="genderRadioButton" id="flexRadioDefault1" value="Female" />
+                            <label class="form-check-label" for="flexRadioDefault1">Female</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="genderRadioButton" id="flexRadioDefault2" value="Male" />
+                            <label class="form-check-label" for="flexRadioDefault2">Male</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" name="genderRadioButton" TValue="string" id="flexRadioDefault3" value="Non-binary" />
+                            <label class="form-check-label" for="flexRadioDefault3">Non-binary</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" name="genderRadioButton" TValue="string" id="flexRadioDefault4" value="Other" />
+                            <label class="form-check-label" for="flexRadioDefault4">Other</label>
+                        </div>
+                    </InputRadioGroup>
+                    <ValidationMessage For="() => NDISVm.Gender" />
+                </div>
+            </div>
+           
+            <div class="col-md-6 col-sm-12">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-12">
+                        <label for="exampleInputaddress" class="form-label">Date of Birth</label>
+                        <select class="form-select" aria-label="Default select example" @onchange="OnChangeDay">
+                            <option selected>Day</option>
+                            @foreach (var item in lstDays)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+
+                        </select>
+                         <ValidationMessage For="() => NDISVm.Day" />
+                    </div>
+                    <div class="col-sm-4 col-xs-12">
+                        <label for="exampleInputaddress" class="form-label"></label>
+                        <select class="form-select" aria-label="Default select example" @onchange="OnChangeMonth">
+                            <option selected>Month</option>
+                            @foreach (var item in lstMonths)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+
+                        </select>
+                         <ValidationMessage For="() => NDISVm.Month" />
+                    </div>
+                    <div class="col-sm-4 col-xs-12">
+                        <label for="exampleInputaddress" class="form-label"></label>
+                        <select class="form-select" aria-label="Default select example" @onchange="OnChangeYear">
+                            <option selected>Year</option>
+                            @foreach (var item in lstYears)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+
+                        </select>
+                        <ValidationMessage For="() => NDISVm.Year" />
+                    </div>
+                </div>
+                
+             
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputaddress" class="form-label">Street Address</label>
+                    <input type="text" class="form-control"  id="exampleInputaddress" @bind="NDISVm.Street_Address__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.Street_Address__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputaddress" class="form-label">Suburb</label>
+                    <input type="text" class="form-control"  id="exampleInputaddress" @bind="NDISVm.Suburb__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.Suburb__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputaddress" class="form-label">Postcode</label>
+                    <input type="text" class="form-control"  id="exampleInputaddress" @bind="NDISVm.Postcode__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.Postcode__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputaddress" class="form-label">State</label>
+                    <select class="form-select" aria-label="Default select example" @onchange="OnChangeState">
+                        <option selected>--Select State--</option>
+                        @foreach (var item in lstStates)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+
+                        
+
+                    </select>
+                    <ValidationMessage For="() => NDISVm.State__c" />
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputphone" class="form-label">Phone</label>
+                    <input type="text" class="form-control"  id="exampleInputphone" @bind="NDISVm.Phone__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.Phone__c" />
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputlanguage" class="form-label">Language</label>
+                    <input type="text" class="form-control"  id="exampleInputlanguage" @bind="NDISVm.Language__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputmedicalBackground" class="form-label">Diagnosed Conditions</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1"  @bind="NDISVm.MedicalBackground__c" rows="3"></textarea>
+               
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputallergies" class="form-label">Allergies or Alerts </label>                  
+                    <textarea class="form-control" id="exampleFormControlTextarea1"  @bind="NDISVm.AllergiesorAlerts__c" rows="3"></textarea>
+                </div>
+            </div>
+
+            <!--NDIS Management Type Section-->
+
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">NDIS management type (please note we do not service NDIA Managed Participants)</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+            <div class="col-md-12 col-sm-12 mt-3">
+                <div class="form-group d-flex gap-3">
+
+                    <InputRadioGroup @bind-Value="NDISVm.NDISManagementType__c" Name="titleRadioButton2">
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton2" id="flexRadioDefault4" value="Plan Managed" />
+                            <label class="form-check-label" for="flexRadioDefault4">Plan Managed</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton2" id="flexRadioDefault5" value="Self Managed" />
+                            <label class="form-check-label" for="flexRadioDefault5">Self Managed</label>
+                        </div>
+                    </InputRadioGroup>
+                    <ValidationMessage For="() => NDISVm.NDISManagementType__c" />
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputplanNumber" class="form-label">NDIS Client Number</label>
+                    <input type="text" class="form-control"  id="exampleInputplanNumber" @bind="NDISVm.NDISPlanNumber__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.NDISPlanNumber__c" />
+                </div>
+            </div>
+
+            <!--Support Coordinator details (if appliable) Section-->
+
+        @*     <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Support Coordinator details (if appliable)</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputreferrerName" class="form-label">Name of Referrer</label>
+                    <input type="text" class="form-control"  id="exampleInputreferrerName" @bind="NDISVm.NameofReferrer__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputpositionTitle" class="form-label">Position Title</label>
+                    <input type="text" class="form-control"  id="exampleInputpositionTitle" @bind="NDISVm.PositionTitle__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputOrganisation" class="form-label">Organisation</label>
+                    <input type="text" class="form-control"  id="exampleInputOrganisation" @bind="NDISVm.Organisation__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputreferrerreferrerEmail" class="form-label">Email</label>
+                    <input type="text" class="form-control"  id="exampleInputreferrerreferrerEmail" @bind="NDISVm.ReferrerEmail__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputreferrerContactphone" class="form-label">Contact phone</label>
+                    <input type="text" class="form-control"  id="exampleInputreferrerContactphone" @bind="NDISVm.ReferrerContactphone__c" aria-describedby="emailHelp">
+                </div>
+            </div> *@
+
+            <!--Primary Contact to arrange services Section-->
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Primary Contact to arrange services</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputprimaryContactFN" class="form-label">Name</label>
+                    <input type="text" class="form-control"  id="exampleInputprimaryContactFN" @bind="NDISVm.PrimaryContactFullName__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.PrimaryContactFullName__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputpositionrelationClient" class="form-label">Relationship to Client</label>
+                    <input type="text" class="form-control"  id="exampleInputpositionrelationClient" @bind="NDISVm.PrimaryContactRelationshiptoClient__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.PrimaryContactRelationshiptoClient__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputprimaryPhone" class="form-label">Phone</label>
+                    <input type="text" class="form-control"  id="exampleInputprimaryPhone" @bind="NDISVm.PrimaryContactPhone__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.PrimaryContactPhone__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Email</label>
+                    <input type="text" class="form-control" id="exampleInputprimaryPhone" @bind="NDISVm.PrimaryContactEmail__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.PrimaryContactEmail__c" />
+                </div>
+            </div>
+
+            <!--Referral Details Section-->
+
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Referral Details</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+            <div class="col-md-12 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea2" class="form-label">Reason for Referral</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea2"  @bind="NDISVm.ReasonforReferral__c" rows="3"></textarea>
+                    <ValidationMessage For="() => NDISVm.ReasonforReferral__c" />
+                </div>
+            </div>
+
+            <!--Referrer Details (if different from support coordinator details above) Section-->
+
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Referrer Details </h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputdifreferrerName" class="form-label">Name of Referrer</label>
+                    <input type="text" class="form-control"  id="exampleInputdifreferrerName" @bind="NDISVm.DifferentNameofReferrer__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputdifpositionTitle" class="form-label" >Position Title</label>
+                    <input type="text" class="form-control"  id="exampleInputdifpositionTitle" @bind="NDISVm.DifferentPositionTitle__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputdifOrganisation" class="form-label">Organisation</label>
+                    <input type="text" class="form-control"  id="exampleInputdifOrganisation" @bind="NDISVm.DifferentOrganisation__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputdifreferrerreferrerEmail" class="form-label">Email</label>
+                    <input type="text" class="form-control"  id="exampleInputdifreferrerreferrerEmail" @bind="NDISVm.DifferentReferrerEmail__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputdifreferrerContactphone" class="form-label">phone</label>
+                    <input type="text" class="form-control"  id="exampledifInputreferrerContactphone" @bind="NDISVm.DifferentReferrerphone__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+
+            <!--Invoicing Details Section-->
+
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Invoicing Details</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputinvoiceName" class="form-label">Name</label>
+                    <input type="text" class="form-control"  id="exampleInputinvoiceName" @bind="NDISVm.InvoiceName__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.InvoiceName__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputinvoiceAddress" class="form-label">Address</label>
+                    <input type="text" class="form-control"  id="exampleInputinvoiceAddress" @bind="NDISVm.InvoiceAddress__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.InvoiceAddress__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputemailtoInvoice" class="form-label">Email invoices to</label>
+                    <input type="text" class="form-control"  id="exampleInputemailtoInvoice" @bind="NDISVm.InvoiceEmail__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.InvoiceEmail__c" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputinvociePhone" class="form-label">Phone </label>
+                    <input type="text" class="form-control"  id="exampleInputinvociePhone" @bind="NDISVm.InvoicePhone__c" aria-describedby="emailHelp">
+                    <ValidationMessage For="() => NDISVm.InvoicePhone__c" />
+                </div>
+            </div>
+
+
+            <!--Offsite Risk Assessment (please complete any applicable sections) Section-->
+
+            <div class="col-md-12 col-sm-12">
+                <h5 style="color:rgb(20, 18, 149)">Offsite Risk Assessment (please complete any applicable sections)</h5>
+                <div style="border-bottom: 1px solid rgb(20, 18, 149);"></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputsocialinfo" class="form-label">Social Information 
+                       @*  <span style="font-size:12px">(family, informal/formal supports)</span> *@
+                    </label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1"  @bind="NDISVm.SocialInformation__c" rows="3"></textarea>
+                  
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <label for="exampleInputcultureReq" class="form-label">Cultural requirements
+                      
+                    </label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1"  @bind="NDISVm.CultureInformation__c" rows="3"></textarea>
+                  @*   <input type="text" class="form-control" placeholder="Enter Cultural requirements" id="exampleInputcultureReq" @bind="NDISVm.CultureInformation__c" aria-describedby="emailHelp"> *@
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputbehaviouralissues" class="form-label">Behavioural issues
+                     
+                    </label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1"  @bind="NDISVm.BehaviouralIssues__c" rows="3"></textarea>
+                @*     <input type="text" class="form-control" placeholder="Enter Behavioural issues" id="exampleInputbehaviouralissues" @bind="NDISVm.BehaviouralIssues__c" aria-describedby="emailHelp"> *@
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputpets" class="form-label">Pets</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1"  @bind="NDISVm.Pets__c" rows="3"></textarea>
+                  @*   <input type="text" class="form-control" placeholder="Enter Pets" id="exampleInputpets" @bind="NDISVm.Pets__c" aria-describedby="emailHelp"> *@
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label for="exampleInputhandlingissue" class="form-label">Environmental / Manual handling issues</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1"  @bind="NDISVm.EnviromentalIssues__c" rows="3"></textarea>
+                    @* <input type="text" class="form-control" placeholder="Enter Environmental / Manual handling issues" id="exampleInputhandlingissue" @bind="NDISVm.EnviromentalIssues__c" aria-describedby="emailHelp"> *@
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mt-2">
+                <div class="form-group d-flex gap-3 mb-0 " style="flex-wrap:wrap;">
+                    <label for="titleRadioButton3">Onsite Parking / Access Issues</label> <br />
+                    <InputRadioGroup @bind-Value="NDISVm.OnSitePark__c" Name="titleRadioButton3">
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton3" id="flexRadioDefault6" value="Yes" />
+                            <label class="form-check-label" for="flexRadioDefault6">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton3" id="flexRadioDefault7" value="No" />
+                            <label class="form-check-label" for="flexRadioDefault7">No</label>
+                        </div>
+                    </InputRadioGroup>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mt-2">
+                <div class="form-group d-flex gap-3 mb-0" style="flex-wrap:wrap;">
+                    <label for="titleRadioButton4">Smoker</label> <br />
+                    <InputRadioGroup @bind-Value="NDISVm.Smoker__c" Name="titleRadioButton4">
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton4" id="flexRadioDefault8" value="Yes" />
+                            <label class="form-check-label" for="flexRadioDefault8">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton4" id="flexRadioDefault9" value="No" />
+                            <label class="form-check-label" for="flexRadioDefault9">No</label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" TValue="string" name="titleRadioButton4" id="flexRadioDefault10" value="UnSure" />
+                            <label class="form-check-label" for="flexRadioDefault10">UnSure</label>
+                        </div>
+                    </InputRadioGroup>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mt-2">
+                <div class="mb-3">
+                    <label for="exampleInputNotes" class="form-label">Notes</label>
+                    <input type="text" class="form-control"  id="exampleInputNotes" @bind="NDISVm.Notes__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-2">
+                <div class="mb-3">
+                    <label for="exampleInputotherrisks" class="form-label">Other risks/alerts</label>
+                    <input type="text" class="form-control"  id="exampleInputotherrisks" @bind="NDISVm.OtherRisks__c" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 text-right">
+                @if (IsSpinner)
+                {
+                    <button class="btn btn-primary" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Submitting...
+                    </button>
+                }
+                else
+                {
+                    <button class="btn bg-gradient-green text-white">Submit</button>
+                }
+                
+            </div>
+
+        </div>
+
+    </div>
+
+</EditForm>
+
+
+@code {
+
+}

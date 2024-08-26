@@ -1,0 +1,133 @@
+﻿@page "/AccountStatement/{ClientID:int?}"
+
+<style>
+    hr {
+        display: none;
+    }
+</style>
+<FormLoader Istrue="@IsloaderShow"></FormLoader>
+<div class="d-flex justify-content-between   " style="margin-top:-26px">
+    <div class=" flex-shrink-0 ">
+        <EditForm Model="@paginationObj">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="row mt-4">
+                <span style="color:black;margin-right:2px;margin-top:8px" class="ml-3">Show</span>
+                <div class="form-group ">
+                    <InputSelect id="" class="form-control" ValueExpression="@(() => paginationObj.QuantityPerPage)" Value="@paginationObj.QuantityPerPage" ValueChanged="@((int value) => LoadListofDeposits(1,value))">
+                        <option value="25">25</option>
+                        @foreach (var state in ListOfTablePages)
+                        {
+                            <option value="@state.Value">@state.Text</option>
+                        }
+                    </InputSelect>
+                </div>
+                <span style="color: black; margin-left: 2px; margin-top: 8px " class="">entries</span>
+            </div>
+        </EditForm>
+    </div>
+    <div class="flex-shrink-0 ml-1 col-10">
+        <EditForm Model="@SearchFilterModels" OnValidSubmit="@SubmitSearchFilter">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="row  ">
+                <div class="col-2">
+                    <div class="form-group">
+                        <label>From Date: <span class="text-danger"></span></label>
+                        <RadzenDatePicker @bind-Value="@SearchFilterModels.StartDate" class="valid" ShowTime="false" DateFormat="dd-MMM-yyyy" />
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label>To Date: <span class="text-danger"></span></label>
+                        <RadzenDatePicker @bind-Value="@SearchFilterModels.EndDate" class="valid" ShowTime="false" DateFormat="dd-MMM-yyyy" />
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label>Client Accounts: <span class="text-danger"></span></label>
+                        <InputSelect id="" class="form-control" @bind-Value="SearchFilterModels.AccountNumber" tabindex="71">
+                            <option value="0">Select Account</option>
+                            <option value="0">All</option>
+                            @foreach (var state in lstOfClientAccounts)
+                            {
+                                <option value="@state.Value">@state.Text</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                @*<div class="col-2">
+                    <div class="form-group">
+                        <label>Search: <span class="text-danger"></span></label>
+                        <input style="" type="search" class="form-control" @bind-value="SearchKey" id="kt_subheader_search_form" placeholder="Search..." />
+                    </div>
+                </div>*@
+                <div class="col-4">
+                    <div class="row">
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-success rounded mt-1">Get Report</button>
+                            <button type="reset" class=" btn btn-primary  rounded mt-1" @onclick="()=>FormReset()">Reset</button>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </EditForm>
+    </div>
+</div>
+<div class="card-body p-2" style="margin-top: -21px">
+    <PaginationCounter TotaPagesQuantity="totalPageQuantity" TotalCount="totalCount" CurrentPage="currentPage" RecordsPerPage="@paginationObj.QuantityPerPage"></PaginationCounter>
+
+    <GenericList Elements="lstPerPageRows">
+        <NullTemplate>
+            <LoaderPage></LoaderPage>
+        </NullTemplate>
+        <WithElementsTemplate>
+            <table class="table table-striped table-sm projects dataTable no-footer dtr-inline">
+                <thead>
+                    <tr class="card-header-gray">
+                        <th>Txn Date</th>
+                        <th>Txn Id</th>
+                        <th>FGC Client Name & Account</th>
+                        <th>CP Name & Account </th>
+                        <th>Debit</th>
+                        <th>Credit</th>                       
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in lstPerPageRows)
+                    {
+                    <tr>
+                        <td>@item.TransactionDate.ToString("dd--MMM-yyyy HH:mm:ss")</td>
+                        <td>@item.TransactionIDStr</td>
+                        <td>@item.ClientName - @item.ClientAccount</td>
+                        <td>@item.CounterPartyName - @item.CounterPartyAccount</td>
+                        @if (item.TypeId == 1)
+                        {
+                            <td>@item.Currency @item.Amount?.ToString("N")</td>
+                            <td></td>
+                        }
+                        else
+                        {
+                            <td></td>
+                            <td>@item.Currency @item.Amount?.ToString("N")</td>
+                        }                       
+                        
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </WithElementsTemplate>
+    </GenericList>
+</div>
+<Pagination TotaPagesQuantity="totalPageQuantity" TotalCount="totalCount" CurrentPage="currentPage" Radius="2"
+            SelectedPage="SelectedPage" ShowrecordTable="@paginationObj.QuantityPerPage"></Pagination>
+@code {
+
+}

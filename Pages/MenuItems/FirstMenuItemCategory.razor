@@ -1,0 +1,99 @@
+﻿@page "/FirstMenuItemCategory/{MenuItemParentID:int}"
+@using ArdantOffical.Data.ModelVm.Users
+@using ArdantOffical.Components.SystemconfigurationComponent
+<div class="card card-green card-margin">
+    <div class="card-header">
+        <h3 class="card-title">First Level Menu </h3>
+        <div class="card-tools">
+            <button type="button" id="btnAddUser" class="btn btn-success pull-right" @onclick="()=>ShowAddNewLinkSideBar()">
+                <i class="fas fa-user-plus text-white" title="Add New User"></i> Add New link
+            </button>
+        </div>
+    </div>
+
+
+
+
+    <div class="d-flex justify-content-between text-white " style="margin-top:-20px">
+        <div class=" ">
+            <EditForm Model="@paginationObj">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="row mt-4 ml-0">
+                    <span style="color:black;margin-right:2px;margin-top:8px" class="ml-3">Show</span>
+                    <div class="form-group ">
+
+                        <InputSelect id="" class="form-control" ValueExpression="@(() => paginationObj.QuantityPerPage)" Value="@paginationObj.QuantityPerPage" ValueChanged="@((int value) => LoadRecords(1,value))">
+                            <option value="25">25</option>
+                            @foreach (var state in ListOfTablePages)
+                            {
+                                <option value="@state.Value">@state.Text</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <span style="color: black; margin-left: 2px; margin-top: 8px " class="">entries</span>
+                </div>
+            </EditForm>
+        </div>
+        <div class="flex-shrink-0 mt-4">
+
+            <EditForm Model="@paginationObj" OnValidSubmit="()=> SearchChanged()">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="text" class="form-control  " style="margin-left:-9px" placeholder="Search" @bind-value="@SearchKey" @bind-value:event="oninput" />
+                    </div>
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-success rounded  ">Get Report</button>
+                        <button type="reset" class=" btn btn-primary  rounded  " @onclick="()=>FormReset()">Reset</button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+    <div class="card-body p-2">
+        <PaginationCounter TotaPagesQuantity="totalPageQuantity" TotalCount="totalCount" CurrentPage="currentPage" RecordsPerPage="@paginationObj.QuantityPerPage"></PaginationCounter>
+
+        <GenericList Elements="PerPagMenuItemRecords">
+            <NullTemplate>
+                <LoaderPage></LoaderPage>
+            </NullTemplate>
+            <WithElementsTemplate>
+                <table class="table table-striped table-sm projects dataTable no-footer dtr-inline">
+                    <thead>
+                        <tr class="card-header-gray">
+
+                            <th>Menu Name </th>
+                            <th>Action Link</th>
+                            <th>Icons</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in PerPagMenuItemRecords as List
+                     <MenuItemVM>
+                         )
+                        {
+                            <tr>
+                                <td><a href="SecondMenuItemCategories/@item.MenuItemID">@item.MenuName </a> </td>
+                                <td>@item.ActionLink</td>
+                                <td>@item.Icons</td>
+                                <td>
+                                    <a href="#" @onclick:preventDefault @onclick="()=>ShowEditSideBar(item.MenuItemID)" class="text-success" title="Edit"><i class="fa fa-pencil"></i></a>&nbsp;
+                                    <a href="#" @onclick:preventDefault @onclick="()=>DeleteMenuItem(item.MenuItemID)" class="text-danger" title="Delete"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </WithElementsTemplate>
+        </GenericList>
+        <Pagination TotaPagesQuantity="totalPageQuantity" TotalCount="totalCount" CurrentPage="currentPage" Radius="2"
+                    SelectedPage="SelectedPage" ShowrecordTable="@paginationObj.QuantityPerPage"></Pagination>
+
+
+    </div>
+    <AddSubNavMenuLink MenuItemId="@MenuItemId" MenuItemParentID="@MenuItemParentID" IsVisible="AddSideBarVisibility" OnVisibilityChanged="OnAddUserVisibilityChanged" OnAddSuccess="OnAddSuccess"></AddSubNavMenuLink>
+    <DeleteConfirmation showModal="@DeleteConfirmationVisibility" OnDeleteVisibilityChangedModel="OnDeleteConfirmationVisibilityChangedModel" OnDeleteAddSuccessModel="OnDeleteConfirmationSuccess"></DeleteConfirmation>
+
+</div>

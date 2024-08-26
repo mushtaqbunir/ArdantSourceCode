@@ -1,0 +1,302 @@
+﻿@page "/AddInvoice"
+@page "/AddInvoice/{JobID}"
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor htp
+@using ArdantOffical.Data.ModelVm.Invoices
+<FormLoader Istrue="@IsloaderShow"></FormLoader>
+<div class="card card-green card-margin">
+    <div class="card-header">
+        <h3 class="card-title">Add New Invoice</h3>
+        <div class="card-tools">
+            <a class="btn btn-primary  float-right p-1" href="@($"/Invoice")" id="create_pdf" style="cursor:pointer">
+                Back Page
+            </a>
+        </div>
+    </div>
+
+
+    <div class="card-body p-2">
+
+        <EditForm Model="@InvoiceModal" OnValidSubmit="SaveData" OnInvalidSubmit="HandleInvalidSubmit">
+
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="card-body">
+
+
+
+                <div class="row">
+                   
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <label>Select Job: <span class="text-danger">*</span></label>
+                            @if (JobID != null)
+                            {
+                                <InputText @bind-Value="InvoiceModal.Job_Number" class="form-control" disabled="disabled" />
+                            }
+                            else
+                            {
+                                <Select2 Value="@InvoiceModal.JobID" Readonly="false" ValueExpression="@( () => @InvoiceModal.JobID)" Datasource="@lstJobs" Id="__ClientsList" ValueChanged="@((string value) => SetJobID(value))" SelectName="Select Job" TabIndex="2" />
+                                @*  <select class="form-control" aria-label="Default select example" @onchange="OnJobSelected">
+                            <option selected>--Select Job--</option>
+                            @foreach (var item in lstJobs)
+                            {
+                            <option value="@item.Id">@item.Job_Number__c</option>
+                            }
+
+                            </select> *@
+                            }
+
+                            <ValidationMessage For="() => InvoiceModal.JobID" />
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <label>Customer Name: <span class="text-danger">*</span></label>
+                            <InputText @bind-Value="InvoiceModal.Customer_Name" Placeholder="" class="form-control" />
+                            <ValidationMessage For="() => InvoiceModal.Customer_Name" />
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <label>Client Number: <span class="text-danger">*</span></label>
+                            <InputText @bind-Value="InvoiceModal.NDISNumber" Placeholder="" class="form-control" />
+                            <ValidationMessage For="() => InvoiceModal.NDISNumber" />
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <label>Send Invoice To: <span class="text-danger">*</span></label>
+                            <InputText @bind-Value="InvoiceModal.SentTo" Placeholder="Add invoice receipiant email" class="form-control" />
+                            <ValidationMessage For="() => InvoiceModal.SentTo" />
+                        </div>
+
+                    </div>
+                 
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <label>Invoice Date: <span class="text-danger">*</span></label>
+                            <RadzenDatePicker @bind-Value="@InvoiceModal.InvoiceDate" class="valid" Style="height:38px !important;" ShowTime="false" DateFormat="dd-MMM-yyyy" />
+                            <ValidationMessage For="() => InvoiceModal.InvoiceDate" />
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <label>Due Date: <span class="text-danger">*</span></label>
+                            <RadzenDatePicker @bind-Value="@InvoiceModal.DueDate" class="valid" Style="height:38px !important;" ShowTime="false" DateFormat="dd-MMM-yyyy" />
+                            <ValidationMessage For="() => InvoiceModal.DueDate" />
+                        </div>
+
+                    </div>
+
+                   
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <label for="exampleInputaddress" class="form-label">Status</label>
+                            <select class="form-control" aria-label="Default select example" @onchange="OnChangeState">
+                                <option selected>--Select Status--</option>
+                                @foreach (var item in lstStatus)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+
+                            </select>
+                            <ValidationMessage For="() => InvoiceModal.Status" />
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <!--Radzen Data Grid-->
+                <div class="row">
+                    <div class="col-12">
+                        @*  <Radzenstack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="10px" class="mt-2 mb-4">
+                        <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" Text="Add New Order" Click="@InsertRow" Disabled="@(editMode == DataGridEditMode.Single && invoiceItemToInsert.Count() > 0)" />
+                        <div style="white-space:nowrap; margin-left: 20px ">Edit Mode:</div>
+                        <RadzenSelectBar @bind-Value="@editMode" TextProperty="Text" ValueProperty="Value" style="margin-right: 16px"
+                        Data="@(Enum.GetValues(typeof(DataGridEditMode)).Cast<DataGridEditMode>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small"
+                        Disabled="@(editMode == DataGridEditMode.Multiple && InvoiceItemsToInsert.Count() > 1)" />
+                        </Radzenstack> *@
+                        <div style="display: flex; flex-direction: row; justify-content:end; align-items: center; margin-top: 10px; margin-bottom: 20px;">
+                            <RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="add_circle_outline" Text="Add New item" Click="@InsertRow" />
+                            @*   Disabled="@(editMode == DataGridEditMode.Multiple && invoiceItemToInsert.Count() > 0)" *@
+
+                        </div>
+
+                        <RadzenDataGrid @ref="invoiceItemsGrid" AllowAlternatingRows="false" AllowFiltering="false" AllowPaging="true" PageSize="10" AllowSorting="false" EditMode="@editMode"
+                                        Data="@InvoiceModal.InvoiceItemList" TItem="InvoiceItemsVm"  RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" Sort="@Reset" Page="@Reset"
+                                        ShowPagingSummary="true" Filter="@Reset">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="InvoiceItemsVm" Context="Modal" Filterable="true" Sortable="false" Width="40px" Title="" TextAlign="TextAlign.Center" Frozen="true">
+                                    <Template Context="Modal">
+                                        @*   <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(Modal))" @onclick:stopPropagation="true" title="Edit">
+                                        </RadzenButton> *@
+                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(Modal))" @onclick:stopPropagation="true" title="Delete">
+                                        </RadzenButton>
+                                    </Template>
+                                    <EditTemplate Context="Modal">
+                                        @* <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(Modal))" title="Save">
+                                        </RadzenButton>
+                                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(Modal))" title="Cancel" >
+                                        </RadzenButton> *@
+                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(Modal))" title="Delete">
+                                        </RadzenButton>
+                                    </EditTemplate>
+                                </RadzenDataGridColumn>
+                                @*   <RadzenDataGridColumn TItem="InvoiceItemsVm" Property="SNo" Title="S.No" Width="50px" Frozen="true">
+                                <Template Context="Modal">
+                                @(Modal.SNo + 1)
+                                </Template>
+                                </RadzenDataGridColumn> *@
+                                <RadzenDataGridColumn TItem="InvoiceItemsVm" Property="Date" Title="Date" Width="120px">
+                                    <EditTemplate Context="Modal">
+                                        <RadzenDatePicker @bind-Value="@Modal.Date" class="valid" Style="height:38px !important;" ShowTime="false" DateFormat="dd-MMM-yyyy" />
+
+                                    </EditTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InvoiceItemsVm" Property="ItemName" Title="Item Name" Width="200px">
+                                    <EditTemplate Context="Modal">
+                                        <RadzenDropDown @bind-Value="@Modal.ItemName" Data="@ItemsList" TextProperty="Text" ValueProperty="Value" Style="width:100%; display: block;" />
+                                    </EditTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InvoiceItemsVm" Property="Description" Title="Description" Width="300px">
+                                    <EditTemplate Context="Modal">
+                                        <input @bind-value="@Modal.Description" class="form-control" Name="Description" />
+                                        @*  <InputText @bind-Value="Modal.Description" Style="width:200px; display: block;" Name="Description"></InputText> *@
+
+                                    </EditTemplate>
+
+                                </RadzenDataGridColumn>
+
+                                <RadzenDataGridColumn TItem="InvoiceItemsVm" Property="Hours" Title="Hr" Width="50px">
+                                    <Template Context="Modal">
+                                        @String.Format(new System.Globalization.CultureInfo("en-US"), "{0}", Modal.Hours)
+                                    </Template>
+                                    <EditTemplate Context="Modal">
+                                        <RadzenNumeric @bind-Value="Modal.Hours" ShowUpDown="false" Style="width:100%;" />
+                                    </EditTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InvoiceItemsVm" Property="Minutes" Title="Min" Width="50px">
+                                    <Template Context="Modal">
+                                        @String.Format(new System.Globalization.CultureInfo("en-US"), "{0}", Modal.Minutes)
+                                    </Template>
+                                    <EditTemplate Context="Modal">
+                                        <RadzenNumeric @bind-Value="Modal.Minutes" ShowUpDown="false" Style="width:100%;" />
+                                    </EditTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InvoiceItemsVm" Property="KM" Title="KM(s)" Width="50px">
+                                    <Template Context="Modal">
+                                        @String.Format(new System.Globalization.CultureInfo("en-US"), "{0}", Modal.KM)
+                                    </Template>
+                                    <EditTemplate Context="Modal">
+                                        @if (Modal.ItemName == "NDIS Travel")
+                                        {
+                                            <RadzenNumeric @bind-Value="Modal.KM" ShowUpDown="false" Style="width:100%; " />
+                                        }
+
+                                    </EditTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InvoiceItemsVm" Property="UnitPrice" Title="Rate" Width="140px">
+                                    <Template Context="Modal">
+                                        @String.Format(new System.Globalization.CultureInfo("en-US"), "{0}", Modal.UnitPrice)
+                                    </Template>
+                                    <EditTemplate Context="Modal">
+                                        <RadzenDropDown @bind-Value="@Modal.Rate" Data="@RatesList" Change="@OnChange" TextProperty="Text" ValueProperty="Value" Style="width:100%; display: block;" />
+                                    </EditTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InvoiceItemsVm" Property="Tax" Title="Tax" Width="140px">
+                                    <EditTemplate Context="Modal">
+                                        <RadzenDropDown @bind-Value="@Modal.Tax" Data="@TaxesList" TextProperty="Text" Change="@OnTaxChange" ValueProperty="Value" Style="width:100%; display: block;" />
+                                        <RadzenRequiredValidator Text="Tax is required" Component="Tax" Popup="true" />
+                                    </EditTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="InvoiceItemsVm" Property="Amount" Title="Amount" Width="70px">
+                                    <Template Context="Modal">
+                                        @String.Format(new System.Globalization.CultureInfo("en-US"), "{0}", Modal.TotalAmount)
+                                    </Template>
+                                    <EditTemplate Context="Modal">
+                                        <RadzenNumeric Value="Modal.TotalAmount" ShowUpDown="false" Style="width:100%; text-align:center;" @onfocusout="((args) => SaveRow(Modal))" />
+                                    </EditTemplate>
+                                </RadzenDataGridColumn>
+
+                            </Columns>
+                        </RadzenDataGrid>
+                    </div>
+                </div>
+
+               <div class="row">
+                   <div class="col-12 text-right">
+                        <p class="mb-0">Sub Total : <span>@InvoiceModal.SubTotal</span></p>
+                        <p class="mb-0">Tax : <span>@InvoiceModal.TaxAmount</span></p>
+                        <p class="mb-0">Total : <span>@InvoiceModal.Total</span></p>
+                   </div>
+               </div>
+            @*     <div class="row">
+                    <div class="col-10"></div>
+                    <div class="col-1">Sub Total:</div>
+                    <div class="col-1" style="text-align:center;">@SubTotal</div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-10"></div>
+                    <div class="col-1">Tax:</div>
+                    <div class="col-1" style="text-align:center;">@TaxAmount</div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-10"></div>
+                    <div class="col-1">Total:</div>
+                    <div class="col-1" style="text-align:center;">@Total</div>
+                </div> *@
+
+
+
+            </div>
+            <div class="ml-lg-4 ml-md-4 ml-sm-4 mr-3 mb-5">
+                @if (IsSpinner)
+                {
+                    <button class="btn btn-primary float-right" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Please wait...
+                    </button>
+                   @*  <a class="btn bg-gradient-green text-white GeneratePDf float-right p-1" @onclick="LoadHtmlContent" style="cursor:pointer;height: 33px;">
+                        View Invoice
+                    </a> *@
+                }
+                else
+                {
+                    <button type="submit" class=" ml-2 btn  float-right bg-gradient-green" tabindex="11">@ActionName</button>
+                   @*  <a class="btn bg-gradient-green text-white GeneratePDf float-right p-1" @onclick="LoadHtmlContent" style="cursor:pointer;height: 33px;">
+                        View Invoice
+                    </a> *@
+                  
+                }            
+                   
+                
+
+               
+
+                @*   <button type="reset" class="btn btn-secondary float-right" @onclick="CloseSideBar" tabindex="12">Cancel</button> *@
+            </div>
+        </EditForm>
+
+    </div>
+    <!-- /.card-body -->
+</div>
+
+<FgcToast TostModels="@TostModelclass"> </FgcToast>
+
+@if (IsPdfPreview)
+{
+    <PreviewInvoice InvoiceModal="@InvoiceModal" HtmlContent="@htmlContent" VisibilityHide="HidePreviewPdf"></PreviewInvoice>
+}
+
+@code {
+
+}

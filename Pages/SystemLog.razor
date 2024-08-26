@@ -1,0 +1,205 @@
+﻿@page "/SystemLog"
+<FormLoader Istrue="@IsloaderShow"></FormLoader>
+<div class="card card-green card-margin">
+    <div class="card-header">
+        <h3 class="card-title">System Log</h3>
+        @*@if (SystemLog_All != null && SystemLog_All.Count > 0)
+            {*@
+        <div class="card-tools">
+            <ul class="nav navbar-nav">
+                <!-- User Account Menu -->
+                <li class="dropdown user user-menu">
+                    <a href="#" class="btn btn-success dropdown-toggle mt-1" data-toggle="dropdown">
+
+                        <span class="hidden-xs">Download</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- The user image in the menu -->
+                        <li class="user-body">
+                            <!-- Button trigger modal -->
+                            <div class="col-xs-2 text-left">
+                                <a href="#" @onclick:preventDefault><i class="fas fa-file-csv"> &nbsp; CSV</i></a>
+                            </div>
+                        </li>
+                        <li class="user-body">
+                            <div class="col-xs-2 text-left">
+                                <a href="#" @onclick:preventDefault><i class="fa fa-file-excel-o" @onclick="@(async() => await DownloadExcelAsync())"> &nbsp; Excel</i></a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+        @*}*@
+    </div>
+    <div class="card-body p-2">
+        <EditForm Model="@SystemLogVM">
+            <DataAnnotationsValidator />
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="text-bold text-danger">Note:</span> <span>Enter local time</span>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="inputName">Start Date</label>
+                        <RadzenDatePicker @bind-Value="@SystemLogVM.StartDate" class="valid" ShowTime="false" HourFormat="12" DateFormat="dd-MMM-yyyy" TabIndex="1" />
+                        <ValidationMessage For="() => SystemLogVM.StartDate" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="inputName">Start Time</label>
+
+                        @*<InputDate TValue="TimeSpan?" @bind-Value="SystemLogVM.StartTime"></InputDate>*@
+                        @*<Blazorise.TimePicker TValue="TimeSpan?"  @bind-Time="@SystemLogVM.StartTime"></Blazorise.TimePicker>*@
+                        @*<Timepicker Label="Custom Format" @bind-value="SystemLogVM.StartTime"  TimeFormat="HH:mm tt" ></Timepicker>*@
+                        @*<RadzenDatePicker class="valid" Placeholder="12:00 AM" TValue="String" @bind-value="@SystemLogVM.StartTime" ShowTime="true" TimeOnly="true" HourFormat="12" DateFormat="HH:mm tt" TabIndex="2" />*@
+                        <Blazorise.TimeEdit TValue="TimeSpan?" @bind-Time="@SystemLogVM.StartTime" Style="margin-top:3px;" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="inputName">End Date</label>
+                        <RadzenDatePicker @bind-Value="@SystemLogVM.EndDate" class="valid" ShowTime="false" HourFormat="12" DateFormat="dd-MMM-yyyy" TabIndex="3" />
+                        <ValidationMessage For="() => SystemLogVM.EndDate" />
+                    </div>
+
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="inputName">End Time</label>
+                        @*<RadzenDatePicker class="valid" Placeholder="12:00 AM" TValue="TimeSpan?" @bind-value="@SystemLogVM.EndTime" ShowTime="true" TimeOnly="true" HourFormat="12" DateFormat="HH:mm tt" TabIndex="4" />*@
+                        <Blazorise.TimeEdit TValue="TimeSpan?" @bind-Time="@SystemLogVM.EndTime" Style="margin-top:3px;" />
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="inputRole">User <span class="text-danger">*</span></label>
+
+                        @*<InputSelect id="transactionType" class="form-control mt-1" @bind-Value="SystemLogVM.UserID" TabIndex="3">
+                        <option value="">-- Select User --</option>
+                        @foreach (var state in lstUsers)
+                            {
+                                <option value="@state.Value">@state.Text</option>
+                            }
+                        </InputSelect>*@
+                       
+                    </div>
+                </div>
+                <div class="col-md-2">
+
+                    <div class="form-group">
+                        <button class="btn btn-success" type="submit" tabindex="4" style="width:100px; margin-top:23px;">Search</button>
+
+                    </div>
+                </div>
+
+            </div>
+        </EditForm>
+
+
+        <div class="d-flex justify-content-between text-white " style="margin-top:-20px">
+            <div class=" " style="width:100%">
+                <input @bind-value="@SearchFilter" @bind-value:event="oninput" @onkeyup="async () => await SearchChanged(SearchFilter)" class="form-control" type="text" placeholder="search" style=" width: 201px; margin-bottom: 4px; float: right; position: relative; top: 65px;">
+                <EditForm Model="@paginationObj">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="row mt-4 ml-0">
+                        <span style="color:black;margin-right:2px;margin-top:8px" class="ml-3">Show</span>
+                        <div class="form-group ">
+                            <InputSelect id="" class="form-control" ValueExpression="@(() => paginationObj.QuantityPerPage)" Value="@paginationObj.QuantityPerPage" ValueChanged="@((int value) => LoadRecords(1,value))">
+                                <option value="25">25</option>
+                                @foreach (var state in ListOfTablePages)
+                                {
+                                    <option value="@state.Value">@state.Text</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <span style="color: black; margin-left: 2px; margin-top: 8px " class="">entries</span>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+        <PaginationCounter TotaPagesQuantity="totalPageQuantity" TotalCount="totalCount" CurrentPage="currentPage" RecordsPerPage="@paginationObj.QuantityPerPage"></PaginationCounter>
+
+        <GenericList Elements="PerPageSystemLog">
+            @*<NullTemplate>
+                    <LoaderPage></LoaderPage>
+                </NullTemplate>*@
+            <WithElementsTemplate>
+                <table class="table table-striped table-sm projects dataTable no-footer dtr-inline">
+                    <thead>
+                        <tr class="card-header-gray">
+
+                            <th>Object</th>
+                            <th>Action</th>
+                            <th>Old Value</th>
+                            <th>New Value</th>
+                            <th>Remarks</th>
+                            <th>Posted By</th>
+                            <th>IP</th>
+                            <th>Date (UK Time)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in PerPageSystemLog)
+                        {
+                            <tr>
+
+                                <td style="width: 81px;">@item.Object</td>
+                                <td>@item.Action</td>
+
+                                @{
+
+                                    if (string.IsNullOrEmpty(item.OldValue))
+                                    {
+                                        item.OldValue = "-";
+                                    }
+                                    if (string.IsNullOrEmpty(item.NewValue))
+                                    {
+                                        item.NewValue = "-";
+                                    }
+                                }
+                                <td class="text-center">
+                                    @if (item.OldValue == "Returned")
+                                    {
+                                        item.OldValue = "Observation";
+                                    }
+
+                                    @item.OldValue
+                                </td>
+                                <td class="text-center">@item.NewValue</td>
+                                <td>
+                                    @FGCExtensions.ShowMarkupString(item.Remarks) @if (item.CRID > 0)
+                                    {<a href="#" @onclick:preventDefault @onclick="()=>ShowAddActionLogSideBar(Convert.ToInt32(item.CRID))">  View Details</a>}
+                                </td>
+                                <td> @item.PostedBy</td>
+                                <td> @item.IP</td>
+                                <td> @Convert.ToDateTime(item.DatePosted).ToString("dd-MMM-yyy hh:mm:ss")</td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+            </WithElementsTemplate>
+        </GenericList>
+        <Pagination TotaPagesQuantity="totalPageQuantity" TotalCount="totalCount" CurrentPage="currentPage" Radius="2"
+                    SelectedPage="SelectedPage" ShowrecordTable="@paginationObj.QuantityPerPage"></Pagination>
+
+
+
+
+
+
+    </div>
+</div>
+<ModalShowpopup showModal="@responseDialogVisibility" Message="@responseBody" title="@responseHeader" OnVisibilityChangedModel="@OnVisibilityChangedModel"></ModalShowpopup>
+<ActionLog Crid="@CrIdAction" VisibleActionLog="AddActionLogSideBarVisibility" OnActionLogVisibilityChanged="OnAddActionLogVisibilityChanged" OnActionLogSuccess="OnActionLogSuccess"></ActionLog>
+
+@code {
+
+}

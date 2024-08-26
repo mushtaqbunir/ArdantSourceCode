@@ -1,0 +1,116 @@
+﻿@page "/ProviderRegistration"
+@layout ArdantFormLayout
+<style>
+    .form-title {
+        color: rgb(20, 18, 149);
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        word-wrap: break-word;
+        font-weight: 400;
+    }
+
+    .form-subtitle {
+        text-align: center;
+        font-size: 19px;
+        font-weight: 400;
+        letter-spacing: 2px;
+    }
+
+</style>
+<FormLoader Istrue="@IsloaderShow"></FormLoader>
+<div class="container" style="margin-top:60px">
+    <EditForm Model="@OTModal" OnValidSubmit="@SaveOTData">
+
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <h5 class="mb-0 form-title">Ardant is beginning to onboard occupational therapists</h5>
+                <br />
+                <p class="mb-0 form-subtitle">We invite you to register your expression of interest</p>
+            </div>
+            @*     <h5 class="form-title"></h5>
+            <p class="form-subtitle"></p> *@
+
+            <div class="col-md-10 col-sm-12 mt-3">
+                <p class="text-danger">@ErrorMessage</p>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+            </div>
+            <div class="col-md-5 col-sm-12 mt-3 ">
+
+                <div class="mb-3">
+
+                    <label for="inputRole">Title: <span class="text-danger">*</span></label>
+                    <InputSelect id="transactionStatus" class="form-select" @bind-Value="OTModal.Title" placeholder="Select Title *" tabindex="1" aria-describedby="emailHelp">
+                        <option value="">--Select--</option>
+                        @foreach (var state in lstTitles)
+                        {
+                            <option value="@state.Value">@state.Text</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="mb-3">
+                    <input placeholder="First Name *" type="text" class="form-control" @bind-value="OTModal.Firstname" id="exampleInputFirstName" aria-describedby="emailHelp" tabindex="3">
+                </div>
+                <div class="mb-3">
+                    <input typeof="email" placeholder="Email *" type="text" @bind-value="OTModal.Email" class="form-control " id="exampleInputEmail" aria-describedby="emailHelp" tabindex="5">
+                </div>
+                <div class="mb-3">
+                    <input typeof="text" placeholder="AHPRA Registration Number *" @bind-value="OTModal.AHPRANo" type="text" class="form-control " id="exampleInputRgNo" aria-describedby="emailHelp" tabindex="7">
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-12 mt-3">
+                <div class="mb-3">
+
+                    <label for="inputRole">Gender: <span class="text-danger">*</span></label>
+                    <InputSelect id="gender" class="form-select" @bind-Value="OTModal.Gender" tabindex="2">
+                        <option value="">--Select--</option>
+                        @foreach (var state in lstGender)
+                        {
+                            <option value="@state.Value">@state.Text</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="mb-3">
+                    <input type="text" placeholder="Last Name *" @bind-value="OTModal.Lastname" class="form-control " id="exampleInputLastName" tabindex="4">
+                </div>
+                <div class="mb-3">
+                    <input type="text" placeholder="Phone *" @bind-value="OTModal.Phone" class="form-control" id="exampleInputPhone" tabindex="6">
+                </div>
+
+                <div class="mb-3">
+                    <input type="text" placeholder="ABN (Optional)" class="form-control " @bind-value="OTModal.ABN" id="exampleInputABN" tabindex="8">
+                </div>
+            </div>
+
+
+            <div class="col-md-10 col-sm-12 mt-3">
+                <div class="mb-3">
+                    <textarea class="form-control" placeholder="Message" id="exampleFormControlTextarea1" @bind="OTModal.Message" rows="3" tabindex="9"></textarea>
+                </div>
+            </div>
+            <div class="col-md-10 col-sm-12 text-md-end text-sm-center">
+                @if (IsSpinner)
+                {
+                    <button class="btn btn-primary" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Submitting...
+                    </button>
+                }
+                else
+                {
+                    <button type="submit" class="btn bg-gradient-green text-white mb-3" style="font-size: 15px !important;" tabindex="10">
+                        Submit
+                    </button>
+                }
+
+            </div>
+        </div>
+    </EditForm>
+
+
+</div>
+
+@code {
+
+}

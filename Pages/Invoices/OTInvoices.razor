@@ -1,0 +1,205 @@
+﻿@page "/OTInvoices"
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor htp
+
+<FormLoader Istrue="@IsloaderShow"></FormLoader>
+<div class="card card-green card-margin">
+    <div class="card-header">
+        <h3 class="card-title">My NDIS Invoices</h3>
+        <div class="card-tools">
+
+            @if (IsSpinnerDownload)
+            {
+                <button class="btn btn-primary p-1 mr-1" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Downloading...
+                </button>
+            }
+            else
+
+            {
+                <button type="button" @onclick="@(async() => await DownloandExcel())" class="btn btn-primary p-1 mr-1" tabindex="11">Download Excel</button>
+            }
+
+            @if (IsAddSpinner)
+            {
+
+                <button class="btn btn-primary" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Creating New Invoice...
+                </button>
+
+            }
+            else
+            {
+                <a class="btn btn-primary  float-right p-1" href="javascript:void(0)" @onclick="CreateNewInvoice" id="create_pdf" style="cursor:pointer">
+                    Create New Invoice
+                </a>
+            }
+
+        </div>
+    </div>
+
+    <EditForm Model="@paginationObj">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="row ml-0" style="margin-top: 10px">
+            <span style="color:black;margin-right:2px;margin-top:8px" class="ml-3">Show</span>
+            <div class="form-group ">
+
+                <InputSelect id="" class="form-control" ValueExpression="@(() => paginationObj.QuantityPerPage)" Value="@paginationObj.QuantityPerPage" ValueChanged="@((int value) => LoadRecords(1,value))">
+                    <option value="25">25</option>
+                    @foreach (var state in ListOfTablePages)
+                    {
+                        <option value="@state.Value">@state.Text</option>
+                    }
+                </InputSelect>
+            </div>
+            <span style="color: black; margin-left: 2px; margin-top: 8px " class="">entries</span>
+        </div>
+    </EditForm>
+
+    <div class="flex-shrink-0 mt-4">
+
+        <EditForm Model="@paginationObj" OnValidSubmit="()=> SearchChanged()">
+            <div class="row p-2">
+                <div class="col-md-2 col-sm-12 mt-1">
+                    <div class="form-group">
+                        <label style="color:black">Select OT:</label>
+                        <Select2 Value="@OTId" Readonly="false" ValueExpression="@( () => OTId)" Datasource="@lstOts" Id="__OtsList" ValueChanged="@((string value) => SetOTID(value))" SelectName="Select Job" TabIndex="2" />
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12">
+
+                    <div class="form-group">
+                        <label style="color:black">From Date: <span class="text-danger"></span></label>
+                        <RadzenDatePicker @bind-Value="@searchFilters.FromDate" class="valid" ShowTime="false" DateFormat="dd-MMM-yyyy" />
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <div class="form-group">
+                        <label style="color:black">To Date: <span class="text-danger"></span></label>
+                        <RadzenDatePicker @bind-Value="@searchFilters.ToDate" class="valid" ShowTime="false" DateFormat="dd-MMM-yyyy" />
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12 mt-1">
+
+                    <label for="exampleInputaddress" style="color:black" class="form-label">Status:</label>
+                    <select class="form-control" aria-label="Default select example" @bind="searchFilters.Status">
+                        <option selected>--Select Status--</option>
+                        @foreach (var item in lstStatus)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+
+                </div>
+                <div class="col-md-2 col-sm-12" style="margin-top: 30px;">
+                    <input type="text" class="form-control" placeholder="Search" @bind-value="@searchFilters.SearchKey" @bind-value:event="oninput" />
+                </div>
+                <div class="col-md-2 col-sm-12" style="margin-top: 30px;">
+
+                    <button type="submit" class="btn btn-primary rounded  ">Get Report</button> &nbsp;
+
+                    <button type="reset" class=" btn btn-primary  rounded  " @onclick="()=>FormReset()">Reset</button>
+                </div>
+            </div>
+        </EditForm>
+
+        @*<div class="row">
+        <div class="col-6">
+        <input type="text" class="form-control  " style="margin-left:-9px" placeholder="Search" @bind-value="@SearchKey" @bind-value:event="oninput"  />
+        </div>
+        <div class="col-6">
+        <button type="button" class="btn btn-success rounded  " @onclick="()=>SearchChanged()">Get Report</button>
+        <button type="reset" class=" btn btn-primary  rounded  " @onclick="()=>FormReset()">Reset</button>
+        </div>
+        </div>*@
+
+        <p class="text-danger">@ErrorMessage</p>
+    </div>
+
+    <div class="card-body p-2">
+        <PaginationCounter TotaPagesQuantity="totalPageQuantity" TotalCount="totalCount" CurrentPage="currentPage" RecordsPerPage="@paginationObj.QuantityPerPage"></PaginationCounter>
+
+        @if (PerPageInvoiceRecords != null)
+        {
+            <div class="row" style="margin:0px;">
+                <GenericList Elements="PerPageInvoiceRecords">
+                    <NullTemplate>
+                        <LoaderPage></LoaderPage>
+                    </NullTemplate>
+                    <WithElementsTemplate>
+                        <table class="table table-striped table-sm projects dataTable no-footer dtr-inline table-responsive-sm" style="font-size:14px">
+                            <thead>
+                                <tr class="card-header-gray">
+                                    <th>Date </th>
+                                    <th>Job Number</th>
+                                    <th>Customer Name</th>
+                                    <th>Invoice Title </th>
+                                    <th>Sent To </th>
+                                    <th>Invoice Total </th>
+                                    <th>Status </th>
+                                    @*   <th>Description</th> *@
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in PerPageInvoiceRecords)
+                                {
+                                    <tr>
+                                        <td> @item.InvoiceDate?.ToString("dd-MMM-yyyy") </td>
+                                        <td>@item.Job_Number</td>
+                                        <td>@item.Customer_Name</td>
+                                        <td> @item.Title </td>
+                                        <td> @item.SentTo </td>
+                                        <td> @item.InvoiceTotal </td>
+                                        <td> @item.Status </td>
+                                        @*  <td></td> *@
+                                        <td>
+                                            @*  <a href="#" @onclick:preventDefault @onclick="()=>ShowInvoiceItem(item.Id)" class="text-info" title="Add Item">
+                                    <i class="fa fa-plus" aria-hidden="true" style="color: #1f1f8d;"></i>
+                                    </a>&nbsp; *@
+
+                                            <a href="javascript:void(0)" @onclick="()=>InvoicePreview(item.Id)" class="text-info" title="View Invoice"><i class="fa fa-eye" aria-hidden="true"></i></a>
+
+
+                                            &nbsp;
+                                            <a href="javascript:void(0)" @onclick="()=>EditInvoice(item.Id)" class="text-info" title="Edit"><i class="fa fa-pencil"></i></a>
+                                            <a href="#" @onclick:preventDefault @onclick="()=> DeleteInvoice(item.Id)" class="text-danger" title="Delete"><i class="fa fa-trash-o"></i></a>
+                                            @*  <a href="#" @onclick:preventDefault @onclick="()=>DeleteInvoice(item.Id)" class="text-danger" title="Delete"><i class="fa fa-trash-o"></i></a>  *@
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </WithElementsTemplate>
+                </GenericList>
+            </div>
+        }
+        <Pagination TotaPagesQuantity="totalPageQuantity" TotalCount="totalCount" CurrentPage="currentPage" Radius="2"
+                    SelectedPage="SelectedPage" ShowrecordTable="@paginationObj.QuantityPerPage"></Pagination>
+
+
+    </div>
+    <!-- /.card-body -->
+</div>
+
+<FgcToast TostModels="@TostModelclass"> </FgcToast>
+
+@if (IsInvoicePreview)
+{
+    <PreviewInvoice InvoiceModal="@InvoiceModal" VisibilityHide="HideInvoicePreview" HtmlContent="@htmlContent"></PreviewInvoice>
+}
+
+<DeleteConfirmation showModal="@IsDeleteComfirmation" OnDeleteVisibilityChangedModel="DeleteConfirmed"></DeleteConfirmation>
+
+@if (IsValidationPopup)
+{
+    <ValidationComponent Message="Please select any search parameter" title="Validation" OnVisibilityChangedModel="HideValidationPopup" showModal="IsValidationPopup"></ValidationComponent>
+}
+
+@code {
+
+}
